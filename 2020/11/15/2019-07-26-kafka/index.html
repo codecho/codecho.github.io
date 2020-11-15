@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="消息队列内部实现原理   什么是微服务  强调的是服务的大小，它关注的是一个点，是具体解决某个问题的一个服务应用   什么是微服务架构  通常而言，微服务架构是一种架构模式或架构风格，它提倡将单个应用程序划分为一组小的服务，每个服务独立运行，服务之间互相调用、互相配合  Dubbo：基于TCP协议传输完成RPC  SpringCloud：基于Http协议+REST API    微服务优缺点">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kafka">
+<meta property="og:url" content="http://yoursite.com/2020/11/15/2019-07-26-kafka/index.html">
+<meta property="og:site_name" content="codecho的个人空间">
+<meta property="og:description" content="消息队列内部实现原理   什么是微服务  强调的是服务的大小，它关注的是一个点，是具体解决某个问题的一个服务应用   什么是微服务架构  通常而言，微服务架构是一种架构模式或架构风格，它提倡将单个应用程序划分为一组小的服务，每个服务独立运行，服务之间互相调用、互相配合  Dubbo：基于TCP协议传输完成RPC  SpringCloud：基于Http协议+REST API    微服务优缺点">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20190726142947590.png">
+<meta property="og:image" content="d:/学习记录笔记/个人/images/1571760000109.png">
+<meta property="article:published_time" content="2020-11-15T10:53:15.068Z">
+<meta property="article:modified_time" content="2020-11-15T12:28:03.362Z">
+<meta property="article:author" content="codecho">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20190726142947590.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/15/2019-07-26-kafka/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Kafka | codecho的个人空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">codecho的个人空间</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/15/2019-07-26-kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="codecho的个人空间">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Kafka
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-15 18:53:15 / Modified: 20:28:03" itemprop="dateCreated datePublished" datetime="2020-11-15T18:53:15+08:00">2020-11-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>消息队列内部实现原理</p>
+<p><img src="https://img-blog.csdnimg.cn/20190726142947590.png"></p>
+</li>
+<li><p>什么是微服务</p>
+<ul>
+<li>强调的是服务的大小，它关注的是一个点，是具体解决某个问题的一个服务应用</li>
+</ul>
+</li>
+<li><p>什么是微服务架构</p>
+<ul>
+<li><p>通常而言，微服务架构是一种架构模式或架构风格，它提倡将单个应用程序划分为一组小的服务，每个服务独立运行，服务之间互相调用、互相配合</p>
+</li>
+<li><p>Dubbo：基于TCP协议传输完成RPC</p>
+</li>
+<li><p>SpringCloud：基于Http协议+REST API</p>
+</li>
+</ul>
+</li>
+<li><p>微服务优缺点</p>
+</li>
+</ol>
+<ol start="5">
+<li>Spring Cloud与Spring Boot的关系<ul>
+<li>Spring Boot专注快速开发单个微服务</li>
+<li>Spring Cloud关注全局的微服务治理框架，它将Spring Boot开发的一个个单体微服务整合并管理起来</li>
+<li>Spring Boot可以不依赖Spring Cloud独立开发项目，但是Spring Cloud必须依赖Spring Boot</li>
+</ul>
+</li>
+</ol>
+<p><strong>一、概述</strong></p>
+<ol>
+<li><p>定义</p>
+<p> Kafka是一个<strong>分布式</strong>的基于<strong>发布/订阅模式</strong>的消息队列。</p>
+</li>
+<li><p>消息队列</p>
+<p> 2.1 消息队列的两种模式</p>
+<ul>
+<li><p><strong>点对点模式</strong>（一对一，消费者主动拉取数据，收到消息后清除消息）</p>
+</li>
+<li><p><strong>发布/订阅模式</strong>（一对多，消费者消费数据后不清除消息）</p>
+<ul>
+<li><p>消费者主动拉取：需要消费者不断轮询队列判断是否有消息</p>
+</li>
+<li><p>队列主动推送：各个消费者处理速度不同，可能导致处理能力不足或资源浪费</p>
+</li>
+</ul>
+<p><img src="D:\学习记录笔记\个人\images\1571760000109.png" alt="1571760000109"></p>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>消息传输一致性</strong></p>
+<ul>
+<li>at most once：最多一次，consumer拉取消息，先保存offset，再处理消息，如果在处理消息过程中发生异常，新的consumer将无法拉取offset之前的消息，因为offset已被上一个consumer保存</li>
+<li>at least once：最少一次，consumer拉取消息，先处理消息，再保存offset，如果在保存offset过程中发生异常，新的consumer可能会拉取到已被上一个consumer处理过的消息</li>
+<li>exactly once：恰好一次，可通过最少一次+consumer输出中增加已处理消息最大编号达到不会重复处理消息的情况</li>
+</ul>
+<p><strong>replicas</strong></p>
+<ul>
+<li>一个partition有一个leader和多个follower，leader负责处理所有的读写请求，follower需要和leader保持同步；leader会跟踪每个follower的状态，如果follower失效或落后太多，会被从replicas同步列表中移除；当所有的follower都将一条消息保存成功后，该消息才被认为是“commited”，此时该消息才能被consumer消费；因此即使只有一个replicas实例存活，也可以保证消息的正常发送和接收</li>
+</ul>
+<p><strong>log file</strong></p>
+<ul>
+<li>每个partition由多个log file（segment）组成，segment的命名为“最小offset.kafka”，如“0000000.kafka”，其中，最小offset为该segment中起始消息的offset</li>
+</ul>
+<p><strong>分布式</strong></p>
+<ul>
+<li><p>broker node registry：一个kafka broker启动后，向zookeeper注册自己的节点信息（临时节点），当broker和zookeeper断开连接时，该节点也会被删除</p>
+</li>
+<li><p>broker topic registry：一个kafka broker启动后，向zookeeper注册自己持有的topic和partitions信息（临时节点）</p>
+</li>
+<li><p>consumer and consumer group：consumer被创建时，向zookeeper注册自己的信息</p>
+</li>
+<li><p>consumer id registry：每个consumer都有自己的唯一id，该id用来标记消费者信息</p>
+</li>
+<li><p>consumer offset tracking：跟踪每个消费者目前消费的partition中最大的offset（持久节点）</p>
+</li>
+<li><p>partition owner registry：标记partition被哪个consumer消费（临时节点），一个partition只能被group下一个consumer消费，当group下某个consumer时效后，触发负载均衡（让partitions在多个consumer之间均衡消费）</p>
+</li>
+<li><p>当consumer启动时，触发的操作：</p>
+<ul>
+<li>首先进行“consumer id registry”</li>
+<li>然后在“consumer id registry”节点下注册一个watch用来监听当前consumer group中其他consumer的“leave”和“join”；只要该节点path下节点列表变更，都会触发此consumer group下consumer的负载均衡（如一个consumer失效，那么其他consumer接管partitions）</li>
+<li>在“broker id registry”节点下，注册一个watch用来监听broker的存活情况，如果broker列表变更，将会触发所有consumer group下的consumer rebalance</li>
+</ul>
+</li>
+<li><p><strong>总结</strong>’</p>
+<ul>
+<li>broker使用zookeeper用来注册broker信息，以及监测partition leader存活状态broker使用zookeeper用来注册broker信息，以及监测partition leader存活状态</li>
+<li>producer使用zookeeper用来发现broker列表，以及和topic下每个partition leader建立socker连接并发送消息</li>
+<li>consumer使用zookeeper用来注册consumer信息，其中包括consumer消费的partition列表等，同时也用来发现broker列表，并和partition leader建立socker连接并获取消息</li>
+</ul>
+</li>
+</ul>
+<p><strong>leader选择</strong></p>
+<ul>
+<li><p>kafka动态维护了一个同步状态的副本的集合（a set of in-sync replicas），简称<code>ISR</code>，在这个集合中的节点都是和leader保持高度一致的，任何一条消息必须被这个集合中的每个节点读取并追加到日志中，才会通知外部该条消息已经被提交了。</p>
+</li>
+<li><p>因此这个集合中的任何一个节点随时可以被选为leader，ISR在zookeeper中维护</p>
+</li>
+<li><p>ISR中有f+1个节点，就可以允许在f个节点down掉的情况下不会丢失消息并提供服务，ISR的成员是动态的，如果一个节点被淘汰了，当它重新达到“同步”状态，可以重新加入ISR集合</p>
+</li>
+<li><p>这种leader的选择方式是快速的，是和kafka的应用场景</p>
+</li>
+<li><p>kafka对于数据不会丢失的保证，是基于至少一个节点是存活的，一旦所有节点都down掉了，那么将无法保证</p>
+</li>
+<li><p>当所有的replicas都down掉时，必须及时做出反应，可以有以下两种选择：</p>
+<ul>
+<li><p>等待ISR中的任意一个节点恢复并担任leader</p>
+</li>
+<li><p>选择所有节点中（不只是ISR）第一个恢复的节点作为leader</p>
+<p>如果等待ISR中的节点恢复，一旦ISR中节点恢复不了，集群页永远恢复不了，如果等待所有节点中某个节点恢复，该节点的数据可能与真实数据有所出入，因为可能该节点的数据没有完全同步</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>leader与副本同步</strong></p>
+<ul>
+<li>对于某个分区来说，保存正分区的broker为该分区的leader，保存副本分区的broker为该分区的follower</li>
+<li>备份分区会完全复制正分区的消息，包括消息的编号等附加属性值</li>
+<li>为了保持正分区和备份分区的内容一致，kafka采取的方案是在保存备份分区的“broker”上开启一个消费者进程进行消费，从而使得正分区的内容和备份分区的内容保持一致</li>
+<li>一般情况下，一个分区有一个正分区和若干个（可能是0个）备份分区，正分区+备份分区的总数量可以配置，<strong>producer、consumer只和保存正分区的leader进行通信</strong></li>
+<li>kafka允许topic的分区拥有若干副本，该数量可以配置，可以为topic配置副本数量，kafka会自动在每个副本上备份数据</li>
+<li>创建副本的单位是topic的分区，每个分区都有一个leader和若干个（可能是0个）followers，所有的读写操作都由leader进行处理，一般分区的数量比broker的数量多得多，各分区的leader均匀的分布在broker中，所有follower复制其leader的日志，日志中的消息和顺序都和leader中的一致，followers像普通的consumer那样从leader拉取消息并保存到自己的日志文件中</li>
+</ul>
+<p><strong>acks设置</strong></p>
+<ul>
+<li>acks设为0，表示producer不会等待broker的响应，因此producer无法知晓消息是否发送成功，可能会导致消息丢失，但同时，acks设为0会得到最大的系统吞吐量</li>
+<li>acks设为1，表示producer会在leader partition收到消息时得到broker的一个确认，这样更加可靠，因为producer会等待知道broker确认收到消息</li>
+<li>acks设为-1，表示producer会在所有备份的partition收到消息时得到broker的确认，acks设为-1可以得到最高的可靠性保证</li>
+</ul>
+<p><strong>offset存储</strong></p>
+<ul>
+<li>0.9版本之前，offset存在zk</li>
+<li>0.9版本及以后，offset存在kafka的topic中</li>
+</ul>
+<h2 id="linux安装kafka并使用"><a href="#linux安装kafka并使用" class="headerlink" title="linux安装kafka并使用"></a>linux安装kafka并使用</h2><ol>
+<li><p>windows环境下下载kafka和zookeeper压缩包，使用Xftp将压缩包传到linux服务器，解压缩，修改文件夹名称</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tar -xzf zookeeper-3.4.14.tar.gz</span><br><span class="line">mv zookeeper-3.4.14 zookeeper</span><br><span class="line"></span><br><span class="line">tar -xzf kafka_2.12-2.3.1.tgz</span><br><span class="line">mv kafka_2.12-2.3.1 kafka</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>复制zoo_sample.cfg配置文件</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp zoo_sample.cfg zoo.cfg</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动zookeeper和kafka，使用kafka自带的zookeeper</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/kafka/kafka</span><br><span class="line">bin/zookeeper-server-start.sh config/zookeeper.properties</span><br><span class="line">bin/kafka-server-start.sh config/server.properties &amp;</span><br></pre></td></tr></table></figure>
+
+<p> 使用自己安装的zookeeper</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/zookeeper/zookeeper</span><br><span class="line">bin/zkServer.sh start</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建一个主题</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic hello</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看已创建的主题</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --list --zookeeper localhost:2181</span><br><span class="line">__consumer_offsets</span><br><span class="line">hello</span><br><span class="line">test</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生产和消费消息，打开两个控制台，一个用于生产消息，一个用于消费消息</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --broker-list localhost:9092 --topic hello</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">hello</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">are u ok?</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">bingo</span></span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic hello --from-beginning</span><br><span class="line">hello</span><br><span class="line">are u ok?</span><br><span class="line">bingo</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h4><ul>
+<li><p>问题：之前下的3.5.6版本的zookeeper，启动时报错：Error: Could not find or load main class org.apache.zookeeper.server.quorum.</p>
+</li>
+<li><p>解决：下载3.4.14版本</p>
+</li>
+<li><p>配置kafka环境变量并生效</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">sudo vi /etc/profile</span><br><span class="line"><span class="meta">#</span><span class="bash">KAFKA_HOME</span></span><br><span class="line">export KAFKA_HOME=/usr/kafka/kafka</span><br><span class="line">export PATH=$PATH:$KAFKA_HOME/bin</span><br><span class="line"></span><br><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h2 id="设置集群"><a href="#设置集群" class="headerlink" title="设置集群"></a>设置集群</h2><ol>
+<li><p>复制server.properties文件并修改</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/kafka/kafka/config</span><br><span class="line">cp server.properties server01.properties</span><br><span class="line">cp server.properties server02.properties</span><br><span class="line">vi server01.properties</span><br><span class="line">broker.id=1</span><br><span class="line">listeners=PLAINTEXT://:9093</span><br><span class="line">log.dirs=/tmp/kafka-logs01</span><br><span class="line"></span><br><span class="line">vi server02.properties</span><br><span class="line">broker.id=2</span><br><span class="line">listeners=PLAINTEXT://:9094</span><br><span class="line">log.dirs=/tmp/kafka-logs02</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>启动两个新的kafka节点</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd /usr/kafka/kafka</span><br><span class="line">bin/kafka-server-start.sh config/server01.properties &amp;</span><br><span class="line">bin/kafka-server-start.sh config/server02.properties &amp;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建topic，调整副本因子</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 3 --partitions 1 --topic shopping-record</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看刚创建的topic，这里的分区leader为server01</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-topics.sh --describe --zookeeper localhost:2181 --topic shopping-record</span><br><span class="line">Topic:shopping-record	PartitionCount:1	ReplicationFactor:3	Configs:</span><br><span class="line">Topic: shopping-record	Partition: 0	Leader: 1	Replicas: 1,2,0	Isr: 1,2,0</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生产一些消息</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-producer.sh --broker-list localhost:9092 --topic working</span><br><span class="line"><span class="meta">&gt;</span><span class="bash">i really work hard</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash">but i am so tired</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>消费一些消息</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic working --from-beginning</span><br><span class="line">i really work hard</span><br><span class="line">but i am so tired</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>kill掉server01</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep server</span><br><span class="line">kill -9 server01的pid</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继续消费消息</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic working --from-beginning</span><br><span class="line">i really work hard</span><br><span class="line">but i am so tired</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="注意：-1"><a href="#注意：-1" class="headerlink" title="注意："></a>注意：</h4><ul>
+<li><p>问题：启动一个kafka节点后必须重开一个控制台启动其他的kafka节点，很麻烦，</p>
+</li>
+<li><p>解决：可以在命令中增加一个参数<code>-daemon</code></p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bin/kafka-server-start.sh -daemon config/server01.properties &amp;</span><br><span class="line">jps</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ul>
+<h3 id="使用Java代码连接kafka遇到的问题"><a href="#使用Java代码连接kafka遇到的问题" class="headerlink" title="使用Java代码连接kafka遇到的问题"></a>使用Java代码连接kafka遇到的问题</h3><ol>
+<li><p><code>UnknownHostException</code></p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[Producer clientId&#x3D;producer-1] Error connecting to node iZwz97n253zzwjb7itfw4xZ:9093 (id: 1 rack: null)</span><br><span class="line"></span><br><span class="line">java.net.UnknownHostException: iZwz97n253zzwjb7itfw4xZ</span><br></pre></td></tr></table></figure>
+
+<p> 原因：通过<code>hostname</code>命令可以查看到服务器主机名为<code>iZwz97n253zzwjb7itfw4xZ</code></p>
+<p> 解决：修改kafka的server.properties文件</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">advertised.listeners&#x3D;PLAINTEXT:&#x2F;&#x2F;服务器ip:9092</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>1111</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error while fetching metadata with correlation id 1 : &#123;LeagueOfLegends&#x3D;UNKNOWN_TOPIC_OR_PARTITION&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/02/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2019-07-22-java%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" rel="next" title="Java源码学习">
+      Java源码学习 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux%E5%AE%89%E8%A3%85kafka%E5%B9%B6%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">linux安装kafka并使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="nav-number">1.0.1.</span> <span class="nav-text">注意：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%9B%86%E7%BE%A4"><span class="nav-number">2.</span> <span class="nav-text">设置集群</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A-1"><span class="nav-number">2.0.1.</span> <span class="nav-text">注意：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Java%E4%BB%A3%E7%A0%81%E8%BF%9E%E6%8E%A5kafka%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">使用Java代码连接kafka遇到的问题</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">codecho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codecho</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

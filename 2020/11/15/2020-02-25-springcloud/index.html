@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="一、微服务 微服务强调服务的大小，它关注的是某一个点，是具体解决某一个问题&#x2F;提供落地对应服务的一个服务应用。 微服务架构是一种架构模式或一种架构风格，它提倡将单一应用程序划分成一组小的服务，每个服务运行在其独立的进程中，服务之间相互协调、相互配合。服务间采用轻量级的通信机制互相沟通（通常是基于HTTP的RESTFul API）。 Dubbo、SpringCloud通信机制：RPC（远程过程调用）、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud">
+<meta property="og:url" content="http://yoursite.com/2020/11/15/2020-02-25-springcloud/index.html">
+<meta property="og:site_name" content="codecho的个人空间">
+<meta property="og:description" content="一、微服务 微服务强调服务的大小，它关注的是某一个点，是具体解决某一个问题&#x2F;提供落地对应服务的一个服务应用。 微服务架构是一种架构模式或一种架构风格，它提倡将单一应用程序划分成一组小的服务，每个服务运行在其独立的进程中，服务之间相互协调、相互配合。服务间采用轻量级的通信机制互相沟通（通常是基于HTTP的RESTFul API）。 Dubbo、SpringCloud通信机制：RPC（远程过程调用）、">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-15T10:53:15.088Z">
+<meta property="article:modified_time" content="2020-11-15T12:27:13.321Z">
+<meta property="article:author" content="codecho">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/15/2020-02-25-springcloud/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>SpringCloud | codecho的个人空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">codecho的个人空间</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/15/2020-02-25-springcloud/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="codecho的个人空间">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-15 18:53:15 / Modified: 20:27:13" itemprop="dateCreated datePublished" datetime="2020-11-15T18:53:15+08:00">2020-11-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="一、微服务"><a href="#一、微服务" class="headerlink" title="一、微服务"></a>一、微服务</h3><ol>
+<li><strong><em>微服务</em></strong>强调服务的大小，它关注的是某一个点，是具体解决某一个问题/提供落地对应服务的一个服务应用。</li>
+<li><strong><em>微服务架构</em></strong>是一种架构模式或一种架构风格，它提倡将单一应用程序划分成一组小的服务，每个服务运行在其独立的进程中，服务之间相互协调、相互配合。服务间采用轻量级的通信机制互相沟通（通常是基于HTTP的RESTFul API）。</li>
+<li>Dubbo、SpringCloud通信机制：RPC（远程过程调用）、REST</li>
+</ol>
+<h3 id="二、微服务优缺点"><a href="#二、微服务优缺点" class="headerlink" title="二、微服务优缺点"></a>二、微服务优缺点</h3><ol>
+<li><strong>优点</strong><ul>
+<li>服务内聚，代码易理解，聚焦一个指定的业务功能或需求</li>
+<li>开发简单，开发效率高，一个服务专一做一件事</li>
+<li>松耦合，在开发阶段或部署阶段都是独立的</li>
+<li>可以使用不同语言开发</li>
+<li>易于和第三方集成，允许以容易且灵活的方式集成自动部署，</li>
+<li>易于被开发人员理解，修改和维护，</li>
+<li>允许融合最新技术</li>
+<li>只关注业务逻辑，不用考虑页面的问题</li>
+<li>每个微服务都有自己的存储能力，可以有自己的数据库，也可以有统一数据库</li>
+</ul>
+</li>
+<li><strong>缺点</strong><ul>
+<li>开发人员要处理分布式系统的复杂性</li>
+<li>多服务增加了运维难度</li>
+<li>系统部署依赖</li>
+<li>服务间通信成本</li>
+<li>数据一致性</li>
+<li>系统集成测试</li>
+<li>性能监控</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、微服务技术栈"><a href="#三、微服务技术栈" class="headerlink" title="三、微服务技术栈"></a>三、微服务技术栈</h3><ol>
+<li>微服务技术栈<ul>
+<li>服务开发：SpringBoot、SpringMVC</li>
+<li>服务配置与管理：Netflix的Archaius、阿里的Diamond</li>
+<li>服务注册与发现：Eureka、Consul、Zookeeper</li>
+<li>服务调用：Rest、RPC、gRPC</li>
+<li>服务熔断：Hystrix、Envoy</li>
+<li>负载均衡：Nginx、Ribbon</li>
+<li>服务接口调用（客户端调用服务的简化工具）：Feign</li>
+<li>消息队列：Kafka、RabbitMQ、ActiveMQ</li>
+<li>服务配置中心管理：SpringCloud Config、Chef</li>
+<li>服务路由（API网关）：Zuul</li>
+<li>服务监控：Zabbix、Nagios、Metrics、Spectator</li>
+<li>全链路追踪：Zipkin、Brave、Dapper</li>
+<li>服务部署：Docker、OpenStack、Kubernetes</li>
+<li>数据流操作开发包：SpringCloud Stream（封装与Redis，RabbitMQ，Kafka等发送接收消息）</li>
+<li>时间消息总线：SpringCloud Bus</li>
+</ul>
+</li>
+</ol>
+<h3 id="四、SpringCloud是什么"><a href="#四、SpringCloud是什么" class="headerlink" title="四、SpringCloud是什么"></a>四、SpringCloud是什么</h3><ol>
+<li>SpringCloud是分布式微服务架构下的一站式解决方案，是各个微服务架构落地技术的集合体，俗称微服务全家桶</li>
+<li>SpringCloud和SpringBoot是什么关系：<ul>
+<li>SpringBoot可以独立于SpringCloud使用，但是SpringCloud必须依赖于springBoot</li>
+<li>SpringBoot专注于快速方便地开发单个个体微服务；SpringCloud是关注全局的微服务协调整理治理框架，它将SpringBoot开发的一个个单体微服务整合并管理起来</li>
+<li><strong>SpringBoot关注于快速、方便地开发单个微服务个体，SpringCloud关注全局的服务治理框架</strong></li>
+</ul>
+</li>
+<li>SpringCloud与Dubbo的区别<ul>
+<li>SpringCloud采用的基于Http的REST方式，Dubbo采用RPC方式，前者牺牲了服务调用的性能，但是比RPC更加灵活，没有强依赖</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2020-09-10%20Java%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" rel="prev" title="Java虚拟机">
+      <i class="fa fa-chevron-left"></i> Java虚拟机
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/15/Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/" rel="next" title="Mybatis一知半解">
+      Mybatis一知半解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.</span> <span class="nav-text">一、微服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二、微服务优缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="nav-number">3.</span> <span class="nav-text">三、微服务技术栈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81SpringCloud%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-number">4.</span> <span class="nav-text">四、SpringCloud是什么</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">codecho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codecho</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

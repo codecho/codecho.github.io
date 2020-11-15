@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="斜体 粗体 斜粗 段落1  段落2  段落3 hello 详情请参考^官网  no.1 no.2   no.1 no.2   no.1 hello   no.2 world     要点1  细心 诚信 勤奋   要点2  能力  学习能力 解决问题能力     hello &lt;www.world.com&gt;  高级链接 京东 淘宝       参数名 类型 含义    str Strin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown语法学习">
+<meta property="og:url" content="http://yoursite.com/2020/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="codecho的个人空间">
+<meta property="og:description" content="斜体 粗体 斜粗 段落1  段落2  段落3 hello 详情请参考^官网  no.1 no.2   no.1 no.2   no.1 hello   no.2 world     要点1  细心 诚信 勤奋   要点2  能力  学习能力 解决问题能力     hello &lt;www.world.com&gt;  高级链接 京东 淘宝       参数名 类型 含义    str Strin">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="d:/TyporaImg/runoob-logo-1567061411865.png">
+<meta property="article:published_time" content="2020-11-15T10:53:15.078Z">
+<meta property="article:modified_time" content="2020-11-15T12:27:40.449Z">
+<meta property="article:author" content="codecho">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/TyporaImg/runoob-logo-1567061411865.png">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Markdown语法学习 | codecho的个人空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">codecho的个人空间</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="codecho的个人空间">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Markdown语法学习
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-15 18:53:15 / Modified: 20:27:40" itemprop="dateCreated datePublished" datetime="2020-11-15T18:53:15+08:00">2020-11-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><strong><em>斜粗</em></strong></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a target="_blank" rel="noopener" href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a target="_blank" rel="noopener" href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用**<em>反斜杠**</em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** <em>\</em></p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2019-07-18-linux/" rel="prev" title="Linux使用">
+      <i class="fa fa-chevron-left"></i> Linux使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2020-02-25-java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" rel="next" title="Java高级特性">
+      Java高级特性 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#markdown%E9%AB%98%E7%BA%A7%E6%8A%80%E5%B7%A7"><span class="nav-number">1.</span> <span class="nav-text">markdown高级技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="nav-number">1.1.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BD%AC%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">转义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A-1"><span class="nav-number">2.1.</span> <span class="nav-text">示例：</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%85%AC%E5%BC%8F"><span class="nav-number">3.</span> <span class="nav-text">公式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%94%9A%E7%82%B9"><span class="nav-number">4.</span> <span class="nav-text">锚点</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">codecho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codecho</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

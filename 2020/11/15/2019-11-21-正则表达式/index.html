@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="介绍  正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。 如：  abcd：可以匹配abd、abcd、abccd等，\表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串 abc+d：可以匹配abcd、abccd、abcccd等">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正则表达式">
+<meta property="og:url" content="http://yoursite.com/2020/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="codecho的个人空间">
+<meta property="og:description" content="介绍  正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。 如：  abcd：可以匹配abd、abcd、abccd等，\表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串 abc+d：可以匹配abcd、abccd、abcccd等">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-11-15T10:53:15.078Z">
+<meta property="article:modified_time" content="2020-11-15T12:27:27.014Z">
+<meta property="article:author" content="codecho">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://yoursite.com/2020/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>正则表达式 | codecho的个人空间</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">codecho的个人空间</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="codecho的个人空间">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          正则表达式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2020-11-15 18:53:15 / Modified: 20:27:27" itemprop="dateCreated datePublished" datetime="2020-11-15T18:53:15+08:00">2020-11-15</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <ol>
+<li><p>介绍</p>
+<blockquote>
+<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
+<p>如：</p>
+<ul>
+<li>abc<em>d：可以匹配abd、abcd、abccd等，\</em>表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
+<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
+</ul>
+</blockquote>
+</li>
+<li><p>普通字符和非打印字符参考<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+</li>
+<li><p>元字符：</p>
+<ul>
+<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
+<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
+<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
+<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
+<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
+<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
+<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
+<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
+<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
+<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~<code>&#39;z&#39;</code>范围内的任意小写字母，<code>[A-Z]</code>同理</li>
+<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~<code>&#39;z&#39;</code>范围内的任意字符，<code>&#39;[^A-Z]&#39;</code>同理</li>
+<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
+<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
+<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
+<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
+<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
+<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
+<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
+<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
+<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
+<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
+<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
+<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
+</ul>
+</li>
+<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<ul>
+<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
+<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
+<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
+<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
+<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
+<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
+<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
+<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
+<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
+<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
+<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+</ul>
+</li>
+<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 *<strong>** 或 **+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<ul>
+<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
+<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
+<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
+</ul>
+</li>
+<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
+</li>
+<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
+<ul>
+<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
+<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
+<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
+<li>\B：匹配一个非单词边界</li>
+<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
+</ul>
+</li>
+<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
+<ul>
+<li><p>\：转义符</p>
+</li>
+<li><p>(), (?:), (?=), []：圆括号和方括号</p>
+</li>
+<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
+</li>
+<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
+</li>
+<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2020-02-25-java%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7/" rel="prev" title="Java高级特性">
+      <i class="fa fa-chevron-left"></i> Java高级特性
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2020/11/15/2019-10-16-ubuntu%E5%AE%89%E8%A3%85redis/" rel="next" title="Ubuntu安装Redis">
+      Ubuntu安装Redis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">codecho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codecho</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
