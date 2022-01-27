@@ -1,0 +1,1753 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2022/01/27/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<ol>
+<li><p>介绍</p>
+<blockquote>
+<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
+<p>如：</p>
+<ul>
+<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
+<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
+</ul>
+</blockquote>
+</li>
+<li><p>普通字符和非打印字符参考<a href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+</li>
+<li><p>元字符：</p>
+<ul>
+<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
+<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
+<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
+<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
+<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
+<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
+<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
+<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
+<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
+<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
+<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
+<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
+<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
+<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
+<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
+<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
+<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
+<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
+<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
+<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
+<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
+<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
+<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
+</ul>
+</li>
+<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<ul>
+<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
+<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
+<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
+<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
+<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
+<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
+<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
+<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
+<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
+<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
+<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+</ul>
+</li>
+<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<ul>
+<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
+<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
+<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
+</ul>
+</li>
+<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
+</li>
+<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
+<ul>
+<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
+<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
+<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
+<li>\B：匹配一个非单词边界</li>
+<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
+</ul>
+</li>
+<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
+<ul>
+<li><p>\：转义符</p>
+</li>
+<li><p>(), (?:), (?=), []：圆括号和方括号</p>
+</li>
+<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
+</li>
+<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
+</li>
+<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Markdown语法学习</title>
+    <url>/2022/01/27/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java序列化与反序列化</title>
+    <url>/2022/01/27/Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<ol>
+<li><p>序列化</p>
+<ul>
+<li><p>概念：</p>
+<p>  将Java中的对象转换为字节序列</p>
+</li>
+<li><p>使用场景：</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
+<p>  在网络中传输对象</p>
+</li>
+<li><p>实现方式：</p>
+<p>  实现<code>java.io.Serializable</code>接口</p>
+</li>
+<li><p>注意点：</p>
+<p>  基本类型、数组、枚举等也会进行序列化</p>
+<p>  transient修饰的属性和静态属性不参与序列化</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>反序列化</p>
+<ul>
+<li><p>概念：</p>
+<p>  将字节序列转换为Java对象</p>
+</li>
+<li><p>使用场景</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
+<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
+</li>
+<li><p>注意点：</p>
+<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
+</li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>serialVersionUID</p>
+<ul>
+<li><p>概念：</p>
+<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
+</li>
+<li><p>作用：</p>
+<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
+
+<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
+
+<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Mybatis一知半解</title>
+    <url>/2022/01/27/Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
+    <content><![CDATA[<ol>
+<li><p>mybatis核心类及接口</p>
+<ol>
+<li><p>Configuration：</p>
+<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
+<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactoryBuilder：</p>
+<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
+<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSession：</p>
+<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactory：</p>
+<p> 创建SqlSession的工厂类接口</p>
+</li>
+<li><p>SqlNode：</p>
+<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Executor：</p>
+<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
+
+<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
+
+<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
+<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
+<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
+<ol>
+<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>mybatis缓存</p>
+<ol>
+<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
+<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
+</li>
+<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Cache对象之间的引用顺序为：</p>
+<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/01/27/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>Linux使用</title>
+    <url>/2022/01/27/2019-07-18-linux/</url>
+    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
+<li><p>修改root用户密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
+<li><p>停机和关机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
+<li><p>输入 ls -/  命令查看目录结构</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
+<li><p>目录结构的作用和含义</p>
+<ul>
+<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
+<li>/boot 存放启动linux需要的核心文件</li>
+<li>/dev 存放linux的外部设备</li>
+<li>/etc 存放系统管理需要的配置文件和子目录</li>
+<li>/home 用户主目录，以用户名命名，如 /codecho</li>
+<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
+<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
+<li>/media linux识别设备后将其挂载到此目录</li>
+<li>/mnt 系统临时挂载点</li>
+<li>/opt 存放安装的第三方软件</li>
+<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
+<li>/root <em><strong>root</strong></em>用户主目录</li>
+<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
+<li>/srv 存放一些服务启动后需要的数据</li>
+<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
+<li>/tmp 存放临时文件</li>
+<li>/usr 存放用户的程序和文件</li>
+<li>/usr/bin 存放一般的应用程序</li>
+<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
+<li>/usr/src 存放linux内核源码</li>
+<li>/var 存放经常会变化的文件，比如系统的日志</li>
+<li>/run 存放系统启动后的信息，重启时清空</li>
+</ul>
+</li>
+</ol>
+<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
+<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
+<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
+<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
+<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
+<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
+</ul>
+<ul>
+<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
+<li>r 表示读权限，- 表示没有读权限</li>
+<li>w 表示写权限，- 表示没有写权限</li>
+<li>x 表示执行权限，- 表示没有执行权限</li>
+<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
+</ul>
+</li>
+<li><p>更改文件属性的命令</p>
+<ul>
+<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
+<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
+<li><p>linux根目录：/</p>
+</li>
+<li><p>文件/目录的常用操作命令</p>
+<ul>
+<li><p>ls：列出目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
+<li><p>cd：切换目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
+<li><p>pwd：显示当前目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
+<li><p>mkdir：创建目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
+<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
+<li><p>cp：复制文件/目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
+<li><p>rm：删除目录或文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：移动目录/文件，或者修改名称</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>linux文件内容查看</p>
+<ul>
+<li><p>cat：从第一行开始显示内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
+<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
+</li>
+<li><p>tail：显示文件最后 n 行内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
+<li><p>添加用户账号</p>
+<ul>
+<li><p>useradd [options] 用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>设置用户账号密码</p>
+<ul>
+<li><p>passwd [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户账号</p>
+<ul>
+<li><p>userdel [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改用户账号</p>
+<ul>
+<li><p>usermod [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加用户组</p>
+<ul>
+<li><p>groupadd [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户组</p>
+<ul>
+<li>groupdel 用户组</li>
+</ul>
+</li>
+<li><p>修改用户组</p>
+<ul>
+<li><p>groupmod [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
+<ul>
+<li>newgrp 要切换的用户组</li>
+</ul>
+</li>
+</ol>
+<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
+<li><p>df：查看文件系统的整体磁盘空间使用量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
+<li><p>du：查看文件和目录的磁盘使用空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
+<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
+<ul>
+<li><p>命令行模式：此时用户输入会被识别为命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
+</li>
+<li><p>底部命令行模式：输入命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
+<li><p>常用按键：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
+<li><p>yum：查找、安装、删除软件包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
+<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
+</li>
+<li><p>shell脚本：一种为shell编写的脚本程序</p>
+</li>
+<li><p>shell的分类：</p>
+<ul>
+<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
+<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
+<li>C Shell（/usr/bin/csh）</li>
+<li>K Shell（/usr/bin/ksh）</li>
+<li>Shell for Root（/sbin/sh）</li>
+</ul>
+</li>
+<li><p>查看系统可用的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前系统的默认shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
+<li><p>编写一个简单的shell脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>执行shell脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
+<li><p>文件管理</p>
+<ul>
+<li><p>cat [options] filename</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
+<li><p>chgrp：参考 三</p>
+</li>
+<li><p>chmod：同上</p>
+</li>
+<li><p>chown：同上</p>
+</li>
+<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：参考 三</p>
+</li>
+<li><p>rm：同上</p>
+</li>
+<li><p>tee  [-ai][file]</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>MySQL学习</title>
+    <url>/2022/01/27/2019-08-02-mysql/</url>
+    <content><![CDATA[<ol>
+<li><p>起别名</p>
+<ul>
+<li><p>优点</p>
+<ul>
+<li>便于理解</li>
+<li>如果要查询的字段有重名的情况，使用别名可以区分开来</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 方式一</span><br><span class="line">select count(*) &#x27;总预约数&#x27; from reservation_record </span><br><span class="line"># 方式二</span><br><span class="line">select count(*) as &#x27;总预约数&#x27; from reservation_record </span><br><span class="line"># 如果别名是关键字，可以使用 &#x27;&#x27; 或 &quot;&quot; 包裹别名</span><br><span class="line">select count(*) as &quot;select&quot; from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>去重</p>
+<ul>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select distinct hospital_id from reservation_record </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>“+”号的作用：mysql中的 “+” 只用来作为运算符</p>
+<ul>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 如果两个操作数都是数值型，做加法运算</span><br><span class="line">select 500+20</span><br><span class="line"># 如果其中一个操作数为字符型，先尝试将其转换为数值型，如果转换成功，做加法运算；否则将其当作 0 ，再做加法运算</span><br><span class="line">select &quot;500&quot;+20</span><br><span class="line"># 如果其中一个操作数为 null ，则结果必为 null</span><br><span class="line">select 500+null</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>concat()函数实现拼接</p>
+<ul>
+<li><p>说明</p>
+<ul>
+<li>使用concat()函数可以拼接多个内容</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select CONCAT(&#x27;how &#x27;,&#x27;are &#x27;,&#x27;u&#x27;) as title</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>比较运算符</p>
+<ul>
+<li><p>说明</p>
+<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&gt;、&lt;、=</td>
+<td align="center">大于、小于、等于</td>
+</tr>
+<tr>
+<td align="center">!=、&lt;&gt;</td>
+<td align="center">不等于，&lt;&gt;是mysql的标准写法，建议使用&lt;&gt;</td>
+</tr>
+<tr>
+<td align="center">&gt;=、&lt;=</td>
+<td align="center">大于等于、小于等于</td>
+</tr>
+<tr>
+<td align="center">&lt;=&gt;</td>
+<td align="center">严格比较两个null值是否相等，均为null时结果为1，只有一个为null时结果为0</td>
+</tr>
+<tr>
+<td align="center">between、not between</td>
+<td align="center">（不）在两个范围之间</td>
+</tr>
+<tr>
+<td align="center">in、not in</td>
+<td align="center">（不）在集合中</td>
+</tr>
+<tr>
+<td align="center">is null、is not null</td>
+<td align="center">（不）为空</td>
+</tr>
+<tr>
+<td align="center">like</td>
+<td align="center">模糊匹配</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>通配符</p>
+<ul>
+<li><p>%：替代0个或多个字符</p>
+</li>
+<li><p>_：替代单个字符</p>
+</li>
+<li><p>转义：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 通过 &quot;\&quot;转义符 ，这里 \ 后的 % 不再是通配符</span><br><span class="line">select * from reservation_record where title like &#x27;_\%%&#x27;</span><br><span class="line"># 通过 escape关键字 ，这里 &amp; 之后的 % 不再是通配符</span><br><span class="line">select * from reservation_record where title like &#x27;_&amp;%%&#x27; escape &#x27;&amp;&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查找年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where age &gt; 1</span><br><span class="line"># 查找年龄不等于2的宠物信息</span><br><span class="line">select * from pet_archives where age &lt;&gt; 2</span><br><span class="line"># 查找年龄大于等于2的宠物信息</span><br><span class="line">select * from pet_archives where age &gt;= 2</span><br><span class="line"># 查找年龄不在1~2范围的宠物信息</span><br><span class="line">select * from pet_archives where age not between 1 and 2</span><br><span class="line"># 查找宠物主id在（1,3,5）中的宠物信息</span><br><span class="line">select * from pet_archives where pet_user_id in (1,3,5)</span><br><span class="line"># 查找品种不为null的宠物信息</span><br><span class="line">select * from pet_archives where variety is not null</span><br><span class="line"># 查找标题第三个字符为“哈”的预约信息</span><br><span class="line">select * from reservation_record where title like &#x27;__哈%&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>逻辑运算符</p>
+<ul>
+<li><p>说明：用于连接条件表达式</p>
+<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&amp;&amp;或and</td>
+<td align="center">逻辑与</td>
+</tr>
+<tr>
+<td align="center">||或or</td>
+<td align="center">逻辑或</td>
+</tr>
+<tr>
+<td align="center">!或not</td>
+<td align="center">逻辑非</td>
+</tr>
+<tr>
+<td align="center">xor</td>
+<td align="center">逻辑异或</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 查找性别为m，年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; and age &gt; 1</span><br><span class="line"># 查找性别为m或者年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; or age &gt; 1</span><br><span class="line"># 查找性别不为m的宠物信息</span><br><span class="line">select * from pet_archives where not gender = &#x27;m&#x27;</span><br><span class="line"># 查找性别为m，年龄小于等于1、性别不为m，年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; xor age &gt; 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>排序查询</p>
+<ul>
+<li><p>说明</p>
+<ul>
+<li>select 查询列表 from 表名 [where 查询条件] order by 排序列表 asc|desc</li>
+<li>默认升序</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 按照年龄从大到小顺序查询宠物信息</span><br><span class="line">select * from pet_archives order by age desc</span><br><span class="line"># 按照评分（按表达式排序）从低到高顺序查询预约信息</span><br><span class="line">select *,rate*1.0 from reservation_record order by rate*1.0 asc</span><br><span class="line"># 按照评分（按别名排序）从低到高顺序查询预约信息</span><br><span class="line">select *,rate*1.0 评分 from reservation_record order by 评分 asc</span><br><span class="line"># 按照标题长度（按函数排序）从大到小顺序查询预约信息</span><br><span class="line">select * from reservation_record order by length(title) desc</span><br><span class="line"># 按照年龄从大到小，id从小到大顺序（按多字段排序）查询宠物信息</span><br><span class="line">select * from pet_archives order by age desc,id asc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>字符函数</p>
+<ul>
+<li>length(str)<ul>
+<li><p>返回参字符串的<strong>字节个数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select length(title) 字节数 from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>char_length(str)<ul>
+<li><p>返回字符串的<strong>字符个数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select char_length(title) 字符数 from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>concat(str1,str2,…)<ul>
+<li><p>拼接多个字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select concat(title,reservation_date) from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>lower(str)<ul>
+<li><p>将字符串转为小写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select lower(&#x27;HELLO&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>upper(str)<ul>
+<li><p>将字符串转为大写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select upper(&#x27;hello&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>substr(str,pos)<ul>
+<li><p>截取从pos位置及末尾所有字符</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select SUBSTR(&#x27;welcometomysql&#x27;,10)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>substr(str,pos,len)<ul>
+<li><p>截取从pos位置开始，<strong>字符长度</strong>为len的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select SUBSTR(&#x27;welcometomysql&#x27;,8,2)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>instr(str,substr)<ul>
+<li><p>返回substr子串在str中出现的第一个位置，找不到返回0</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select instr(&#x27;HelloWorldWorld&#x27;,&#x27;World&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>trim(str)<ul>
+<li><p>去除字符串str开始和结尾的空格</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select trim(&#x27;    hellowor ld   &#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>trim(remstr from str)<ul>
+<li><p>去除字符串str开始和结尾的remstr字符</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select TRIM(&#x27;A&#x27; FROM &#x27;Ahelloworld&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>lpad(str1,len,str2)<ul>
+<li><p>在str1字符串开始处填充字符串str2，使其长度达到len，如果len小于原长度，从右边截断</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select lpad(&#x27;HELLO&#x27;,8,&#x27;z&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>rpad(str1,len,str2)<ul>
+<li><p>在str1字符串结尾处填充字符串str2，….</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select rpad(&#x27;HELLO&#x27;,8,&#x27;z&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>replace(str1,s,str2)<ul>
+<li><p>使用str2字符串替换str1字符串中的s字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select replace(&#x27;hello&#x27;,&#x27;e&#x27;,&#x27;a&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数字函数</p>
+<ul>
+<li>round(x)</li>
+<li>对x四舍五入，等同于round(x,0)</li>
+<li>round(x,d)<ul>
+<li><p>对x四舍五入，保留d位小数，d为负数时，指定小数点左边d位整数位为0，同时小数位也为0</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select round(3213.1415926,-2)</span><br><span class="line"># 3200</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>ceil(x)<ul>
+<li><p>向上取整，返回&gt;=x的<strong>最小整数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select ceil(1.23)</span><br><span class="line"># 2</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>floor(x)<ul>
+<li><p>向下取整，返回&lt;=x的<strong>最大整数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select floor(1.01)</span><br><span class="line"># 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>truncate(x,d)</li>
+<li>截断x，保留d位小数，不会进行四舍五入，d为负数时，指定小数点左边d为整数位为0  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select truncate(1.234,-2)</span><br><span class="line"># 0</span><br></pre></td></tr></table></figure></li>
+<li>mod(x,y)<ul>
+<li><p>返回x除以y后的余数</p>
+</li>
+<li><p>运算规则：x-x/y*y</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select mod(-10,3)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>日期函数</p>
+<ul>
+<li>now()</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>返回系统当前日期和时间<pre><code>  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select NOW()</span><br><span class="line"># 2019-08-12 09:35:59</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li>current_date、curdate<ul>
+<li><p>返回系统当前日期</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select CURRENT_DATE()</span><br><span class="line"># 2019-08-12</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>current_time、curtime<ul>
+<li><p>返回系统当前时间</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select CURRENT_TIME()</span><br><span class="line"># 09:37:27</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>year(d)<ul>
+<li><p>根据d返回年份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select year(now())</span><br><span class="line"># 2019</span><br><span class="line">select year(&#x27;2019-08-12&#x27;)</span><br><span class="line"># 2019</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>month(d)<ul>
+<li><p>根据d返回月份</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select month(now())</span><br><span class="line"># 8	</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>day(d)<ul>
+<li><p>根据d返回日</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select day(now())</span><br><span class="line"># 12</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>hour(d)<ul>
+<li><p>根据d返回小时</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select hour(now())</span><br><span class="line"># 9</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>minute(d)<ul>
+<li><p>根据d返回分钟</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select minute(now())</span><br><span class="line"># 41</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>second(d)<ul>
+<li><p>根据d返回秒</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select second(now())</span><br><span class="line"># 50</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>str_to_date(str,format)<ul>
+<li><p>将日期格式的字符串转换成指定格式的日期</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select str_to_date(&#x27;2019-08-12 9:42:00&#x27;,&#x27;%Y-%m-%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019-08-12 09:42:00</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>date_format(date,format)<ul>
+<li><p>将日期转换成字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select date_format(now(),&#x27;%Y_%m_%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019_08_12 09:49:51</span><br><span class="line">select date_format(&#x27;2019/08/12 09:51:00&#x27;,&#x27;%Y/%m/%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019/08/12 09:51:00</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>mysql日期格式<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%Y</td>
+<td>4位年份</td>
+</tr>
+<tr>
+<td>%y</td>
+<td>2位年份</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>英文月名（January…December）</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>月份（01,02,03…12）</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>月份（1,2,3…12）</td>
+</tr>
+<tr>
+<td>%D</td>
+<td>带有英文的天</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>天（00,01,02,03…31）</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>天（0,1,2,3…31）</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>小时，二十四小时制（00,01,02…23）</td>
+</tr>
+<tr>
+<td>%h</td>
+<td>小时，十二小时制（01,02,03…12）</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>分钟（00,01,02…59）</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>秒（00,01,02…59）</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="11">
+<li><p>其他函数</p>
+<ul>
+<li><p>version()</p>
+<ul>
+<li><p>查询数据库版本</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select version()</span><br><span class="line"># 8.0.14</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>database()</p>
+<ul>
+<li><p>查询当前数据库名称</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select database()</span><br><span class="line"># pet_hospital</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>user()</p>
+<ul>
+<li><p>查看当前用户</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select user()</span><br><span class="line"># root@101.231.252.114</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>流程控制函数</p>
+<ul>
+<li><p>if(expr,v1,v2)</p>
+<ul>
+<li><p>如果表达式 expr 成立，返回结果 v1；否则，返回结果 v2</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select IF(10%2=0,&#x27;偶数&#x27;,&#x27;奇数&#x27;)</span><br><span class="line"># 偶数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>case结构</p>
+<ul>
+<li><p>CASE 表示函数开始，END表示函数结束。如果condition1成立，返回result1；如果condition2成立，返回result2；如果所有condition都不成立，返回result；其中一个condition成立，后面的condition不再判断</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CASE expression</span><br><span class="line">    WHEN condition1 THEN result1</span><br><span class="line">    WHEN condition2 THEN result2</span><br><span class="line">   ...</span><br><span class="line">    WHEN conditionN THEN resultN</span><br><span class="line">    ELSE result</span><br><span class="line">END</span><br></pre></td></tr></table></figure></li>
+<li><p>简单case函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select </span><br><span class="line">case age</span><br><span class="line">	when 1 then &#x27;一岁大的狗&#x27;</span><br><span class="line">	when 2 then &#x27;两岁大的狗&#x27;</span><br><span class="line">	when 3 then &#x27;三岁大的狗&#x27;</span><br><span class="line">	else &#x27;老狗&#x27;</span><br><span class="line">end &#x27;年龄&#x27;</span><br><span class="line">from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>case搜索函数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select </span><br><span class="line">case </span><br><span class="line">	when age = 1 then &#x27;一岁大的狗&#x27;</span><br><span class="line">	when age = 2 then &#x27;两岁大的狗&#x27;</span><br><span class="line">	when age = 3 then &#x27;三岁大的狗&#x27;</span><br><span class="line">	else &#x27;老狗&#x27;</span><br><span class="line">end &#x27;年龄&#x27;</span><br><span class="line">from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p><em><strong>注意：</strong></em>简单case函数只返回第一个符合条件的值，剩下的自动忽略</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分组函数</p>
+<ul>
+<li><p>功能：用作统计使用，又称作聚合函数、统计函数</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li><p>求和：sum</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select sum(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>平均值：avg</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select avg(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>最大值：max</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select max(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>最小值：min</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select min(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>统计数量：count</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*) from pet_archives</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>sum()、avg()一般用于处理数值型</li>
+<li>max()、min()、count()可以处理任意类型</li>
+<li>以上函数都可以忽略null值</li>
+<li>可以和distinct关键字搭配上述函数进行去重</li>
+</ul>
+</li>
+<li><p>count()函数详解</p>
+<ul>
+<li>count(*)：对行的数目进行统计，包含NULL</li>
+<li>count(column)：对指定列不为NULL的行的数目进行统计</li>
+<li>效率<ul>
+<li>MYISAM引擎下，count(*)的效率高</li>
+<li>INNODB引擎下，count(*)和count(1)的效率差不多，比count(column)要高一些</li>
+</ul>
+</li>
+<li><em><strong>注意：</strong></em>和分组函数一同查询的字段要求是group by后面的字段</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分组查询</p>
+<ul>
+<li><p>group by </p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select 分组函数,字段（需要出现在group by后面）</span><br><span class="line">from table</span><br><span class="line">[where 筛选条件]</span><br><span class="line">group by 分组列表</span><br><span class="line">[order by 字句]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li><p>分组查询中的筛选条件分为两类</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>数据源</th>
+<th>位置</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分组前筛选</td>
+<td>原始表</td>
+<td>group by子句前面</td>
+<td>where</td>
+</tr>
+<tr>
+<td>分组后筛选</td>
+<td>分组后的结果集</td>
+<td>group by子句后面</td>
+<td>having</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>分组函数做条件肯定是放在having子句中</p>
+</li>
+<li><p>能用分组前筛选的，就优先考虑使用分组前筛选</p>
+</li>
+</ul>
+</li>
+<li><p>按函数分组</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*),length(name) lth from pet_archives group by lth</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>按多个字段分组</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select id,name,age lth from pet_archives group by name,id,age</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加排序</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select id,name,age from pet_archives group by id,name,age order by age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>连接查询</p>
+<ul>
+<li><p>含义：多表查询，查询的字段来自多个表时，使用连接查询</p>
+</li>
+<li><p>笛卡尔乘积：A表m行数据，B表n行数据，查询结果X=m*n行数据</p>
+<ul>
+<li>原因：没有有效的连接条件</li>
+<li>解决：添加有效的连接条件</li>
+</ul>
+</li>
+<li><p>连接查询分类</p>
+<ul>
+<li>按年代分类<ul>
+<li>sql92标准：仅仅支持内连接</li>
+<li>sql99标准：推荐，支持内连接+外连接（左外和内外）+交叉连接</li>
+</ul>
+</li>
+<li>按功能分类<ul>
+<li>内连接<ul>
+<li>等值连接</li>
+<li>非等值连接</li>
+<li>自连接</li>
+</ul>
+</li>
+<li>外连接<ul>
+<li>左外连接</li>
+<li>右外连接</li>
+<li>全外连接</li>
+</ul>
+</li>
+<li>交叉连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>sql92标准</p>
+<ul>
+<li><p>等值连接</p>
+<ul>
+<li><p>多表等值连接的结果为多表的交际部分</p>
+</li>
+<li><p>n表连接，至少需要n-1个连接条件</p>
+</li>
+<li><p>多表的顺序没有要求</p>
+</li>
+<li><p>一般需要给表起别名，方便书写、避免字段模棱两可</p>
+</li>
+<li><p>可以和之前介绍的子句配合使用，如排序、分组、筛选</p>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.name 宠物,a.age 宠物年龄,b.nickname 主人 from pet_archives a,pet_owner_user b where a.pet_user_id = b.id and a.age &gt; 1 group by a.name,a.age,b.nickname order by a.age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>非等值连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select salary,grade_level from employee a,job_grade b where salary between b.lowest_salary and highest_salary</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>自连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.employee_id 员工号,a.name 员工姓名,b.employee_id 主管员工号,b.name 主管姓名 from employee a,employee b where a.manager_id = b.employee_id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>sql99标准</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select 查询列表 from table1 [连接类型] join table2 on 连接条件 [where 筛选条件] [group by 分组列表] [having 筛选条件] [order by 排序列表] </span><br></pre></td></tr></table></figure></li>
+<li><p>连接类型</p>
+<ul>
+<li>内连接：inner</li>
+<li>外连接<ul>
+<li>左外：left [outer]</li>
+<li>右外：right [outer]</li>
+<li>全外：full [outer]</li>
+</ul>
+</li>
+<li>交叉连接：cross</li>
+</ul>
+</li>
+<li><p>内连接</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select 查询列表 from table1 inner join table2 on 连接条件</span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>添加排序、分组、筛选</li>
+<li>inner可以省略</li>
+<li>筛选条件放在where后面，连接条件放在on后面，提高阅读性</li>
+<li>inner join连接和sql92中的等值连接效果一样，都是查询多表的交集</li>
+</ul>
+</li>
+<li><p>等值连接</p>
+<ul>
+<li><p>示例：三表联查</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.name,a.age,b.nickname from pet_archives a inner join pet_owner_user b on a.pet_user_id = b.id inner join visit_record c on a.id = c.pet_id group by a.name,a.age,b.nickname order by a.age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>非等值连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select count(*),grade_level from employee a join job_grade b on a.salary between b.lowest_salary and highest_salary group by grade_level having</span><br><span class="line">count(*) &gt; 20 order by grade_level desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>自连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.name 员工姓名,b.name 主管姓名 from employee a join employee b on a.manager_id = b.employee_id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>外连接</p>
+<ul>
+<li><p>应用场景：用于查询表1有，表2没有的记录</p>
+</li>
+<li><p>特点</p>
+<ul>
+<li>外连接的查询结果为主表中的所有记录，如果从表中有和它匹配的，显示匹配的值，如果从表中没有和它匹配的，显示NULL，外连接查询结果=内连接查询结果+主表中存在但从表中不存在的记录</li>
+<li>左外连接，left join左边的是主表；右外连接，right join右边的的是主表</li>
+<li>左外和右外交换两个表的顺序，可以实现同样的效果</li>
+<li>全外连接=内连接的结果+表1有但表2没有的记录+表2有但表1没有的记录</li>
+</ul>
+</li>
+<li><p>左外连接</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select name,nickname from pet_owner_user a left outer join pet_archives b on a.id = b.pet_user_id</span><br></pre></td></tr></table></figure></li>
+<li><p>全外连接</p>
+<ul>
+<li><strong>注意：</strong>MySQL不支持全连接，可以通过下面的sql来实现全连接</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.name,b.nickname from pet_archives a left join pet_owner_user b on a.pet_user_id = b.id union select a.name,b.nickname from pet_archives a right join pet_owner_user b on a.pet_user_id = b.id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>交叉连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.name,b.nickname from pet_archives a cross join pet_owner_user b</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>子查询</p>
+<ul>
+<li><p>含义：出现在其他语句中的select语句，称为子查询或内查询；外部的查询语句，称为主查询或外查询</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li>按子查询出现的位置<ul>
+<li>select后面：仅仅支持标量子查询</li>
+<li>from后面：支持表子查询</li>
+<li>where或having后面：标量子查询、列子查询、行子查询</li>
+<li>exist后面（相关子查询）：表子查询</li>
+</ul>
+</li>
+<li>按结果集的行列数不同<ul>
+<li>标量子查询（结果集只有一行一列）</li>
+<li>列子查询（结果集只有一列多行）</li>
+<li>行子查询（结果集只有一行多列）</li>
+<li>表子查询（结果集一般为多行多列）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>where或having后面的子查询</p>
+<ul>
+<li><p>分类</p>
+<ul>
+<li><p>标量子查询（单行子查询）</p>
+</li>
+<li><p>列子查询（多行子查询）</p>
+</li>
+<li><p>行子查询（一行多列）</p>
+</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>子查询放在小括号内</li>
+<li>子查询一般放在条件的右侧</li>
+<li>标量子查询，一般配合单行操作符使用  &gt; &lt; &gt;= &lt;= = &lt;&gt; ；列子查询，一般配合多行操作符使用 IN ANY/SOME ALL</li>
+<li>子查询的执行优先于主查询执行，主查询的条件需要使用子查询的结果</li>
+</ul>
+</li>
+<li><p>标量子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select min(salary),department_id from employee group by department_id having min(salary) &gt; (select min(salary) from employee where department_id = 50)</span><br></pre></td></tr></table></figure></li>
+<li><p>多行比较操作符</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IN/NOT IN</td>
+<td><strong>等于</strong>列表中的<strong>任意一个</strong></td>
+</tr>
+<tr>
+<td>ANY/SOME</td>
+<td>和子查询返回的<strong>某个值</strong>比较</td>
+</tr>
+<tr>
+<td>ALL</td>
+<td>和子查询返回的<strong>所有值</strong>比较</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>列子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select id,name,pet_user_id from pet_archives where pet_user_id in (select id from pet_owner_user where age &gt; 20)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>select后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.nickname 姓名,(select count(*) from pet_archives b where a.id = b.pet_user_id) 宠物总数 from pet_owner_user a</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>from后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select temp.*,a.grade_level from (select avg(salary) avg_salary,department_id from employee group by department_id) temp inner join job_grade b on temp.avg_salary between lowest_sal and highest_sal</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>exist后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select a.nickname from pet_owner_user a where exists (select * from pet_archives b where a.id = b.pet_user_id)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分页查询</p>
+<ul>
+<li><p>应用场景：当要显示的数据，一页显示不完，需要分页提交sql请求</p>
+</li>
+<li><p>语法</p>
+<ul>
+<li>offset：要显示条目的起始索引（起始索引从0开始）</li>
+<li>size：要显示的条目个数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select 查询列表 from table [join type join 表2 on 连接条件 where 筛选条件 group by 分组字段 having 分组后的筛选 oder by 排序列表] limit offset,size </span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>limit语句放在查询语句的最后</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select id,name,pet_user_id from pet_archives group by id limit 0,5</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>联合查询</p>
+<ul>
+<li><p>union：联合，合并，将多条查询语句的结果合并成一个结果</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">查询语句1</span><br><span class="line">union</span><br><span class="line">查询语句2</span><br><span class="line">union</span><br><span class="line">查询语句3</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>要求多条查询语句的查询列数是一致的</li>
+<li>多条查询语句的查询列的类型和顺序最好保持一致</li>
+<li>union关键字默认去重，如果使用union all，可以包含重复项</li>
+</ul>
+</li>
+<li><p>应用场景</p>
+<ul>
+<li>要查询的结果来自多个表，且多个表没有直接的连接，但查询的信息一致时</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select * from pet_archives where name like &#x27;%哈%&#x27; </span><br><span class="line">union </span><br><span class="line">select * from pet_archives where age &gt; 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>DML语言</p>
+<ul>
+<li><p>数据操纵语言</p>
+<ul>
+<li>插入：insert</li>
+<li>删除：delete</li>
+<li>修改：update</li>
+</ul>
+</li>
+<li><p>插入语句</p>
+<ul>
+<li><p>方式1</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into table(column1,...) values(value1,...)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into reservation_type(name,total,hospital_id) values(&#x27;宠物寄养&#x27;,0,1001)</span><br></pre></td></tr></table></figure></li>
+<li><p>方式2</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into table set column1 = value1,...</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into reservation_type set name = &#x27;代遛狗&#x27;,total = 0,hospital_id = 1001</span><br></pre></td></tr></table></figure></li>
+<li><p>批量插入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into table(column1,...) values(value,...),(value,...),(value,...)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">insert into reservation_type(name,total,hospital_id) values(&#x27;测试1&#x27;,0,1001),(&#x27;测试2&#x27;,0,1001),(&#x27;测试3&#x27;,0,1001)</span><br></pre></td></tr></table></figure></li>
+<li><p>insert方式1和方式2的比较</p>
+<ul>
+<li>方式1支持插入多行</li>
+<li>方式1支持子查询，方式2不支持<ul>
+<li>insert into table(column1,…) select xxx,…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>修改语句</p>
+<ul>
+<li><p>修改单表的记录</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update table set column1 = value1,... where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update reservation_type set name = &#x27;代撸猫&#x27; where id = 2010</span><br></pre></td></tr></table></figure></li>
+<li><p>修改多表的记录</p>
+<ul>
+<li><p>sql92语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update table1 别名,table2 别名,... set column1 = value1,... where 连接条件 and 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>sql99语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update table1 别名 inner|left|right join table2 别名 on 连接条件 set column = value1,... where 筛选条件</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">update pet_archives a left join pet_owner_user b on a.pet_user_id = b.id set a.gender = &#x27;f&#x27;,b.gender = &#x27;f&#x27; where b.id = 18</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除语句</p>
+<ul>
+<li><p>方式1：delete</p>
+<ul>
+<li><p>删除单表的记录</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete from table where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete from reservation_type where id = 2016</span><br></pre></td></tr></table></figure></li>
+<li><p>删除多表的记录</p>
+<ul>
+<li><p>sql92语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete table1的别名,table2的别名 from table1 别名,table2 别名 where 连接条件 and 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>sql99语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete table1的别名,table2的别名 from table1 别名 inner|left|right join table2 别名 on 连接条件 where 筛选条件</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">delete a,b from pet_archives a left join pet_owner_user b on a.pet_user_id = b.id where b.id = 18</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>方式2：truncate</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">truncate table 表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>delete和truncate的比较</p>
+<ul>
+<li>delete可以添加where筛选条件，truncate不可以添加筛选条件</li>
+<li>truncate删除效率比delete要高一些</li>
+<li>使用delete删除记录后，再插入数据，自增列的值从断点开始；truncate删除记录后，再插入数据，自增列的值从1开始</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>delete删除有返回值；truncate删除没有返回值<pre><code>- delete是DML语句，可以使用rollback进行回滚；truncate是DDL语句，需要drop权限，因此会隐式提交，不能rollback
+</code></pre>
+</li>
+</ul>
+<ol start="20">
+<li><p>DDL语言</p>
+<ul>
+<li><p>数据定义语言</p>
+<ul>
+<li>库的管理<ul>
+<li>创建、修改、删除</li>
+</ul>
+</li>
+<li>表的管理<ul>
+<li>创建、修改、删除</li>
+</ul>
+</li>
+<li>创建：create</li>
+<li>修改：alter</li>
+<li>删除：drop</li>
+</ul>
+</li>
+<li><p>库的管理</p>
+<ul>
+<li><p>库的创建</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create database 库名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>库的修改</p>
+<ul>
+<li><p>修改库名</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rename 旧库名 to 新库名</span><br></pre></td></tr></table></figure></li>
+<li><p>修改库的字符集</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter database 库名 character set utf8</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>库的删除</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">drop database 库名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>表的管理</p>
+<ul>
+<li><p>表的创建</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">列名 列类型(长度) 约束,# 注释</span><br><span class="line">...</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table testTable(</span><br><span class="line">    testId int(10) primary key,# 测试id</span><br><span class="line">    testName varchar(255)# 测试名称</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的修改</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 add|drop|modify|change column 列名 [列类型 约束]</span><br></pre></td></tr></table></figure></li>
+<li><p>修改列名</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 change column 旧列名 新列名 类型(长度) </span><br></pre></td></tr></table></figure></li>
+<li><p>修改列类型或约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 类型(长度)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加新列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 add column 列名 类型(长度)</span><br></pre></td></tr></table></figure></li>
+<li><p>删除列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 drop column 列名</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表名</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 rename to 新表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的删除</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">drop table if exists 旧表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的复制</p>
+<ul>
+<li><p>仅仅复制表的结构</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 目标表 like 源表 </span><br></pre></td></tr></table></figure></li>
+<li><p>复制表的结构和数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 目标表 select * from 源表</span><br></pre></td></tr></table></figure></li>
+<li><p>只复制部分数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 目标表 select 查询列表 from 源表 where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>只复制某些字段</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 目标表 select 要复制的字段 from 源表 where 0 </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常见数据类型</p>
+<ul>
+<li>数值型<ul>
+<li>整数：默认有符号，如果要设置无符号，使用unsigned关键字<ul>
+<li>tinyint：一个字节</li>
+<li>smallint：两个字节</li>
+<li>mediumint：三个字节</li>
+<li>int/integer：四个字节</li>
+<li>bigint：八个字节</li>
+</ul>
+</li>
+<li>小数<ul>
+<li>定点型<ul>
+<li>decimal(m,d)：如果m&gt;d，m+2个字节，否则d+2个字节 </li>
+</ul>
+</li>
+<li>浮点型<ul>
+<li>fload(m,d)：四个字节，单精度</li>
+<li>double(m,d)：八个字节，双精度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>字符型<ul>
+<li>较短的文本<ul>
+<li>char(m)：固定长度字符串，m在0~255之间</li>
+<li>varchar(m)：可变长度字符串，m在0~65535之间</li>
+</ul>
+</li>
+<li>较长的文本<ul>
+<li>text：长文本数据</li>
+<li>blob：二进制长文本数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>日期型<ul>
+<li>date：最小值1000-01-01，最大值9999-12-31</li>
+<li>datetime：最小值1000-01-01 00:00:00，最大值9999-12-31 23:59:59</li>
+<li>timestamp：最小值1970-01-01 00:00:00，最大值2038-01-19</li>
+<li>year：最小值1901，最大值2155</li>
+<li>time：最小值-838:59:59，最大值838:59:59</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常见约束</p>
+<ul>
+<li><p>含义：为了保证表中数据的准确性和可靠性，对表中的数据进行的一种限制</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li>not null：非空，保证该字段的值不能为空</li>
+<li>default：默认，保证该字段有默认值</li>
+<li>primary key：主键，保证该字段的值在表中是唯一的，并且不为空</li>
+<li>unique：唯一，保证该字段的值具有唯一性，可以为空</li>
+<li>check：检查约束，mysql不支持</li>
+<li>foreign key：外键，限制两个表的关系，保证该字段的值必须来自主表的关联列的值，在从表中添加外键约束，用于引用主表中某列的值</li>
+</ul>
+</li>
+<li><p>列级约束和表级约束</p>
+<ul>
+<li>列级约束：对一个数据列建立的约束，可在列定义时声明，也可在列定义后声明，not null、default只存在列级约束</li>
+<li>表级约束：对多个数据列简历的约束，只能在列定义后声明，primary key、unique、foreign key同时存在列级约束和表级约束</li>
+</ul>
+</li>
+<li><p>创建表时添加约束</p>
+<ul>
+<li><p>添加列级约束：字段名 数据类型 约束类型 </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	id int(11) primary key,# 主键</span><br><span class="line">	st_name varchar(255) not null,# 非空</span><br><span class="line">	gender char(1),</span><br><span class="line">	age int default 0,# 默认</span><br><span class="line">	c_id int foreign key reference class(id)# 外键</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">create table class(</span><br><span class="line">	id int(11) primary key,# 主键</span><br><span class="line">	c_name varchar(255) not null# 非空</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加表级约束：constraint 约束名 约束类型(字段名)</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	id int,</span><br><span class="line">	st_name varchar(255),</span><br><span class="line">	gender varchar(255),</span><br><span class="line">	age int,</span><br><span class="line">	c_id int,</span><br><span class="line">	</span><br><span class="line">	constraint pk primary key(id),# 主键</span><br><span class="line">	constraint uk unique(st_name),# 唯一</span><br><span class="line">	constraint fk_c_id foreign key(c_id) reference class(id),# 外键</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>主键和唯一的比较</p>
+<ul>
+<li>主键：保证唯一性；不允许为空；一张表中只能有一个</li>
+<li>唯一：保证唯一性；允许为空；一张表中可以有多个</li>
+</ul>
+</li>
+<li><p>外键特点</p>
+<ul>
+<li>需要在从表中设置外键关系</li>
+<li>从表的外键列的类型和主表的关联列的类型要求一致或兼容</li>
+<li>主表的关联列必须是一个key（一般为主键或唯一）</li>
+<li>插入数据时，先插入主表，再插入从表；删除数据时正好相反</li>
+</ul>
+</li>
+<li><p>修改表时添加约束</p>
+<ul>
+<li><p>添加列级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 约束</span><br></pre></td></tr></table></figure></li>
+<li><p>添加表级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 add constraint 约束名 约束类型(列名) [主表(关联列)]</span><br></pre></td></tr></table></figure></li>
+<li><p>添加非空约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 not null</span><br></pre></td></tr></table></figure></li>
+<li><p>添加默认约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 default 默认值</span><br></pre></td></tr></table></figure></li>
+<li><p>添加主键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 列级约束</span><br><span class="line">alter table 表名 modify column 列名 数据类型 primary key</span><br><span class="line"># 表级约束</span><br><span class="line">alter table 表名 add primary key(列名)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加唯一</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 列级约束</span><br><span class="line">alter table 表名 modify column 列名 数据类型 unique</span><br><span class="line"># 表级约束</span><br><span class="line">alter table 表名 add unique(列名)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加外键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 从表名 add constraint 外键名称 foreign key(列名) reference 主表名(列名)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改表时删除约束</p>
+<ul>
+<li><p>删除非空约束</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 NULL</span><br></pre></td></tr></table></figure></li>
+<li><p>删除默认</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型</span><br></pre></td></tr></table></figure></li>
+<li><p>删除主键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 drop primary key</span><br></pre></td></tr></table></figure></li>
+<li><p>删除唯一</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 drop index 约束名</span><br></pre></td></tr></table></figure></li>
+<li><p>删除外键</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 drop foreign key 约束名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>标识列</p>
+<ul>
+<li><p>含义：不需要手动设置值，系统提供默认的序列值，又叫自增序列</p>
+</li>
+<li><p>特点</p>
+<ul>
+<li>自增序列必须和主键配合使用吗？<ul>
+<li>不一定，但是必须是一个key（）</li>
+</ul>
+</li>
+<li>一个表最多有几个自增序列？<ul>
+<li>最多一个</li>
+</ul>
+</li>
+<li>自增序列可以是什么类型？<ul>
+<li>只能是数值型</li>
+</ul>
+</li>
+<li>自增序列如何设置自增的步长值？<ul>
+<li>set auto_increment_increment = x</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>创建表时设置自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">	id int primary key auto_increment</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表时设置自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 [约束] auto_increment</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表时删除自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>事务</p>
+<ul>
+<li><p>含义</p>
+<ul>
+<li>一条或多条sql语句执行时要么全部执行成功，要么全部失败</li>
+</ul>
+</li>
+<li><p>特性</p>
+<ul>
+<li>原子性（Atomicity）：事务中的操作像原子一样不可分割，要么全部成功，要么全部失败</li>
+<li>一致性（Consistency）：事务的执行结果必须使数据库从一个一致性状态变为另一个一致性状态（系统状态满足数据的完整性约束；系统的状态反映数据库本应描述的现实世界的真实状态）</li>
+<li>隔离性（Isolation）：并发执行的事务不会相互影响，其对数据库的影响和它们串行执行时一样</li>
+<li>持久性（Durability）：事务一旦提交，其对数据库的影响是永久性的。任何事务或系统故障都不会导致数据丢失</li>
+</ul>
+</li>
+<li><p>事务的创建</p>
+<ul>
+<li><p>隐式事务：事务没有明显的开启和结束的标记，如insert、update、delete语句</p>
+</li>
+<li><p>显式事务：事务具有明显的开启和结束的标记</p>
+<ul>
+<li><p>前提：必须设置禁用自动提交</p>
+</li>
+<li><p>步骤</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">begin或start transaction</span><br><span class="line">	sql语句,</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">commit</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>事务并发问题</p>
+<ul>
+<li>脏读：事务A读取了被事务B更新的数据，但事务B未提交，后面如果事务B回滚，事务A之前读取到的数据就是临时且无效的</li>
+<li>不可重复读：事务A第一次读取到一行记录row1，事务B提交后，事务A第二次读取到row1，但row1的数据已经发生变化</li>
+<li>幻读：事务A第一次读取到一行记录row1，事务B提交修改后，事务A第二次读取到row1和row2…</li>
+</ul>
+</li>
+<li><p>数据库事务的隔离性：数据库系统必须具有隔离并发运行各个事务的能力，使它们不会相互影响，避免各种并发问题</p>
+</li>
+<li><p>事务隔离级别</p>
+<ul>
+<li>READ UNCOMMITED：允许事务读取未被其他事务提交的变更，脏读、不可重复读、幻读都可能存在</li>
+<li>READ COMMITED：只允许事务读取已经被其他事务提交的变更，可以避免脏读，但不可重复读、幻读可能存在</li>
+<li>REPEATABLE READ：一个事务在其提交之前，读取的数据都是相同的，即使其他事务作了修改，但幻读可能存在</li>
+<li>SERIALIZABLE：一个事务持续期间，禁止其他事务进行任何操作，但效率很低</li>
+</ul>
+</li>
+<li><p>Oracle支持的事务隔离级别：READ COMMITED（默认）、SERIALIZABLE</p>
+</li>
+<li><p>MySQL支持的事务隔离级别：READ UNCOMMITED、READ COMMITED、REPEATABLE READ（默认）、SERIALIZABLE</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+</search>
