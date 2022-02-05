@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Mybatis一知半解</title>
+    <url>/2022/01/27/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
+    <content><![CDATA[<ol>
+<li><p>mybatis核心类及接口</p>
+<ol>
+<li><p>Configuration：</p>
+<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
+<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactoryBuilder：</p>
+<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
+<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSession：</p>
+<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactory：</p>
+<p> 创建SqlSession的工厂类接口</p>
+</li>
+<li><p>SqlNode：</p>
+<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Executor：</p>
+<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
+
+<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
+
+<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
+<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
+<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
+<ol>
+<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>mybatis缓存</p>
+<ol>
+<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
+<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
+</li>
+<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Cache对象之间的引用顺序为：</p>
+<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>Markdown语法学习</title>
     <url>/2022/01/27/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
     <content><![CDATA[<p><em>斜体</em></p>
@@ -201,69 +264,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Mybatis一知半解</title>
-    <url>/2022/01/27/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
-    <content><![CDATA[<ol>
-<li><p>mybatis核心类及接口</p>
-<ol>
-<li><p>Configuration：</p>
-<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
-<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactoryBuilder：</p>
-<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
-<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSession：</p>
-<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactory：</p>
-<p> 创建SqlSession的工厂类接口</p>
-</li>
-<li><p>SqlNode：</p>
-<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Executor：</p>
-<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
-
-<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
-
-<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
-<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
-<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-</li>
-<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
-<ol>
-<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li><p>mybatis缓存</p>
-<ol>
-<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
-<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
-</li>
-<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> Cache对象之间的引用顺序为：</p>
-<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
-</li>
-</ol>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>Java序列化与反序列化</title>
     <url>/2022/01/27/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<ol>
@@ -344,12 +344,12 @@
 <p>查看主从节点启动情况</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
 
-<p><img src="D:\TyporaSave\images\查看redis主从节点启动情况.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
 </li>
 <li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
 
-<p><img src="D:\TyporaSave\images\查看主节点情况.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
 </li>
 <li><p>测试主节点和从节点数据同步</p>
 <blockquote>
@@ -377,9 +377,9 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
 
 <p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
-<p><img src="D:\TyporaSave\images\启动sentinel.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
 <p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
-<p><img src="D:\TyporaSave\images\查看sentinel日志.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
 </li>
 <li><p>模拟主节点挂掉的情况</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
@@ -388,16 +388,16 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
 
 <p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
-<p><img src="D:\TyporaSave\images\哨兵选举主节点.PNG"></p>
-<p><img src="D:\TyporaSave\images\选举主节点后修改从节点配置文件.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
 </li>
 <li><p>重新启动原来的主节点6379</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
 
 <p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
-<p><img src="D:\TyporaSave\images\原来的主节点配置文件被更新.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
 <p>也可以用<code>info</code>命令查看从节点信息</p>
-<p><img src="D:\TyporaSave\images\info命令查看从节点信息.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
 </li>
 </ul>
 <h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
@@ -412,7 +412,7 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 
 <p>查看节点是否启动成功</p>
-<p><img src="D:\TyporaSave\images\启动6个集群节点.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
 </li>
 <li><p>创建真正的集群！！！</p>
 <p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
@@ -421,34 +421,34 @@
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
 
-<p><img src="D:\TyporaSave\images\创建真正的集群.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
 </li>
 <li><p>更简单快速地创建集群</p>
 <p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
 
 <p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
-<p><img src="D:\TyporaSave\images\create-cluster脚本.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
 </li>
 <li><p>连接集群并使用</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
 
 <p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
-<p><img src="D:\TyporaSave\images\连接集群并使用.PNG"></p>
-<p><img src="D:\TyporaSave\images\连接集群并使用2.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
 </li>
 <li><p>模拟三个主节点中的一个挂掉</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
 
 <p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
-<p>![](D:\TyporaSave\images\Redis Cluster主节点挂掉后选举从节点作为新的主节点.PNG)</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
 <p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
-<p><img src="D:\TyporaSave\images\原来的主节点上线后变成从节点.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
 </li>
 </ul>
 <h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
 <li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
-<p><img src="D:\TyporaSave\images\使用redis工具连接集群.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
 </li>
 </ul>
 ]]></content>
