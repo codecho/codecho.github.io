@@ -202,7 +202,7 @@
   </entry>
   <entry>
     <title>Mybatis一知半解</title>
-    <url>/2022/01/27/Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
+    <url>/2022/01/27/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
     <content><![CDATA[<ol>
 <li><p>mybatis核心类及接口</p>
 <ol>
@@ -265,7 +265,7 @@
   </entry>
   <entry>
     <title>Java序列化与反序列化</title>
-    <url>/2022/01/27/Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <url>/2022/01/27/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<ol>
 <li><p>序列化</p>
 <ul>
@@ -326,6 +326,185 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Linux下搭建Redis集群</title>
+    <url>/2022/02/06/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS 7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
+<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看主从节点启动情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\TyporaSave\images\查看redis主从节点启动情况.PNG"></p>
+</li>
+<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\TyporaSave\images\查看主节点情况.PNG"></p>
+</li>
+<li><p>测试主节点和从节点数据同步</p>
+<blockquote>
+<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
+</blockquote>
+<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
+
+<p>在连接主节点的窗口中插入一些数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
+</blockquote>
+<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
+<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
+
+<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
+<li><p>启动哨兵</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
+<p><img src="D:\TyporaSave\images\启动sentinel.PNG"></p>
+<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
+<p><img src="D:\TyporaSave\images\查看sentinel日志.PNG"></p>
+</li>
+<li><p>模拟主节点挂掉的情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>的日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
+<p><img src="D:\TyporaSave\images\哨兵选举主节点.PNG"></p>
+<p><img src="D:\TyporaSave\images\选举主节点后修改从节点配置文件.PNG"></p>
+</li>
+<li><p>重新启动原来的主节点6379</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
+<p><img src="D:\TyporaSave\images\原来的主节点配置文件被更新.PNG"></p>
+<p>也可以用<code>info</code>命令查看从节点信息</p>
+<p><img src="D:\TyporaSave\images\info命令查看从节点信息.PNG"></p>
+</li>
+</ul>
+<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
+<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
+<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
+<blockquote>
+<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
+<li><p>启动上述6个节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>查看节点是否启动成功</p>
+<p><img src="D:\TyporaSave\images\启动6个集群节点.PNG"></p>
+</li>
+<li><p>创建真正的集群！！！</p>
+<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
+<blockquote>
+<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
+
+<p><img src="D:\TyporaSave\images\创建真正的集群.PNG"></p>
+</li>
+<li><p>更简单快速地创建集群</p>
+<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
+<p><img src="D:\TyporaSave\images\create-cluster脚本.PNG"></p>
+</li>
+<li><p>连接集群并使用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
+<p><img src="D:\TyporaSave\images\连接集群并使用.PNG"></p>
+<p><img src="D:\TyporaSave\images\连接集群并使用2.PNG"></p>
+</li>
+<li><p>模拟三个主节点中的一个挂掉</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
+<p>![](D:\TyporaSave\images\Redis Cluster主节点挂掉后选举从节点作为新的主节点.PNG)</p>
+<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
+<p><img src="D:\TyporaSave\images\原来的主节点上线后变成从节点.PNG"></p>
+</li>
+</ul>
+<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
+<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
+<p><img src="D:\TyporaSave\images\使用redis工具连接集群.PNG"></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Centos安装Redis</title>
+    <url>/2022/01/30/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
+<li><p>从官网获取Redis压缩包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
+<li><p>使用redis-cli连接redis-server</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
+<ul>
+<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
+<ul>
+<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+</ul>
+<blockquote>
+<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
+<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引入Redis依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过RedisTemplate操作Redis</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2022/01/27/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -345,7 +524,7 @@
   </entry>
   <entry>
     <title>Linux使用</title>
-    <url>/2022/01/27/2019-07-18-linux/</url>
+    <url>/2022/01/27/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
 <li><p>修改root用户密码</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
@@ -571,8 +750,256 @@
 ]]></content>
   </entry>
   <entry>
+    <title>arthas诊断工具简单使用</title>
+    <url>/2022/01/30/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<blockquote>
+<blockquote>
+<p>Arthas（阿尔萨斯）是什么</p>
+</blockquote>
+</blockquote>
+<p>Arthas是Alibaba开源的Java诊断工具</p>
+<blockquote>
+<p>Arthas能做什么</p>
+</blockquote>
+<ol>
+<li>这个类从哪个 jar 包加载的？为什么会报各种类相关的 Exception？</li>
+<li>我改的代码为什么没有执行到？难道是我没 commit？分支搞错了？</li>
+<li>遇到问题无法在线上 debug，难道只能通过加日志再重新发布吗？</li>
+<li>线上遇到某个用户的数据处理有问题，但线上同样无法 debug，线下无法重现！</li>
+<li>是否有一个全局视角来查看系统的运行状况？</li>
+<li>有什么办法可以监控到JVM的实时运行状态？</li>
+<li>怎么快速定位应用的热点，生成火焰图？</li>
+<li>怎样直接从JVM内查找某个类的实例？</li>
+</ol>
+<blockquote>
+<p>开发中常见的问题</p>
+</blockquote>
+<ol>
+<li><p>前端调用一个后端的接口，该接口逻辑非常复杂，可能会调用其他service接口或其他模块的FeignClient，但是在其中某个接口报错了，报错信息又不是很明显，这种情况下，一般要么分析代码逻辑，要么增加日志输出来排查发生异常的原因</p>
+<p> 使用Arthas后，可以通过<code>watch</code>命令观察指定方法的调用情况，可以观察<code>入参</code>、<code>返回值</code>、<code>异常信息</code>、<code>本次调用的方法信息</code>、<code>本次调用的类信息</code>等，配合ognl表达式可以实现复杂的操作</p>
+</li>
+<li><p>后端改动或者增加一个复杂的接口后，联调时可能遇到一个问题，改一遍代码，然后pull代码，编译，重启服务，然后又遇到问题，再修改代码，再重复同样的操作，这些步骤十分的耗时，如果开发时间比较紧迫，更加让人难以忍受</p>
+<p> 使用Arthas的<code>jad</code>、<code>mc</code>、<code>retransform</code>命令修改java代码，编译字节码文件，加载新的字节码，不需要重新pull代码，编译，重启等一系列耗时的操作，就能直接实现修改后的效果</p>
+</li>
+</ol>
+<blockquote>
+<p>如何使用</p>
+</blockquote>
+<ol>
+<li><p>安装启动</p>
+<p> 安装方式很多，有直接启动jar包、使用shell脚本、rpm安装等，这里使用直接启动jar包的方式</p>
+ <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 下载arthas-boot.jar</span></span><br><span class="line">curl -O https://arthas.aliyun.com/arthas-boot.jar</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 启动</span></span><br><span class="line">java -jar arthas-boot.jar</span><br></pre></td></tr></table></figure></li>
+<li><p>选择要attach的进程</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[INFO] arthas-boot version: 3.5.4</span><br><span class="line">[INFO] Process 10294 already using port 3658</span><br><span class="line">[INFO] Process 10294 already using port 8563</span><br><span class="line">[INFO] Found existing java process, please choose one and input the serial number of the process, eg : 1. Then hit ENTER.</span><br><span class="line">* [1]: 10294 java-study-0.0.1-SNAPSHOT.jar</span><br><span class="line">  [2]: 13008 org.apache.zookeeper.server.quorum.QuorumPeerMain</span><br><span class="line">  [3]: 19681 /usr/nacos/target/nacos-server.jar</span><br><span class="line">  [4]: 4819 org.elasticsearch.bootstrap.Elasticsearch</span><br><span class="line">  [5]: 21381 /usr/my_service/java_study/java-study-0.0.1-SNAPSHOT.jar</span><br><span class="line">  [6]: 22535 kafka.Kafka</span><br><span class="line">  [7]: 21772 /usr/my_service/java_study/java-study-0.0.1-SNAPSHOT.jar</span><br><span class="line">1</span><br><span class="line">[INFO] arthas home: /root/.arthas/lib/3.5.4/arthas</span><br><span class="line">[INFO] The target process already listen port 3658, skip attach.</span><br><span class="line">[INFO] arthas-client connect 127.0.0.1 3658</span><br><span class="line">  ,---.  ,------. ,--------.,--.  ,--.  ,---.   ,---.                           </span><br><span class="line"> /  O  \ |  .--. <span class="string">&#x27;&#x27;</span>--.  .--<span class="string">&#x27;|  &#x27;</span>--<span class="string">&#x27;  | /  O  \ &#x27;</span>   .-<span class="string">&#x27;                          </span></span><br><span class="line"><span class="string">|  .-.  ||  &#x27;</span>--<span class="string">&#x27;.&#x27;</span>   |  |   |  .--.  ||  .-.  |`.  `-.                          </span><br><span class="line">|  | |  ||  |\  \    |  |   |  |  |  ||  | |  |.-<span class="string">&#x27;    |                         </span></span><br><span class="line"><span class="string">`--&#x27;</span> `--<span class="string">&#x27;`--&#x27;</span> <span class="string">&#x27;--&#x27;</span>   `--<span class="string">&#x27;   `--&#x27;</span>  `--<span class="string">&#x27;`--&#x27;</span> `--<span class="string">&#x27;`-----&#x27;</span>                          </span><br><span class="line">                                                                                </span><br><span class="line"></span><br><span class="line">wiki       https://arthas.aliyun.com/doc                                        </span><br><span class="line">tutorials  https://arthas.aliyun.com/doc/arthas-tutorials.html                  </span><br><span class="line">version    3.5.4                                                                </span><br><span class="line">main_class                                                                      </span><br><span class="line">pid        10294                                                                </span><br><span class="line">time       2021-09-15 10:18:15</span><br></pre></td></tr></table></figure></li>
+<li><p>输入<code>help</code>查看命令帮助信息</p>
+</li>
+</ol>
+<blockquote>
+<p>使用<code>watch</code>命令观察方法的调用情况，如入参，返回值，异常信息等</p>
+</blockquote>
+<ol>
+<li><p><code>watch</code>命令参数</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>class-pattern</em></td>
+<td>类名表达式匹配</td>
+</tr>
+<tr>
+<td><em>method-pattern</em></td>
+<td>方法名表达式匹配</td>
+</tr>
+<tr>
+<td><em>express</em></td>
+<td>观察表达式，默认值：<code>&#123;params, target, returnObj&#125;</code></td>
+</tr>
+<tr>
+<td><em>condition-express</em></td>
+<td>条件表达式</td>
+</tr>
+<tr>
+<td>[b]</td>
+<td>在<strong>方法调用之前</strong>观察</td>
+</tr>
+<tr>
+<td>[e]</td>
+<td>在<strong>方法异常之后</strong>观察</td>
+</tr>
+<tr>
+<td>[s]</td>
+<td>在<strong>方法返回之后</strong>观察</td>
+</tr>
+<tr>
+<td>[f]</td>
+<td>在<strong>方法结束之后</strong>(正常返回和异常返回)观察</td>
+</tr>
+<tr>
+<td>[E]</td>
+<td>开启正则表达式匹配，默认为通配符匹配</td>
+</tr>
+<tr>
+<td>[x:]</td>
+<td>指定输出结果的属性遍历深度，默认为 1</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>观察表达式</p>
+<p> 观察表达式的构成主要由ognl表达式组成，使用它可以获取对象的属性，调用对象的方法等</p>
+<p> ognl表达式可以使用的对象有params(入参)、target(当前调用的类信息)、returnObj(返回值)、throwExp(异常信息)等，详细内容参考<a href="https://arthas.aliyun.com/doc/advice-class.html">表达式核心变量</a></p>
+</li>
+<li><p>测试代码</p>
+<p> 根据id查询用户信息</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> User <span class="title">getUserById</span><span class="params">(Long id)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isEmpty(id)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;用户id为空!&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    List&lt;User&gt; collect = userList.stream().filter(u -&gt; id.equals(u.getId()))</span><br><span class="line">        .collect(Collectors.toList());</span><br><span class="line">    <span class="keyword">if</span> (CollectionUtils.isEmpty(collect)) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> Exception(<span class="string">&quot;根据id未找到用户信息&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> collect.get(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>观察方法调用情况</p>
+<ul>
+<li><p>观察方法入参和返回值</p>
+<p>  执行watch命令：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &#123;params, returnObj&#125; 表示需要观察方法入参和返回值，-n 5 表示执行5次后结束 -x 3 表示遍历对象的深度</span></span><br><span class="line">watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+<p>  调用接口：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/1</span><br></pre></td></tr></table></figure>
+
+<p>  查看控制台输出：这里result中包含了入参和返回的对象</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 1) cost <span class="keyword">in</span> 71 ms, listenerId: 25</span><br><span class="line">method=com.codecho.test.service.UserServiceImpl.getUserById location=AtExit</span><br><span class="line">ts=2021-09-17 14:28:29; [cost=1.151249ms] result=@ArrayList[</span><br><span class="line">    @Object[][</span><br><span class="line">        @Long[1],</span><br><span class="line">    ],</span><br><span class="line">    @User[</span><br><span class="line">        id=@Long[1],</span><br><span class="line">        username=@String[1001],</span><br><span class="line">        avatar=@String[https://xxxx.com/1001.png],</span><br><span class="line">        phoneNumber=@String[10010010001],</span><br><span class="line">        age=@Integer[20],</span><br><span class="line">        gender=@String[男],</span><br><span class="line">    ],</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li><p>观察方法抛出的异常信息</p>
+<p>  执行watch命令：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &#123;params, throwExp&#125; 表示需要观察方法入参和异常对象</span></span><br><span class="line">watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, throwExp&#125;&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+<p>  调用接口：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/1001</span><br></pre></td></tr></table></figure>
+
+<p>  查看控制台输出：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, throwExp&#125;&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 1) cost <span class="keyword">in</span> 70 ms, listenerId: 26</span><br><span class="line">method=com.codecho.test.service.UserServiceImpl.getUserById location=AtExceptionExit</span><br><span class="line">ts=2021-09-17 14:29:56; [cost=2.055759ms] result=@ArrayList[</span><br><span class="line">    @Object[][</span><br><span class="line">        @Long[1001],</span><br><span class="line">    ],</span><br><span class="line">    java.lang.Exception: 根据id未找到用户信息</span><br><span class="line">	at com.codecho.test.service.UserServiceImpl.getUserById(UserServiceImpl.java:48)</span><br><span class="line">	at com.codecho.test.controller.TestController.getUserById(TestController.java:28)</span><br><span class="line">	at sun.reflect.GeneratedMethodAccessor25.invoke(Unknown Source)</span><br><span class="line">	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)</span><br><span class="line">	at java.lang.reflect.Method.invoke(Method.java:498)</span><br><span class="line">	...</span><br></pre></td></tr></table></figure>
+
+<p>  可以通过调整观察表达式只展示异常具体信息</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, throwExp.getMessage&#125;&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+<p>  重新调用接口，再次查看控制台输出</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, throwExp.getMessage&#125;&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 1) cost <span class="keyword">in</span> 71 ms, listenerId: 27</span><br><span class="line">method=com.codecho.test.service.UserServiceImpl.getUserById location=AtExceptionExit</span><br><span class="line">ts=2021-09-17 14:31:08; [cost=1.685761ms] result=@ArrayList[</span><br><span class="line">    @Object[][</span><br><span class="line">        @Long[1001],</span><br><span class="line">    ],</span><br><span class="line">    @String[根据id未找到用户信息],</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li><p>只观察满足条件的方法调用</p>
+<p>  执行watch命令：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># params[0]%2==0 表示当用户id为偶数时才会记录调用信息</span></span><br><span class="line">watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> <span class="string">&#x27;params[0]%2==0&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+<p>  调用接口：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/1</span><br><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/2</span><br><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/3</span><br><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/4</span><br></pre></td></tr></table></figure>
+
+<p>  查看控制台输出：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch com.codecho.test.service.UserService getUserById <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> <span class="string">&#x27;params[0]%2==0&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 1) cost <span class="keyword">in</span> 71 ms, listenerId: 28</span><br><span class="line">method=com.codecho.test.service.UserServiceImpl.getUserById location=AtExit</span><br><span class="line">ts=2021-09-17 14:32:06; [cost=0.067629ms] result=@ArrayList[</span><br><span class="line">    @Object[][</span><br><span class="line">        @Long[2],</span><br><span class="line">    ],</span><br><span class="line">    @User[</span><br><span class="line">        id=@Long[2],</span><br><span class="line">        username=@String[1002],</span><br><span class="line">        avatar=@String[https://xxxx.com/1002.png],</span><br><span class="line">        phoneNumber=@String[10010010002],</span><br><span class="line">        age=@Integer[23],</span><br><span class="line">        gender=@String[男],</span><br><span class="line">    ],</span><br><span class="line">]</span><br><span class="line">method=com.codecho.test.service.UserServiceImpl.getUserById location=AtExit</span><br><span class="line">ts=2021-09-17 14:32:11; [cost=0.081801ms] result=@ArrayList[</span><br><span class="line">    @Object[][</span><br><span class="line">        @Long[4],</span><br><span class="line">    ],</span><br><span class="line">    @User[</span><br><span class="line">        id=@Long[4],</span><br><span class="line">        username=@String[1004],</span><br><span class="line">        avatar=@String[https://xxxx.com/1004.png],</span><br><span class="line">        phoneNumber=@String[10010010004],</span><br><span class="line">        age=@Integer[21],</span><br><span class="line">        gender=@String[女],</span><br><span class="line">    ],</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>  执行watch命令：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># #cost &gt; 5 表示耗时超过5ms才会记录调用信息 -v 表示打印条件表达式的值和结果</span></span><br><span class="line">watch com.codecho.test.service.UserService * <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> <span class="string">&#x27;#cost &gt; 5&#x27;</span> -v -n 1 -x 3</span><br></pre></td></tr></table></figure>
+
+<p>  调用接口：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl http://localhost:8088/<span class="built_in">test</span>/user/1</span><br></pre></td></tr></table></figure>
+
+<p>  查看控制台输出：</p>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch com.codecho.test.service.UserService * <span class="string">&#x27;&#123;params, returnObj&#125;&#x27;</span> <span class="string">&#x27;#cost &gt; 5&#x27;</span> -v -n 1 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 8) cost <span class="keyword">in</span> 76 ms, listenerId: 29</span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br><span class="line">Condition express: <span class="comment">#cost &gt; 5 , result: false</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p>使用<code>trace</code>命令查看方法的调用路径和每个节点的耗时</p>
+</blockquote>
+<ol>
+<li><p><code>trace</code>命令参数</p>
+<table>
+<thead>
+<tr>
+<th>参数名称</th>
+<th>参数说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><em>class-pattern</em></td>
+<td>类名表达式匹配</td>
+</tr>
+<tr>
+<td><em>method-pattern</em></td>
+<td>方法名表达式匹配</td>
+</tr>
+<tr>
+<td><em>condition-express</em></td>
+<td>条件表达式</td>
+</tr>
+<tr>
+<td>[E]</td>
+<td>开启正则表达式匹配，默认为通配符匹配</td>
+</tr>
+<tr>
+<td>[n:]</td>
+<td>命令执行次数</td>
+</tr>
+<tr>
+<td>#cost</td>
+<td>方法执行耗时</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>观察接口调用路径</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@40528]$ trace *ActionInfoServiceImpl interactionAssist -n 2</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 2 , method count: 2) cost <span class="keyword">in</span> 857 ms, listenerId: 4</span><br><span class="line">`---ts=2021-09-17 15:37:53;thread_name=http-nio-8325-exec-1;id=85;is_daemon=<span class="literal">true</span>;priority=5;TCCL=org.springframework.boot.web.embedded.tomcat.TomcatEmbeddedWebappClassLoader@4258106</span><br><span class="line">    `---[26.143404ms] com.hand.interaction.base.actioninfo.service.ActionInfoServiceImpl$$EnhancerBySpringCGLIB$<span class="variable">$34d24eff</span>:interactionAssist() [throws Exception]</span><br><span class="line">        +---[25.926649ms] org.springframework.cglib.proxy.MethodInterceptor:intercept() [throws Exception]</span><br><span class="line">        |   `---[21.546574ms] com.hand.interaction.base.actioninfo.service.ActionInfoServiceImpl:interactionAssist() [throws Exception]</span><br><span class="line">        |       +---[0.131916ms] com.alibaba.fastjson.JSONObject:toJSONString() <span class="comment">#6957</span></span><br><span class="line">        |       +---[0.190136ms] org.apache.logging.log4j.Logger:info() <span class="comment">#6957</span></span><br><span class="line">        |       +---[0.00505ms] com.hand.core.util.UserUtil:getUser() <span class="comment">#6960</span></span><br><span class="line">        |       +---[0.00535ms] com.hand.interaction.base.actioninfo.model.ActionInfo:getInteractionId() <span class="comment">#6966</span></span><br><span class="line">        |       +---[1.262189ms] com.hand.interaction.base.interaction.service.InteractionService:queryByIdCache() <span class="comment">#6966</span></span><br><span class="line">        |       +---[0.00564ms] com.hand.interaction.base.interaction.model.Interaction:getEndTime() <span class="comment">#6970</span></span><br><span class="line">        |       +---[0.00526ms] com.hand.interaction.base.interaction.model.Interaction:getLicenseMode() <span class="comment">#6977</span></span><br><span class="line">        |       +---[0.010319ms] com.hand.interaction.base.actioninfo.service.ActionInfoServiceImpl:checkUserInfo() <span class="comment">#6977</span></span><br><span class="line">        |       +---[0.004508ms] com.hand.interaction.base.actioninfo.model.ActionInfo:getInteractionId() <span class="comment">#6980</span></span><br><span class="line">        |       +---[0.00497ms] com.hand.interaction.base.actioninfo.model.ActionInfo:getOpenId() <span class="comment">#6980</span></span><br><span class="line">        |       +---[0.006282ms] com.hand.interaction.base.actioninfo.model.ActionInfo:getMobilePhone() <span class="comment">#6980</span></span><br><span class="line">        |       +---[0.127087ms] com.hand.interaction.base.util.CommonUtils:tianYu() <span class="comment">#6980</span></span><br><span class="line">        |       +---[0.005831ms] com.hand.base.user.model.User:getOpenId() <span class="comment">#6982</span></span><br><span class="line">        |       +---[0.005991ms] com.hand.core.util.StringUtils:isBlank() <span class="comment">#6983</span></span><br><span class="line">        |       +---[0.009688ms] com.hand.interaction.base.interaction.model.Interaction:getBoostType() <span class="comment">#6988</span></span><br><span class="line">        |       +---[0.008306ms] com.hand.interaction.base.actioninfo.model.ActionInfo:getHpOpenid() <span class="comment">#6988</span></span><br><span class="line">        |       +---[0.004388ms] com.hand.core.util.StringUtils:isBlank() <span class="comment">#6989</span></span><br><span class="line">        |       +---[0.007474ms] com.hand.interaction.base.actioninfo.model.ActionInfo:setHpOpenid() <span class="comment">#6992</span></span><br><span class="line">        |       +---[min=0.003366ms,max=0.007244ms,total=0.01061ms,count=2] com.hand.interaction.base.interaction.model.Interaction:getInteractionFormat() <span class="comment">#6997</span></span><br><span class="line">        |       +---[0.005109ms] com.hand.interaction.base.interaction.model.Interaction:getShareMode() <span class="comment">#7026</span></span><br><span class="line">        |       +---[0.004529ms] com.hand.interaction.base.interaction.model.Interaction:getId() <span class="comment">#7028</span></span><br><span class="line">        |       +---[0.005249ms] com.hand.interaction.base.interaction.model.Interaction:getBoostType() <span class="comment">#7035</span></span><br><span class="line">        |       +---[19.019048ms] com.hand.interaction.base.actioninfo.service.ActionInfoServiceImpl:newMemBoostValidate() <span class="comment">#7050 [throws Exception]</span></span><br><span class="line">        |       `---throw:com.hand.core.basic.service.BasicServiceException <span class="comment">#7585 [您已经是会员，无法助力！]</span></span><br><span class="line">        `---throw:com.hand.core.basic.service.BasicServiceException <span class="comment">#49 [您已经是会员，无法助力！]</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<blockquote>
+<p>使用<code>jad</code>、<code>mc</code>、<code>retransform</code>命令热更新代码</p>
+</blockquote>
+<ol>
+<li><p>测试代码</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">payMoney</span><span class="params">(User user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// 查找用户</span></span><br><span class="line">    User queryUser = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (!StringUtils.isEmpty(user.getId())) &#123;</span><br><span class="line">        queryUser = getUserById(user.getId());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        queryUser = getUserByUsername(user.getUsername());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试调用普通方法</span></span><br><span class="line">    callPublicMethod(queryUser);</span><br><span class="line">    callPrivateMethod(queryUser);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付收款</span></span><br><span class="line">    payService.pay(queryUser, <span class="keyword">new</span> BigDecimal(<span class="string">&quot;88.8&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用<code>jad</code>命令反编译要修改的类的字节码，并保存到指定目录</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">jad --source-only *UserServiceImpl &gt; /usr/arthas/UserServiceImpl.java</span><br></pre></td></tr></table></figure></li>
+<li><p>使用vim编辑反编译后的java代码，将金额从<strong>88.8</strong>改成<strong>99.9</strong></p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">payMoney</span><span class="params">(User user)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="comment">// 查找用户</span></span><br><span class="line">    User queryUser = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">if</span> (!StringUtils.isEmpty(user.getId())) &#123;</span><br><span class="line">        queryUser = getUserById(user.getId());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        queryUser = getUserByUsername(user.getUsername());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 测试调用普通方法</span></span><br><span class="line">    callPublicMethod(queryUser);</span><br><span class="line">    callPrivateMethod(queryUser);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 支付收款</span></span><br><span class="line">    payService.pay(queryUser, <span class="keyword">new</span> BigDecimal(<span class="string">&quot;88.8&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用<code>mc</code>命令内存编译修改后的java代码，-d 指定输出class的目录</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mc /usr/arthas/UserServiceImpl.java -d /usr/arthas</span><br></pre></td></tr></table></figure>
+
+<p> <strong>注意</strong>：<code>mc</code>命令是可能编译失败的，如果编译失败，可以在本地修改java代码后将编译后的class文件上传到服务器上再使用<code>mc</code>命令</p>
+</li>
+<li><p>使用<code>retransform</code>命令加载修改后的字节码文件</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">retransform /usr/arthas/UserServiceImpl.class</span><br></pre></td></tr></table></figure></li>
+<li><p>使用watch命令观察接口入参，重新调用接口</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch *PayServiceImpl pay <span class="string">&#x27;&#123;params[0], params[1].toString&#125;&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -H <span class="string">&quot;Content-Type:application/json&quot;</span> -X POST -d <span class="string">&#x27;&#123;&quot;username&quot;: &quot;1002&quot;&#125;&#x27;</span> http://localhost:8088/<span class="built_in">test</span>/user/payMoney</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 99.9 元的收款</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch *PayServiceImpl pay <span class="string">&#x27;&#123;params[0], params[1].toString&#125;&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 1 , method count: 1) cost <span class="keyword">in</span> 48 ms, listenerId: 30</span><br><span class="line">method=com.codecho.test.service.PayServiceImpl.pay location=AtExit</span><br><span class="line">ts=2021-09-17 15:40:10; [cost=0.112135ms] result=@ArrayList[</span><br><span class="line">    @User[</span><br><span class="line">        id=@Long[2],</span><br><span class="line">        username=@String[1002],</span><br><span class="line">        avatar=@String[https://xxxx.com/1002.png],</span><br><span class="line">        phoneNumber=@String[10010010002],</span><br><span class="line">        age=@Integer[23],</span><br><span class="line">        gender=@String[男],</span><br><span class="line">    ],</span><br><span class="line">    @String[99.9],</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+<li><p>如果要取消<code>retransform</code>命令的效果，需要删除修改类的<code>retransform entry</code> 并重新触发<code>retransform</code>，如果不进行此操作，即使stop arthas后，<code>retransform</code>的效果仍会生效</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 查看retransform entry</span></span><br><span class="line">retransform -l</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除指定的retransform entry</span></span><br><span class="line">retransform -d 1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新触发retransform</span></span><br><span class="line">retransform --classPattern *UserServiceImpl</span><br></pre></td></tr></table></figure>
+
+<p> 使用watch命令观察接口入参，重新调用接口</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">watch *PayServiceImpl pay <span class="string">&#x27;&#123;params[0], params[1].toString&#125;&#x27;</span> -n 5 -x 3</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -H <span class="string">&quot;Content-Type:application/json&quot;</span> -X POST -d <span class="string">&#x27;&#123;&quot;username&quot;: &quot;1002&quot;&#125;&#x27;</span> http://localhost:8088/<span class="built_in">test</span>/user/payMoney</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 99.9 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 99.9 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 99.9 元的收款</span><br><span class="line">测试调用普通public方法</span><br><span class="line">测试调用普通private方法</span><br><span class="line">用户 1002支付了一笔 88.8 元的收款</span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[arthas@10294]$ watch *PayServiceImpl pay <span class="string">&#x27;&#123;params[0], params[1].toString&#125;&#x27;</span> -n 5 -x 3</span><br><span class="line">Press Q or Ctrl+C to abort.</span><br><span class="line">Affect(class count: 1 , method count: 1) cost <span class="keyword">in</span> 48 ms, listenerId: 30</span><br><span class="line">method=com.codecho.test.service.PayServiceImpl.pay location=AtExit</span><br><span class="line">ts=2021-09-17 15:40:10; [cost=0.112135ms] result=@ArrayList[</span><br><span class="line">    @User[</span><br><span class="line">        id=@Long[2],</span><br><span class="line">        username=@String[1002],</span><br><span class="line">        avatar=@String[https://xxxx.com/1002.png],</span><br><span class="line">        phoneNumber=@String[10010010002],</span><br><span class="line">        age=@Integer[23],</span><br><span class="line">        gender=@String[男],</span><br><span class="line">    ],</span><br><span class="line">    @String[88.8],</span><br><span class="line">]</span><br></pre></td></tr></table></figure></li>
+</ol>
+<blockquote>
+<p><code>quit</code>、<code>stop</code></p>
+</blockquote>
+<ol>
+<li><p><code>quit</code></p>
+<p> 退出当前arthas客户端，arthas服务端不会关闭，所做的修改不会重置</p>
+</li>
+<li><p><code>stop</code></p>
+<p> 关闭arthas服务端，所有arthas客户端都会退出，关闭前增强类会被重置，使用<code>redefine</code>、<code>redefine</code>重加载的类不会被重置</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>MySQL学习</title>
-    <url>/2022/01/27/2019-08-02-mysql/</url>
+    <url>/2022/01/27/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<ol>
 <li><p>起别名</p>
 <ul>
