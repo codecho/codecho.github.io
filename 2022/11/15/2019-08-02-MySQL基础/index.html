@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="起别名  优点  便于理解 如果要查询的字段有重名的情况，使用别名可以区分开来   使用方式 123456# 方式一select count(*) &amp;#x27;总预约数&amp;#x27; from reservation_record # 方式二select count(*) as &amp;#x27;总预约数&amp;#x27; from reservation_record # 如果别名是关键字，可以使用 &amp;#x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL学习">
+<meta property="og:url" content="http://example.com/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/index.html">
+<meta property="og:site_name" content="抓住那只蝉">
+<meta property="og:description" content="起别名  优点  便于理解 如果要查询的字段有重名的情况，使用别名可以区分开来   使用方式 123456# 方式一select count(*) &amp;#x27;总预约数&amp;#x27; from reservation_record # 方式二select count(*) as &amp;#x27;总预约数&amp;#x27; from reservation_record # 如果别名是关键字，可以使用 &amp;#x">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-11-15T09:00:41.597Z">
+<meta property="article:modified_time" content="2022-01-27T09:11:12.528Z">
+<meta property="article:author" content="codecho">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/","path":"2022/11/15/2019-08-02-MySQL基础/","title":"MySQL学习"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>MySQL学习 | 抓住那只蝉</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">抓住那只蝉</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="codecho"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">codecho</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+  <a href="https://github.com/codecho" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MySQL学习
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-01-27 17:11:12" itemprop="dateModified" datetime="2022-01-27T17:11:12+08:00">2022-01-27</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>14 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <ol>
+<li><p>起别名</p>
+<ul>
+<li><p>优点</p>
+<ul>
+<li>便于理解</li>
+<li>如果要查询的字段有重名的情况，使用别名可以区分开来</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 方式一</span><br><span class="line">select count(*) &#x27;总预约数&#x27; from reservation_record </span><br><span class="line"># 方式二</span><br><span class="line">select count(*) as &#x27;总预约数&#x27; from reservation_record </span><br><span class="line"># 如果别名是关键字，可以使用 &#x27;&#x27; 或 &quot;&quot; 包裹别名</span><br><span class="line">select count(*) as &quot;select&quot; from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>去重</p>
+<ul>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select distinct hospital_id from reservation_record </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>“+”号的作用：mysql中的 “+” 只用来作为运算符</p>
+<ul>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 如果两个操作数都是数值型，做加法运算</span><br><span class="line">select 500+20</span><br><span class="line"># 如果其中一个操作数为字符型，先尝试将其转换为数值型，如果转换成功，做加法运算；否则将其当作 0 ，再做加法运算</span><br><span class="line">select &quot;500&quot;+20</span><br><span class="line"># 如果其中一个操作数为 null ，则结果必为 null</span><br><span class="line">select 500+null</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>concat()函数实现拼接</p>
+<ul>
+<li><p>说明</p>
+<ul>
+<li>使用concat()函数可以拼接多个内容</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select CONCAT(&#x27;how &#x27;,&#x27;are &#x27;,&#x27;u&#x27;) as title</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>比较运算符</p>
+<ul>
+<li><p>说明</p>
+<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&gt;、&lt;、=</td>
+<td align="center">大于、小于、等于</td>
+</tr>
+<tr>
+<td align="center">!=、&lt;&gt;</td>
+<td align="center">不等于，&lt;&gt;是mysql的标准写法，建议使用&lt;&gt;</td>
+</tr>
+<tr>
+<td align="center">&gt;=、&lt;=</td>
+<td align="center">大于等于、小于等于</td>
+</tr>
+<tr>
+<td align="center">&lt;=&gt;</td>
+<td align="center">严格比较两个null值是否相等，均为null时结果为1，只有一个为null时结果为0</td>
+</tr>
+<tr>
+<td align="center">between、not between</td>
+<td align="center">（不）在两个范围之间</td>
+</tr>
+<tr>
+<td align="center">in、not in</td>
+<td align="center">（不）在集合中</td>
+</tr>
+<tr>
+<td align="center">is null、is not null</td>
+<td align="center">（不）为空</td>
+</tr>
+<tr>
+<td align="center">like</td>
+<td align="center">模糊匹配</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>通配符</p>
+<ul>
+<li><p>%：替代0个或多个字符</p>
+</li>
+<li><p>_：替代单个字符</p>
+</li>
+<li><p>转义：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 通过 &quot;\&quot;转义符 ，这里 \ 后的 % 不再是通配符</span><br><span class="line">select * from reservation_record where title like &#x27;_\%%&#x27;</span><br><span class="line"># 通过 escape关键字 ，这里 &amp; 之后的 % 不再是通配符</span><br><span class="line">select * from reservation_record where title like &#x27;_&amp;%%&#x27; escape &#x27;&amp;&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"># 查找年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where age &gt; 1</span><br><span class="line"># 查找年龄不等于2的宠物信息</span><br><span class="line">select * from pet_archives where age &lt;&gt; 2</span><br><span class="line"># 查找年龄大于等于2的宠物信息</span><br><span class="line">select * from pet_archives where age &gt;= 2</span><br><span class="line"># 查找年龄不在1~2范围的宠物信息</span><br><span class="line">select * from pet_archives where age not between 1 and 2</span><br><span class="line"># 查找宠物主id在（1,3,5）中的宠物信息</span><br><span class="line">select * from pet_archives where pet_user_id in (1,3,5)</span><br><span class="line"># 查找品种不为null的宠物信息</span><br><span class="line">select * from pet_archives where variety is not null</span><br><span class="line"># 查找标题第三个字符为“哈”的预约信息</span><br><span class="line">select * from reservation_record where title like &#x27;__哈%&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>逻辑运算符</p>
+<ul>
+<li><p>说明：用于连接条件表达式</p>
+<table>
+<thead>
+<tr>
+<th align="center">运算符</th>
+<th align="center">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">&amp;&amp;或and</td>
+<td align="center">逻辑与</td>
+</tr>
+<tr>
+<td align="center">||或or</td>
+<td align="center">逻辑或</td>
+</tr>
+<tr>
+<td align="center">!或not</td>
+<td align="center">逻辑非</td>
+</tr>
+<tr>
+<td align="center">xor</td>
+<td align="center">逻辑异或</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 查找性别为m，年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; and age &gt; 1</span><br><span class="line"># 查找性别为m或者年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; or age &gt; 1</span><br><span class="line"># 查找性别不为m的宠物信息</span><br><span class="line">select * from pet_archives where not gender = &#x27;m&#x27;</span><br><span class="line"># 查找性别为m，年龄小于等于1、性别不为m，年龄大于1的宠物信息</span><br><span class="line">select * from pet_archives where gender = &#x27;m&#x27; xor age &gt; 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>排序查询</p>
+<ul>
+<li><p>说明</p>
+<ul>
+<li>select 查询列表 from 表名 [where 查询条件] order by 排序列表 asc|desc</li>
+<li>默认升序</li>
+</ul>
+</li>
+<li><p>使用方式</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"># 按照年龄从大到小顺序查询宠物信息</span><br><span class="line">select * from pet_archives order by age desc</span><br><span class="line"># 按照评分（按表达式排序）从低到高顺序查询预约信息</span><br><span class="line">select *,rate*1.0 from reservation_record order by rate*1.0 asc</span><br><span class="line"># 按照评分（按别名排序）从低到高顺序查询预约信息</span><br><span class="line">select *,rate*1.0 评分 from reservation_record order by 评分 asc</span><br><span class="line"># 按照标题长度（按函数排序）从大到小顺序查询预约信息</span><br><span class="line">select * from reservation_record order by length(title) desc</span><br><span class="line"># 按照年龄从大到小，id从小到大顺序（按多字段排序）查询宠物信息</span><br><span class="line">select * from pet_archives order by age desc,id asc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>字符函数</p>
+<ul>
+<li>length(str)<ul>
+<li><p>返回参字符串的<strong>字节个数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select length(title) 字节数 from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>char_length(str)<ul>
+<li><p>返回字符串的<strong>字符个数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select char_length(title) 字符数 from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>concat(str1,str2,…)<ul>
+<li><p>拼接多个字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select concat(title,reservation_date) from reservation_record</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>lower(str)<ul>
+<li><p>将字符串转为小写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select lower(&#x27;HELLO&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>upper(str)<ul>
+<li><p>将字符串转为大写</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select upper(&#x27;hello&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>substr(str,pos)<ul>
+<li><p>截取从pos位置及末尾所有字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select SUBSTR(&#x27;welcometomysql&#x27;,10)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>substr(str,pos,len)<ul>
+<li><p>截取从pos位置开始，<strong>字符长度</strong>为len的字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select SUBSTR(&#x27;welcometomysql&#x27;,8,2)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>instr(str,substr)<ul>
+<li><p>返回substr子串在str中出现的第一个位置，找不到返回0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select instr(&#x27;HelloWorldWorld&#x27;,&#x27;World&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>trim(str)<ul>
+<li><p>去除字符串str开始和结尾的空格</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select trim(&#x27;    hellowor ld   &#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>trim(remstr from str)<ul>
+<li><p>去除字符串str开始和结尾的remstr字符</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select TRIM(&#x27;A&#x27; FROM &#x27;Ahelloworld&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>lpad(str1,len,str2)<ul>
+<li><p>在str1字符串开始处填充字符串str2，使其长度达到len，如果len小于原长度，从右边截断</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select lpad(&#x27;HELLO&#x27;,8,&#x27;z&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>rpad(str1,len,str2)<ul>
+<li><p>在str1字符串结尾处填充字符串str2，….</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select rpad(&#x27;HELLO&#x27;,8,&#x27;z&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>replace(str1,s,str2)<ul>
+<li><p>使用str2字符串替换str1字符串中的s字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select replace(&#x27;hello&#x27;,&#x27;e&#x27;,&#x27;a&#x27;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>数字函数</p>
+<ul>
+<li>round(x)</li>
+<li>对x四舍五入，等同于round(x,0)</li>
+<li>round(x,d)<ul>
+<li><p>对x四舍五入，保留d位小数，d为负数时，指定小数点左边d位整数位为0，同时小数位也为0</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select round(3213.1415926,-2)</span><br><span class="line"># 3200</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>ceil(x)<ul>
+<li><p>向上取整，返回&gt;=x的<strong>最小整数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select ceil(1.23)</span><br><span class="line"># 2</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>floor(x)<ul>
+<li><p>向下取整，返回&lt;=x的<strong>最大整数</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select floor(1.01)</span><br><span class="line"># 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>truncate(x,d)</li>
+<li>截断x，保留d位小数，不会进行四舍五入，d为负数时，指定小数点左边d为整数位为0  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select truncate(1.234,-2)</span><br><span class="line"># 0</span><br></pre></td></tr></table></figure></li>
+<li>mod(x,y)<ul>
+<li><p>返回x除以y后的余数</p>
+</li>
+<li><p>运算规则：x-x/y*y</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select mod(-10,3)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>日期函数</p>
+<ul>
+<li>now()</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>返回系统当前日期和时间<pre><code>  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select NOW()</span><br><span class="line"># 2019-08-12 09:35:59</span><br></pre></td></tr></table></figure>
+</code></pre>
+<ul>
+<li>current_date、curdate<ul>
+<li><p>返回系统当前日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select CURRENT_DATE()</span><br><span class="line"># 2019-08-12</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>current_time、curtime<ul>
+<li><p>返回系统当前时间</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select CURRENT_TIME()</span><br><span class="line"># 09:37:27</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>year(d)<ul>
+<li><p>根据d返回年份</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select year(now())</span><br><span class="line"># 2019</span><br><span class="line">select year(&#x27;2019-08-12&#x27;)</span><br><span class="line"># 2019</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>month(d)<ul>
+<li><p>根据d返回月份</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select month(now())</span><br><span class="line"># 8	</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>day(d)<ul>
+<li><p>根据d返回日</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select day(now())</span><br><span class="line"># 12</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>hour(d)<ul>
+<li><p>根据d返回小时</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select hour(now())</span><br><span class="line"># 9</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>minute(d)<ul>
+<li><p>根据d返回分钟</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select minute(now())</span><br><span class="line"># 41</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>second(d)<ul>
+<li><p>根据d返回秒</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select second(now())</span><br><span class="line"># 50</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>str_to_date(str,format)<ul>
+<li><p>将日期格式的字符串转换成指定格式的日期</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select str_to_date(&#x27;2019-08-12 9:42:00&#x27;,&#x27;%Y-%m-%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019-08-12 09:42:00</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>date_format(date,format)<ul>
+<li><p>将日期转换成字符串</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">select date_format(now(),&#x27;%Y_%m_%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019_08_12 09:49:51</span><br><span class="line">select date_format(&#x27;2019/08/12 09:51:00&#x27;,&#x27;%Y/%m/%d %H:%i:%s&#x27;)</span><br><span class="line"># 2019/08/12 09:51:00</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li>mysql日期格式<table>
+<thead>
+<tr>
+<th>格式</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>%Y</td>
+<td>4位年份</td>
+</tr>
+<tr>
+<td>%y</td>
+<td>2位年份</td>
+</tr>
+<tr>
+<td>%M</td>
+<td>英文月名（January…December）</td>
+</tr>
+<tr>
+<td>%m</td>
+<td>月份（01,02,03…12）</td>
+</tr>
+<tr>
+<td>%c</td>
+<td>月份（1,2,3…12）</td>
+</tr>
+<tr>
+<td>%D</td>
+<td>带有英文的天</td>
+</tr>
+<tr>
+<td>%d</td>
+<td>天（00,01,02,03…31）</td>
+</tr>
+<tr>
+<td>%e</td>
+<td>天（0,1,2,3…31）</td>
+</tr>
+<tr>
+<td>%H</td>
+<td>小时，二十四小时制（00,01,02…23）</td>
+</tr>
+<tr>
+<td>%h</td>
+<td>小时，十二小时制（01,02,03…12）</td>
+</tr>
+<tr>
+<td>%i</td>
+<td>分钟（00,01,02…59）</td>
+</tr>
+<tr>
+<td>%s</td>
+<td>秒（00,01,02…59）</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+</ul>
+<ol start="11">
+<li><p>其他函数</p>
+<ul>
+<li><p>version()</p>
+<ul>
+<li><p>查询数据库版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select version()</span><br><span class="line"># 8.0.14</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>database()</p>
+<ul>
+<li><p>查询当前数据库名称</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select database()</span><br><span class="line"># pet_hospital</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>user()</p>
+<ul>
+<li><p>查看当前用户</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select user()</span><br><span class="line"># root@101.231.252.114</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>流程控制函数</p>
+<ul>
+<li><p>if(expr,v1,v2)</p>
+<ul>
+<li><p>如果表达式 expr 成立，返回结果 v1；否则，返回结果 v2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select IF(10%2=0,&#x27;偶数&#x27;,&#x27;奇数&#x27;)</span><br><span class="line"># 偶数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>case结构</p>
+<ul>
+<li><p>CASE 表示函数开始，END表示函数结束。如果condition1成立，返回result1；如果condition2成立，返回result2；如果所有condition都不成立，返回result；其中一个condition成立，后面的condition不再判断</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CASE expression</span><br><span class="line">    WHEN condition1 THEN result1</span><br><span class="line">    WHEN condition2 THEN result2</span><br><span class="line">   ...</span><br><span class="line">    WHEN conditionN THEN resultN</span><br><span class="line">    ELSE result</span><br><span class="line">END</span><br></pre></td></tr></table></figure></li>
+<li><p>简单case函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">select </span><br><span class="line">case age</span><br><span class="line">	when 1 then &#x27;一岁大的狗&#x27;</span><br><span class="line">	when 2 then &#x27;两岁大的狗&#x27;</span><br><span class="line">	when 3 then &#x27;三岁大的狗&#x27;</span><br><span class="line">	else &#x27;老狗&#x27;</span><br><span class="line">end &#x27;年龄&#x27;</span><br><span class="line">from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>case搜索函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">select </span><br><span class="line">case </span><br><span class="line">	when age = 1 then &#x27;一岁大的狗&#x27;</span><br><span class="line">	when age = 2 then &#x27;两岁大的狗&#x27;</span><br><span class="line">	when age = 3 then &#x27;三岁大的狗&#x27;</span><br><span class="line">	else &#x27;老狗&#x27;</span><br><span class="line">end &#x27;年龄&#x27;</span><br><span class="line">from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p><em><strong>注意：</strong></em>简单case函数只返回第一个符合条件的值，剩下的自动忽略</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分组函数</p>
+<ul>
+<li><p>功能：用作统计使用，又称作聚合函数、统计函数</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li><p>求和：sum</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select sum(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>平均值：avg</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select avg(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>最大值：max</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select max(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>最小值：min</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select min(age) from pet_archives</span><br></pre></td></tr></table></figure></li>
+<li><p>统计数量：count</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(*) from pet_archives</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>sum()、avg()一般用于处理数值型</li>
+<li>max()、min()、count()可以处理任意类型</li>
+<li>以上函数都可以忽略null值</li>
+<li>可以和distinct关键字搭配上述函数进行去重</li>
+</ul>
+</li>
+<li><p>count()函数详解</p>
+<ul>
+<li>count(*)：对行的数目进行统计，包含NULL</li>
+<li>count(column)：对指定列不为NULL的行的数目进行统计</li>
+<li>效率<ul>
+<li>MYISAM引擎下，count(*)的效率高</li>
+<li>INNODB引擎下，count(*)和count(1)的效率差不多，比count(column)要高一些</li>
+</ul>
+</li>
+<li><em><strong>注意：</strong></em>和分组函数一同查询的字段要求是group by后面的字段</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分组查询</p>
+<ul>
+<li><p>group by </p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">select 分组函数,字段（需要出现在group by后面）</span><br><span class="line">from table</span><br><span class="line">[where 筛选条件]</span><br><span class="line">group by 分组列表</span><br><span class="line">[order by 字句]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li><p>分组查询中的筛选条件分为两类</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>数据源</th>
+<th>位置</th>
+<th>关键字</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>分组前筛选</td>
+<td>原始表</td>
+<td>group by子句前面</td>
+<td>where</td>
+</tr>
+<tr>
+<td>分组后筛选</td>
+<td>分组后的结果集</td>
+<td>group by子句后面</td>
+<td>having</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>分组函数做条件肯定是放在having子句中</p>
+</li>
+<li><p>能用分组前筛选的，就优先考虑使用分组前筛选</p>
+</li>
+</ul>
+</li>
+<li><p>按函数分组</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select count(*),length(name) lth from pet_archives group by lth</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>按多个字段分组</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id,name,age lth from pet_archives group by name,id,age</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加排序</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id,name,age from pet_archives group by id,name,age order by age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>连接查询</p>
+<ul>
+<li><p>含义：多表查询，查询的字段来自多个表时，使用连接查询</p>
+</li>
+<li><p>笛卡尔乘积：A表m行数据，B表n行数据，查询结果X=m*n行数据</p>
+<ul>
+<li>原因：没有有效的连接条件</li>
+<li>解决：添加有效的连接条件</li>
+</ul>
+</li>
+<li><p>连接查询分类</p>
+<ul>
+<li>按年代分类<ul>
+<li>sql92标准：仅仅支持内连接</li>
+<li>sql99标准：推荐，支持内连接+外连接（左外和内外）+交叉连接</li>
+</ul>
+</li>
+<li>按功能分类<ul>
+<li>内连接<ul>
+<li>等值连接</li>
+<li>非等值连接</li>
+<li>自连接</li>
+</ul>
+</li>
+<li>外连接<ul>
+<li>左外连接</li>
+<li>右外连接</li>
+<li>全外连接</li>
+</ul>
+</li>
+<li>交叉连接</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>sql92标准</p>
+<ul>
+<li><p>等值连接</p>
+<ul>
+<li><p>多表等值连接的结果为多表的交际部分</p>
+</li>
+<li><p>n表连接，至少需要n-1个连接条件</p>
+</li>
+<li><p>多表的顺序没有要求</p>
+</li>
+<li><p>一般需要给表起别名，方便书写、避免字段模棱两可</p>
+</li>
+<li><p>可以和之前介绍的子句配合使用，如排序、分组、筛选</p>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.name 宠物,a.age 宠物年龄,b.nickname 主人 from pet_archives a,pet_owner_user b where a.pet_user_id = b.id and a.age &gt; 1 group by a.name,a.age,b.nickname order by a.age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>非等值连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select salary,grade_level from employee a,job_grade b where salary between b.lowest_salary and highest_salary</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>自连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.employee_id 员工号,a.name 员工姓名,b.employee_id 主管员工号,b.name 主管姓名 from employee a,employee b where a.manager_id = b.employee_id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>sql99标准</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 查询列表 from table1 [连接类型] join table2 on 连接条件 [where 筛选条件] [group by 分组列表] [having 筛选条件] [order by 排序列表] </span><br></pre></td></tr></table></figure></li>
+<li><p>连接类型</p>
+<ul>
+<li>内连接：inner</li>
+<li>外连接<ul>
+<li>左外：left [outer]</li>
+<li>右外：right [outer]</li>
+<li>全外：full [outer]</li>
+</ul>
+</li>
+<li>交叉连接：cross</li>
+</ul>
+</li>
+<li><p>内连接</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 查询列表 from table1 inner join table2 on 连接条件</span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>添加排序、分组、筛选</li>
+<li>inner可以省略</li>
+<li>筛选条件放在where后面，连接条件放在on后面，提高阅读性</li>
+<li>inner join连接和sql92中的等值连接效果一样，都是查询多表的交集</li>
+</ul>
+</li>
+<li><p>等值连接</p>
+<ul>
+<li><p>示例：三表联查</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.name,a.age,b.nickname from pet_archives a inner join pet_owner_user b on a.pet_user_id = b.id inner join visit_record c on a.id = c.pet_id group by a.name,a.age,b.nickname order by a.age desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>非等值连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">select count(*),grade_level from employee a join job_grade b on a.salary between b.lowest_salary and highest_salary group by grade_level having</span><br><span class="line">count(*) &gt; 20 order by grade_level desc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>自连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.name 员工姓名,b.name 主管姓名 from employee a join employee b on a.manager_id = b.employee_id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>外连接</p>
+<ul>
+<li><p>应用场景：用于查询表1有，表2没有的记录</p>
+</li>
+<li><p>特点</p>
+<ul>
+<li>外连接的查询结果为主表中的所有记录，如果从表中有和它匹配的，显示匹配的值，如果从表中没有和它匹配的，显示NULL，外连接查询结果=内连接查询结果+主表中存在但从表中不存在的记录</li>
+<li>左外连接，left join左边的是主表；右外连接，right join右边的的是主表</li>
+<li>左外和右外交换两个表的顺序，可以实现同样的效果</li>
+<li>全外连接=内连接的结果+表1有但表2没有的记录+表2有但表1没有的记录</li>
+</ul>
+</li>
+<li><p>左外连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select name,nickname from pet_owner_user a left outer join pet_archives b on a.id = b.pet_user_id</span><br></pre></td></tr></table></figure></li>
+<li><p>全外连接</p>
+<ul>
+<li><strong>注意：</strong>MySQL不支持全连接，可以通过下面的sql来实现全连接</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.name,b.nickname from pet_archives a left join pet_owner_user b on a.pet_user_id = b.id union select a.name,b.nickname from pet_archives a right join pet_owner_user b on a.pet_user_id = b.id</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>交叉连接</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.name,b.nickname from pet_archives a cross join pet_owner_user b</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>子查询</p>
+<ul>
+<li><p>含义：出现在其他语句中的select语句，称为子查询或内查询；外部的查询语句，称为主查询或外查询</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li>按子查询出现的位置<ul>
+<li>select后面：仅仅支持标量子查询</li>
+<li>from后面：支持表子查询</li>
+<li>where或having后面：标量子查询、列子查询、行子查询</li>
+<li>exist后面（相关子查询）：表子查询</li>
+</ul>
+</li>
+<li>按结果集的行列数不同<ul>
+<li>标量子查询（结果集只有一行一列）</li>
+<li>列子查询（结果集只有一列多行）</li>
+<li>行子查询（结果集只有一行多列）</li>
+<li>表子查询（结果集一般为多行多列）</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>where或having后面的子查询</p>
+<ul>
+<li><p>分类</p>
+<ul>
+<li><p>标量子查询（单行子查询）</p>
+</li>
+<li><p>列子查询（多行子查询）</p>
+</li>
+<li><p>行子查询（一行多列）</p>
+</li>
+</ul>
+</li>
+<li><p>特点</p>
+<ul>
+<li>子查询放在小括号内</li>
+<li>子查询一般放在条件的右侧</li>
+<li>标量子查询，一般配合单行操作符使用  &gt; &lt; &gt;= &lt;= = &lt;&gt; ；列子查询，一般配合多行操作符使用 IN ANY/SOME ALL</li>
+<li>子查询的执行优先于主查询执行，主查询的条件需要使用子查询的结果</li>
+</ul>
+</li>
+<li><p>标量子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select min(salary),department_id from employee group by department_id having min(salary) &gt; (select min(salary) from employee where department_id = 50)</span><br></pre></td></tr></table></figure></li>
+<li><p>多行比较操作符</p>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>IN/NOT IN</td>
+<td><strong>等于</strong>列表中的<strong>任意一个</strong></td>
+</tr>
+<tr>
+<td>ANY/SOME</td>
+<td>和子查询返回的<strong>某个值</strong>比较</td>
+</tr>
+<tr>
+<td>ALL</td>
+<td>和子查询返回的<strong>所有值</strong>比较</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>列子查询</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id,name,pet_user_id from pet_archives where pet_user_id in (select id from pet_owner_user where age &gt; 20)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>select后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.nickname 姓名,(select count(*) from pet_archives b where a.id = b.pet_user_id) 宠物总数 from pet_owner_user a</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>from后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select temp.*,a.grade_level from (select avg(salary) avg_salary,department_id from employee group by department_id) temp inner join job_grade b on temp.avg_salary between lowest_sal and highest_sal</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>exist后面的子查询</p>
+<ul>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select a.nickname from pet_owner_user a where exists (select * from pet_archives b where a.id = b.pet_user_id)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>分页查询</p>
+<ul>
+<li><p>应用场景：当要显示的数据，一页显示不完，需要分页提交sql请求</p>
+</li>
+<li><p>语法</p>
+<ul>
+<li>offset：要显示条目的起始索引（起始索引从0开始）</li>
+<li>size：要显示的条目个数</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select 查询列表 from table [join type join 表2 on 连接条件 where 筛选条件 group by 分组字段 having 分组后的筛选 oder by 排序列表] limit offset,size </span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>limit语句放在查询语句的最后</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select id,name,pet_user_id from pet_archives group by id limit 0,5</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>联合查询</p>
+<ul>
+<li><p>union：联合，合并，将多条查询语句的结果合并成一个结果</p>
+</li>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">查询语句1</span><br><span class="line">union</span><br><span class="line">查询语句2</span><br><span class="line">union</span><br><span class="line">查询语句3</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+<li><p>特点</p>
+<ul>
+<li>要求多条查询语句的查询列数是一致的</li>
+<li>多条查询语句的查询列的类型和顺序最好保持一致</li>
+<li>union关键字默认去重，如果使用union all，可以包含重复项</li>
+</ul>
+</li>
+<li><p>应用场景</p>
+<ul>
+<li>要查询的结果来自多个表，且多个表没有直接的连接，但查询的信息一致时</li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">select * from pet_archives where name like &#x27;%哈%&#x27; </span><br><span class="line">union </span><br><span class="line">select * from pet_archives where age &gt; 1</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>DML语言</p>
+<ul>
+<li><p>数据操纵语言</p>
+<ul>
+<li>插入：insert</li>
+<li>删除：delete</li>
+<li>修改：update</li>
+</ul>
+</li>
+<li><p>插入语句</p>
+<ul>
+<li><p>方式1</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table(column1,...) values(value1,...)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into reservation_type(name,total,hospital_id) values(&#x27;宠物寄养&#x27;,0,1001)</span><br></pre></td></tr></table></figure></li>
+<li><p>方式2</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table set column1 = value1,...</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into reservation_type set name = &#x27;代遛狗&#x27;,total = 0,hospital_id = 1001</span><br></pre></td></tr></table></figure></li>
+<li><p>批量插入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table(column1,...) values(value,...),(value,...),(value,...)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into reservation_type(name,total,hospital_id) values(&#x27;测试1&#x27;,0,1001),(&#x27;测试2&#x27;,0,1001),(&#x27;测试3&#x27;,0,1001)</span><br></pre></td></tr></table></figure></li>
+<li><p>insert方式1和方式2的比较</p>
+<ul>
+<li>方式1支持插入多行</li>
+<li>方式1支持子查询，方式2不支持<ul>
+<li>insert into table(column1,…) select xxx,…</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>修改语句</p>
+<ul>
+<li><p>修改单表的记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table set column1 = value1,... where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update reservation_type set name = &#x27;代撸猫&#x27; where id = 2010</span><br></pre></td></tr></table></figure></li>
+<li><p>修改多表的记录</p>
+<ul>
+<li><p>sql92语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table1 别名,table2 别名,... set column1 = value1,... where 连接条件 and 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>sql99语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table1 别名 inner|left|right join table2 别名 on 连接条件 set column = value1,... where 筛选条件</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update pet_archives a left join pet_owner_user b on a.pet_user_id = b.id set a.gender = &#x27;f&#x27;,b.gender = &#x27;f&#x27; where b.id = 18</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除语句</p>
+<ul>
+<li><p>方式1：delete</p>
+<ul>
+<li><p>删除单表的记录</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from table where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from reservation_type where id = 2016</span><br></pre></td></tr></table></figure></li>
+<li><p>删除多表的记录</p>
+<ul>
+<li><p>sql92语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete table1的别名,table2的别名 from table1 别名,table2 别名 where 连接条件 and 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>sql99语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete table1的别名,table2的别名 from table1 别名 inner|left|right join table2 别名 on 连接条件 where 筛选条件</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete a,b from pet_archives a left join pet_owner_user b on a.pet_user_id = b.id where b.id = 18</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>方式2：truncate</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">truncate table 表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>delete和truncate的比较</p>
+<ul>
+<li>delete可以添加where筛选条件，truncate不可以添加筛选条件</li>
+<li>truncate删除效率比delete要高一些</li>
+<li>使用delete删除记录后，再插入数据，自增列的值从断点开始；truncate删除记录后，再插入数据，自增列的值从1开始</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>delete删除有返回值；truncate删除没有返回值<pre><code>- delete是DML语句，可以使用rollback进行回滚；truncate是DDL语句，需要drop权限，因此会隐式提交，不能rollback
+</code></pre>
+</li>
+</ul>
+<ol start="20">
+<li><p>DDL语言</p>
+<ul>
+<li><p>数据定义语言</p>
+<ul>
+<li>库的管理<ul>
+<li>创建、修改、删除</li>
+</ul>
+</li>
+<li>表的管理<ul>
+<li>创建、修改、删除</li>
+</ul>
+</li>
+<li>创建：create</li>
+<li>修改：alter</li>
+<li>删除：drop</li>
+</ul>
+</li>
+<li><p>库的管理</p>
+<ul>
+<li><p>库的创建</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database 库名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>库的修改</p>
+<ul>
+<li><p>修改库名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rename 旧库名 to 新库名</span><br></pre></td></tr></table></figure></li>
+<li><p>修改库的字符集</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter database 库名 character set utf8</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>库的删除</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop database 库名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>表的管理</p>
+<ul>
+<li><p>表的创建</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">列名 列类型(长度) 约束,# 注释</span><br><span class="line">...</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table testTable(</span><br><span class="line">    testId int(10) primary key,# 测试id</span><br><span class="line">    testName varchar(255)# 测试名称</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的修改</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 add|drop|modify|change column 列名 [列类型 约束]</span><br></pre></td></tr></table></figure></li>
+<li><p>修改列名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 change column 旧列名 新列名 类型(长度) </span><br></pre></td></tr></table></figure></li>
+<li><p>修改列类型或约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 类型(长度)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加新列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 add column 列名 类型(长度)</span><br></pre></td></tr></table></figure></li>
+<li><p>删除列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 drop column 列名</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 rename to 新表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的删除</p>
+<ul>
+<li><p>语法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table if exists 旧表名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>表的复制</p>
+<ul>
+<li><p>仅仅复制表的结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table 目标表 like 源表 </span><br></pre></td></tr></table></figure></li>
+<li><p>复制表的结构和数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table 目标表 select * from 源表</span><br></pre></td></tr></table></figure></li>
+<li><p>只复制部分数据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table 目标表 select 查询列表 from 源表 where 筛选条件</span><br></pre></td></tr></table></figure></li>
+<li><p>只复制某些字段</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table 目标表 select 要复制的字段 from 源表 where 0 </span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常见数据类型</p>
+<ul>
+<li>数值型<ul>
+<li>整数：默认有符号，如果要设置无符号，使用unsigned关键字<ul>
+<li>tinyint：一个字节</li>
+<li>smallint：两个字节</li>
+<li>mediumint：三个字节</li>
+<li>int/integer：四个字节</li>
+<li>bigint：八个字节</li>
+</ul>
+</li>
+<li>小数<ul>
+<li>定点型<ul>
+<li>decimal(m,d)：如果m&gt;d，m+2个字节，否则d+2个字节 </li>
+</ul>
+</li>
+<li>浮点型<ul>
+<li>fload(m,d)：四个字节，单精度</li>
+<li>double(m,d)：八个字节，双精度</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>字符型<ul>
+<li>较短的文本<ul>
+<li>char(m)：固定长度字符串，m在0~255之间</li>
+<li>varchar(m)：可变长度字符串，m在0~65535之间</li>
+</ul>
+</li>
+<li>较长的文本<ul>
+<li>text：长文本数据</li>
+<li>blob：二进制长文本数据</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>日期型<ul>
+<li>date：最小值1000-01-01，最大值9999-12-31</li>
+<li>datetime：最小值1000-01-01 00:00:00，最大值9999-12-31 23:59:59</li>
+<li>timestamp：最小值1970-01-01 00:00:00，最大值2038-01-19</li>
+<li>year：最小值1901，最大值2155</li>
+<li>time：最小值-838:59:59，最大值838:59:59</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>常见约束</p>
+<ul>
+<li><p>含义：为了保证表中数据的准确性和可靠性，对表中的数据进行的一种限制</p>
+</li>
+<li><p>分类</p>
+<ul>
+<li>not null：非空，保证该字段的值不能为空</li>
+<li>default：默认，保证该字段有默认值</li>
+<li>primary key：主键，保证该字段的值在表中是唯一的，并且不为空</li>
+<li>unique：唯一，保证该字段的值具有唯一性，可以为空</li>
+<li>check：检查约束，mysql不支持</li>
+<li>foreign key：外键，限制两个表的关系，保证该字段的值必须来自主表的关联列的值，在从表中添加外键约束，用于引用主表中某列的值</li>
+</ul>
+</li>
+<li><p>列级约束和表级约束</p>
+<ul>
+<li>列级约束：对一个数据列建立的约束，可在列定义时声明，也可在列定义后声明，not null、default只存在列级约束</li>
+<li>表级约束：对多个数据列简历的约束，只能在列定义后声明，primary key、unique、foreign key同时存在列级约束和表级约束</li>
+</ul>
+</li>
+<li><p>创建表时添加约束</p>
+<ul>
+<li><p>添加列级约束：字段名 数据类型 约束类型 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	id int(11) primary key,# 主键</span><br><span class="line">	st_name varchar(255) not null,# 非空</span><br><span class="line">	gender char(1),</span><br><span class="line">	age int default 0,# 默认</span><br><span class="line">	c_id int foreign key reference class(id)# 外键</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">create table class(</span><br><span class="line">	id int(11) primary key,# 主键</span><br><span class="line">	c_name varchar(255) not null# 非空</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加表级约束：constraint 约束名 约束类型(字段名)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">create table student(</span><br><span class="line">	id int,</span><br><span class="line">	st_name varchar(255),</span><br><span class="line">	gender varchar(255),</span><br><span class="line">	age int,</span><br><span class="line">	c_id int,</span><br><span class="line">	</span><br><span class="line">	constraint pk primary key(id),# 主键</span><br><span class="line">	constraint uk unique(st_name),# 唯一</span><br><span class="line">	constraint fk_c_id foreign key(c_id) reference class(id),# 外键</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>主键和唯一的比较</p>
+<ul>
+<li>主键：保证唯一性；不允许为空；一张表中只能有一个</li>
+<li>唯一：保证唯一性；允许为空；一张表中可以有多个</li>
+</ul>
+</li>
+<li><p>外键特点</p>
+<ul>
+<li>需要在从表中设置外键关系</li>
+<li>从表的外键列的类型和主表的关联列的类型要求一致或兼容</li>
+<li>主表的关联列必须是一个key（一般为主键或唯一）</li>
+<li>插入数据时，先插入主表，再插入从表；删除数据时正好相反</li>
+</ul>
+</li>
+<li><p>修改表时添加约束</p>
+<ul>
+<li><p>添加列级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 约束</span><br></pre></td></tr></table></figure></li>
+<li><p>添加表级约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 add constraint 约束名 约束类型(列名) [主表(关联列)]</span><br></pre></td></tr></table></figure></li>
+<li><p>添加非空约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 not null</span><br></pre></td></tr></table></figure></li>
+<li><p>添加默认约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 default 默认值</span><br></pre></td></tr></table></figure></li>
+<li><p>添加主键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 列级约束</span><br><span class="line">alter table 表名 modify column 列名 数据类型 primary key</span><br><span class="line"># 表级约束</span><br><span class="line">alter table 表名 add primary key(列名)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加唯一</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 列级约束</span><br><span class="line">alter table 表名 modify column 列名 数据类型 unique</span><br><span class="line"># 表级约束</span><br><span class="line">alter table 表名 add unique(列名)</span><br></pre></td></tr></table></figure></li>
+<li><p>添加外键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 从表名 add constraint 外键名称 foreign key(列名) reference 主表名(列名)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改表时删除约束</p>
+<ul>
+<li><p>删除非空约束</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 NULL</span><br></pre></td></tr></table></figure></li>
+<li><p>删除默认</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型</span><br></pre></td></tr></table></figure></li>
+<li><p>删除主键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 drop primary key</span><br></pre></td></tr></table></figure></li>
+<li><p>删除唯一</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 drop index 约束名</span><br></pre></td></tr></table></figure></li>
+<li><p>删除外键</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 drop foreign key 约束名</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>标识列</p>
+<ul>
+<li><p>含义：不需要手动设置值，系统提供默认的序列值，又叫自增序列</p>
+</li>
+<li><p>特点</p>
+<ul>
+<li>自增序列必须和主键配合使用吗？<ul>
+<li>不一定，但是必须是一个key（）</li>
+</ul>
+</li>
+<li>一个表最多有几个自增序列？<ul>
+<li>最多一个</li>
+</ul>
+</li>
+<li>自增序列可以是什么类型？<ul>
+<li>只能是数值型</li>
+</ul>
+</li>
+<li>自增序列如何设置自增的步长值？<ul>
+<li>set auto_increment_increment = x</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>创建表时设置自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">	id int primary key auto_increment</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表时设置自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型 [约束] auto_increment</span><br></pre></td></tr></table></figure></li>
+<li><p>修改表时删除自增序列</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alter table 表名 modify column 列名 数据类型</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>事务</p>
+<ul>
+<li><p>含义</p>
+<ul>
+<li>一条或多条sql语句执行时要么全部执行成功，要么全部失败</li>
+</ul>
+</li>
+<li><p>特性</p>
+<ul>
+<li>原子性（Atomicity）：事务中的操作像原子一样不可分割，要么全部成功，要么全部失败</li>
+<li>一致性（Consistency）：事务的执行结果必须使数据库从一个一致性状态变为另一个一致性状态（系统状态满足数据的完整性约束；系统的状态反映数据库本应描述的现实世界的真实状态）</li>
+<li>隔离性（Isolation）：并发执行的事务不会相互影响，其对数据库的影响和它们串行执行时一样</li>
+<li>持久性（Durability）：事务一旦提交，其对数据库的影响是永久性的。任何事务或系统故障都不会导致数据丢失</li>
+</ul>
+</li>
+<li><p>事务的创建</p>
+<ul>
+<li><p>隐式事务：事务没有明显的开启和结束的标记，如insert、update、delete语句</p>
+</li>
+<li><p>显式事务：事务具有明显的开启和结束的标记</p>
+<ul>
+<li><p>前提：必须设置禁用自动提交</p>
+</li>
+<li><p>步骤</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">begin或start transaction</span><br><span class="line">	sql语句,</span><br><span class="line">	...</span><br><span class="line">	...</span><br><span class="line">commit</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>事务并发问题</p>
+<ul>
+<li>脏读：事务A读取了被事务B更新的数据，但事务B未提交，后面如果事务B回滚，事务A之前读取到的数据就是临时且无效的</li>
+<li>不可重复读：事务A第一次读取到一行记录row1，事务B提交后，事务A第二次读取到row1，但row1的数据已经发生变化</li>
+<li>幻读：事务A第一次读取到一行记录row1，事务B提交修改后，事务A第二次读取到row1和row2…</li>
+</ul>
+</li>
+<li><p>数据库事务的隔离性：数据库系统必须具有隔离并发运行各个事务的能力，使它们不会相互影响，避免各种并发问题</p>
+</li>
+<li><p>事务隔离级别</p>
+<ul>
+<li>READ UNCOMMITED：允许事务读取未被其他事务提交的变更，脏读、不可重复读、幻读都可能存在</li>
+<li>READ COMMITED：只允许事务读取已经被其他事务提交的变更，可以避免脏读，但不可重复读、幻读可能存在</li>
+<li>REPEATABLE READ：一个事务在其提交之前，读取的数据都是相同的，即使其他事务作了修改，但幻读可能存在</li>
+<li>SERIALIZABLE：一个事务持续期间，禁止其他事务进行任何操作，但效率很低</li>
+</ul>
+</li>
+<li><p>Oracle支持的事务隔离级别：READ COMMITED（默认）、SERIALIZABLE</p>
+</li>
+<li><p>MySQL支持的事务隔离级别：READ UNCOMMITED、READ COMMITED、REPEATABLE READ（默认）、SERIALIZABLE</p>
+</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/15/2019-07-18-Linux%E5%9F%BA%E7%A1%80/" rel="prev" title="Linux使用">
+                  <i class="fa fa-chevron-left"></i> Linux使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" rel="next" title="Markdown语法学习">
+                  Markdown语法学习 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">浙ICP备2022002987号 </a>
+  </div>
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">codecho</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>Symbols count total: </span>
+    <span title="Symbols count total">59k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>Reading time total &asymp;</span>
+    <span title="Reading time total">53 mins.</span>
+  </span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
