@@ -1,233 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Linux使用</title>
-    <url>/2022/11/15/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
-<li><p>修改root用户密码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
-<li><p>停机和关机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
-<li><p>输入 ls -/  命令查看目录结构</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
-<li><p>目录结构的作用和含义</p>
-<ul>
-<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
-<li>/boot 存放启动linux需要的核心文件</li>
-<li>/dev 存放linux的外部设备</li>
-<li>/etc 存放系统管理需要的配置文件和子目录</li>
-<li>/home 用户主目录，以用户名命名，如 /codecho</li>
-<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
-<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
-<li>/media linux识别设备后将其挂载到此目录</li>
-<li>/mnt 系统临时挂载点</li>
-<li>/opt 存放安装的第三方软件</li>
-<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
-<li>/root <em><strong>root</strong></em>用户主目录</li>
-<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
-<li>/srv 存放一些服务启动后需要的数据</li>
-<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
-<li>/tmp 存放临时文件</li>
-<li>/usr 存放用户的程序和文件</li>
-<li>/usr/bin 存放一般的应用程序</li>
-<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
-<li>/usr/src 存放linux内核源码</li>
-<li>/var 存放经常会变化的文件，比如系统的日志</li>
-<li>/run 存放系统启动后的信息，重启时清空</li>
-</ul>
-</li>
-</ol>
-<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
-<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
-<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
-<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
-<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
-<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
-</ul>
-<ul>
-<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
-<li>r 表示读权限，- 表示没有读权限</li>
-<li>w 表示写权限，- 表示没有写权限</li>
-<li>x 表示执行权限，- 表示没有执行权限</li>
-<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
-</ul>
-</li>
-<li><p>更改文件属性的命令</p>
-<ul>
-<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
-</ul>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
-<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
-<li><p>linux根目录：/</p>
-</li>
-<li><p>文件/目录的常用操作命令</p>
-<ul>
-<li><p>ls：列出目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
-<li><p>cd：切换目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
-<li><p>pwd：显示当前目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
-<li><p>mkdir：创建目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
-<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
-<li><p>cp：复制文件/目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
-<li><p>rm：删除目录或文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：移动目录/文件，或者修改名称</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>linux文件内容查看</p>
-<ul>
-<li><p>cat：从第一行开始显示内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
-<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
-</li>
-<li><p>tail：显示文件最后 n 行内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
-<li><p>添加用户账号</p>
-<ul>
-<li><p>useradd [options] 用户名</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>设置用户账号密码</p>
-<ul>
-<li><p>passwd [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户账号</p>
-<ul>
-<li><p>userdel [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改用户账号</p>
-<ul>
-<li><p>usermod [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>添加用户组</p>
-<ul>
-<li><p>groupadd [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户组</p>
-<ul>
-<li>groupdel 用户组</li>
-</ul>
-</li>
-<li><p>修改用户组</p>
-<ul>
-<li><p>groupmod [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
-<ul>
-<li>newgrp 要切换的用户组</li>
-</ul>
-</li>
-</ol>
-<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
-<li><p>df：查看文件系统的整体磁盘空间使用量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
-<li><p>du：查看文件和目录的磁盘使用空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
-<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
-<ul>
-<li><p>命令行模式：此时用户输入会被识别为命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
-<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
-</li>
-<li><p>底部命令行模式：输入命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
-<li><p>常用按键：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
-<li><p>yum：查找、安装、删除软件包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
-<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
-</li>
-<li><p>shell脚本：一种为shell编写的脚本程序</p>
-</li>
-<li><p>shell的分类：</p>
-<ul>
-<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
-<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
-<li>C Shell（/usr/bin/csh）</li>
-<li>K Shell（/usr/bin/ksh）</li>
-<li>Shell for Root（/sbin/sh）</li>
-</ul>
-</li>
-<li><p>查看系统可用的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
-<li><p>查看当前系统的默认shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
-<li><p>编写一个简单的shell脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>执行shell脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
-<li><p>文件管理</p>
-<ul>
-<li><p>cat [options] filename</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
-<li><p>chgrp：参考 三</p>
-</li>
-<li><p>chmod：同上</p>
-</li>
-<li><p>chown：同上</p>
-</li>
-<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：参考 三</p>
-</li>
-<li><p>rm：同上</p>
-</li>
-<li><p>tee  [-ai][file]</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>MySQL学习</title>
     <url>/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<ol>
@@ -1408,6 +1181,113 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Markdown语法学习</title>
+    <url>/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>正则表达式</title>
     <url>/2022/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<ol>
@@ -1501,6 +1381,69 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Mybatis一知半解</title>
+    <url>/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
+    <content><![CDATA[<ol>
+<li><p>mybatis核心类及接口</p>
+<ol>
+<li><p>Configuration：</p>
+<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
+<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactoryBuilder：</p>
+<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
+<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSession：</p>
+<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactory：</p>
+<p> 创建SqlSession的工厂类接口</p>
+</li>
+<li><p>SqlNode：</p>
+<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Executor：</p>
+<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
+
+<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
+
+<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
+<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
+<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+</li>
+<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
+<ol>
+<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p>mybatis缓存</p>
+<ol>
+<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
+<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
+</li>
+<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Cache对象之间的引用顺序为：</p>
+<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
+</li>
+</ol>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>Java序列化与反序列化</title>
     <url>/2022/11/15/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<ol>
@@ -1563,66 +1506,54 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Mybatis一知半解</title>
-    <url>/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
-    <content><![CDATA[<ol>
-<li><p>mybatis核心类及接口</p>
-<ol>
-<li><p>Configuration：</p>
-<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
-<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactoryBuilder：</p>
-<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
-<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSession：</p>
-<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactory：</p>
-<p> 创建SqlSession的工厂类接口</p>
-</li>
-<li><p>SqlNode：</p>
-<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Executor：</p>
-<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
+    <title>Centos安装Redis</title>
+    <url>/2022/11/15/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
+<li><p>从官网获取Redis压缩包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
 
-<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
+<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
+<li><p>使用redis-cli连接redis-server</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
+<ul>
+<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
+<ul>
+<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
 
-<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
-<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
-<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+</ul>
+<blockquote>
+<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
+<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引入Redis依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过RedisTemplate操作Redis</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
 </li>
-</ol>
-</li>
-<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
-<ol>
-<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li><p>mybatis缓存</p>
-<ol>
-<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
-<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
-</li>
-<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> Cache对象之间的引用顺序为：</p>
-<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
-</li>
-</ol>
-</li>
-</ol>
+</ul>
 ]]></content>
   </entry>
   <entry>
@@ -1754,211 +1685,237 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Centos安装Redis</title>
-    <url>/2022/11/15/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
-    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS7.5</li>
-<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
-<li><p>从官网获取Redis压缩包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
-</li>
-<li><p>编译安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
-<li><p>启动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
-<li><p>使用redis-cli连接redis-server</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
-<ul>
-<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
-</ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
-<ul>
-<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
-</ul>
-<blockquote>
-<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
-</blockquote>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
-<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
-<li><p>引入Redis依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>通过RedisTemplate操作Redis</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Markdown语法学习</title>
-    <url>/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
+    <title>Linux使用</title>
+    <url>/2022/11/15/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
+<li><p>修改root用户密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
+<li><p>停机和关机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
 </ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
+<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
+<li><p>输入 ls -/  命令查看目录结构</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
+<li><p>目录结构的作用和含义</p>
+<ul>
+<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
+<li>/boot 存放启动linux需要的核心文件</li>
+<li>/dev 存放linux的外部设备</li>
+<li>/etc 存放系统管理需要的配置文件和子目录</li>
+<li>/home 用户主目录，以用户名命名，如 /codecho</li>
+<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
+<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
+<li>/media linux识别设备后将其挂载到此目录</li>
+<li>/mnt 系统临时挂载点</li>
+<li>/opt 存放安装的第三方软件</li>
+<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
+<li>/root <em><strong>root</strong></em>用户主目录</li>
+<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
+<li>/srv 存放一些服务启动后需要的数据</li>
+<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
+<li>/tmp 存放临时文件</li>
+<li>/usr 存放用户的程序和文件</li>
+<li>/usr/bin 存放一般的应用程序</li>
+<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
+<li>/usr/src 存放linux内核源码</li>
+<li>/var 存放经常会变化的文件，比如系统的日志</li>
+<li>/run 存放系统启动后的信息，重启时清空</li>
 </ul>
 </li>
 </ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
+<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
+<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
+<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
+<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
+<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
+</ul>
+<ul>
+<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
+<li>r 表示读权限，- 表示没有读权限</li>
+<li>w 表示写权限，- 表示没有写权限</li>
+<li>x 表示执行权限，- 表示没有执行权限</li>
+<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
+</ul>
+</li>
+<li><p>更改文件属性的命令</p>
+<ul>
+<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
 
+<ul>
+<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
+<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
 
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
 </ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>CentOS清理磁盘空间</title>
-    <url>/2022/11/15/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/</url>
-    <content><![CDATA[<ol>
-<li><p>起因</p>
-<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
-<li><p>分析</p>
-<ul>
-<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
-<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
-<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>清理</p>
-<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2022/11/15/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
+<li><p>linux根目录：/</p>
+</li>
+<li><p>文件/目录的常用操作命令</p>
+<ul>
+<li><p>ls：列出目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
+<li><p>cd：切换目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
+<li><p>pwd：显示当前目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
+<li><p>mkdir：创建目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
+<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
+<li><p>cp：复制文件/目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
+<li><p>rm：删除目录或文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：移动目录/文件，或者修改名称</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>linux文件内容查看</p>
+<ul>
+<li><p>cat：从第一行开始显示内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
+<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
+</li>
+<li><p>tail：显示文件最后 n 行内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
+<li><p>添加用户账号</p>
+<ul>
+<li><p>useradd [options] 用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>设置用户账号密码</p>
+<ul>
+<li><p>passwd [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户账号</p>
+<ul>
+<li><p>userdel [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改用户账号</p>
+<ul>
+<li><p>usermod [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加用户组</p>
+<ul>
+<li><p>groupadd [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户组</p>
+<ul>
+<li>groupdel 用户组</li>
+</ul>
+</li>
+<li><p>修改用户组</p>
+<ul>
+<li><p>groupmod [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
+<ul>
+<li>newgrp 要切换的用户组</li>
+</ul>
+</li>
+</ol>
+<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
+<li><p>df：查看文件系统的整体磁盘空间使用量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
+<li><p>du：查看文件和目录的磁盘使用空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
+<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
+<ul>
+<li><p>命令行模式：此时用户输入会被识别为命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
+</li>
+<li><p>底部命令行模式：输入命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
+<li><p>常用按键：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
+<li><p>yum：查找、安装、删除软件包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
+<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
+</li>
+<li><p>shell脚本：一种为shell编写的脚本程序</p>
+</li>
+<li><p>shell的分类：</p>
+<ul>
+<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
+<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
+<li>C Shell（/usr/bin/csh）</li>
+<li>K Shell（/usr/bin/ksh）</li>
+<li>Shell for Root（/sbin/sh）</li>
+</ul>
+</li>
+<li><p>查看系统可用的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前系统的默认shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
+<li><p>编写一个简单的shell脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>执行shell脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
+<li><p>文件管理</p>
+<ul>
+<li><p>cat [options] filename</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
+<li><p>chgrp：参考 三</p>
+</li>
+<li><p>chmod：同上</p>
+</li>
+<li><p>chown：同上</p>
+</li>
+<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：参考 三</p>
+</li>
+<li><p>rm：同上</p>
+</li>
+<li><p>tee  [-ai][file]</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
 ]]></content>
   </entry>
   <entry>
     <title>arthas诊断工具简单使用</title>
     <url>/2022/11/15/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<blockquote>
-<blockquote>
 <p>Arthas（阿尔萨斯）是什么</p>
-</blockquote>
 </blockquote>
 <p>Arthas是Alibaba开源的Java诊断工具</p>
 <blockquote>
@@ -2198,6 +2155,112 @@
 <p> 关闭arthas服务端，所有arthas客户端都会退出，关闭前增强类会被重置，使用<code>redefine</code>、<code>redefine</code>重加载的类不会被重置</p>
 </li>
 </ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>如何创建自己的第一个springboot-starter</title>
+    <url>/2022/11/28/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/</url>
+    <content><![CDATA[<blockquote>
+<p>对于SpringBoot我们一定不会陌生，由于其快速方便的开发方式让我们从各种繁琐的配置中解放出来，让我们的开发效率得到了大大提升，而各种starter则是其最重要的组成部分之一</p>
+</blockquote>
+<h3 id="什么是starter？"><a href="#什么是starter？" class="headerlink" title="什么是starter？"></a>什么是starter？</h3><p>我觉得可以简单认为starter是不同场景下（如MySQL、Redis、RocketMQ等）需要的一系列依赖的集合，就像是一个个可以单独引用的模块，有了starter，我们就可以使用其内置的各种依赖完成当前场景下的需求开发</p>
+<h3 id="starter的结构？"><a href="#starter的结构？" class="headerlink" title="starter的结构？"></a>starter的结构？</h3><ol>
+<li><p>在IDEA中打开一个SpringBoot项目，选择一个starter依赖展开查看，这里以MyBatis为例</p>
+<ul>
+<li><p><code>pom.properties</code>：记录了starter的artifactId、groupId和version信息</p>
+</li>
+<li><p><code>pom.xml</code>：是starter所需的依赖，比如mybatis-spring、mybatis-spring-boot-autoconfigure</p>
+<p>等</p>
+</li>
+<li><p><code>MANIFEST.MF</code>：记录了jar包的构建信息，比如jdk版本等</p>
+</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter%2Fspringboot-starter%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>用同样的方式打开<code>mybatis-spring-boot-autoconfigure</code>的依赖</p>
+<ul>
+<li><code>additional-spring-configuration-metadata.json</code>：手动添加IDE配置提示</li>
+<li><code>spring.factories</code>：key-value键值对形式，记录需要被加载的配置类信息</li>
+<li><code>spring-configuration-metadata.json</code>：自动生成的IDE配置提示</li>
+<li><code>spring-autoconfigure-metadata.properties</code>：自动配置类是否被加载的条件</li>
+<li>除了上述，还有若干Class，如<code>MybatisAutoConfiguration</code>配置类，<code>MybatisProperties</code>属性类等等</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/mybatis-configure%E4%BE%9D%E8%B5%96%E7%BB%93%E6%9E%84.png"></p>
+</li>
+</ol>
+<h3 id="如何创建自己的springboot-starter？"><a href="#如何创建自己的springboot-starter？" class="headerlink" title="如何创建自己的springboot-starter？"></a>如何创建自己的springboot-starter？</h3><blockquote>
+<p>简单来说，分成如下几个步骤</p>
+<p>1.创建一个maven项目，名字为xxx-springboot-autoconfigure（不固定），里面包含XxxAutoConfiguration配置类、XxxProperties属性类（非必须）、spring.factories文件（key为org.xxx.EnableAutoConfiguration，value为XxxAutoConfiguration）</p>
+<p>2.创建一个空的maven项目，名字为xxx-springboot-starter（不固定），在pom.xml中引入上述的xxx-springboot-autoconfigure项目</p>
+<p>2.创建一个springboot项目，引入xxx-springboot-starter项目，创建测试类使用starter中提供的功能类验证是否成功</p>
+</blockquote>
+<h3 id="实例演示"><a href="#实例演示" class="headerlink" title="实例演示"></a>实例演示</h3><ol>
+<li><p>创建一个名为<code>redisson-util-springboot-autoconfigure</code>的maven项目，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/autoconfigure%E7%BB%93%E6%9E%84.png"></p>
+<p>RedissonUtilAutoConfiguration.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(RedissonUtilProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedissonUtilAutoConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> RedissonUtilProperties properties;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建RedissonClient</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedissonClient <span class="title">redissonClient</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String password = properties.getPassword();</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        List&lt;String&gt; nodes = properties.getNodes();</span><br><span class="line">        <span class="keyword">for</span> (String node : nodes) &#123;</span><br><span class="line">            list.add(<span class="string">&quot;redis://&quot;</span> + node);</span><br><span class="line">        &#125;</span><br><span class="line">        Config config = <span class="keyword">new</span> Config();</span><br><span class="line">        config.useClusterServers().setPassword(password).setScanInterval(<span class="number">5000</span>).setNodeAddresses(list);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> Redisson.create(config);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RedissonUtilProperties.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = RedissonUtilProperties.PREFIX)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedissonUtilProperties</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PREFIX = <span class="string">&quot;redisson&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// redis密码</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// redis集群地址（ip:port）</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; nodes;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">getNodes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> nodes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNodes</span><span class="params">(List&lt;String&gt; nodes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nodes = nodes;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>spring.factories</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.codecho.RedissonUtilAutoConfiguration</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个名为<code>redisson-util-springboot-starter</code>的maven项目，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/starter%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>创建一个名为<code>test-starter</code>的springboot项目，引入<code>redisson-util-springboot-starter</code>项目依赖，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E7%BB%93%E6%9E%84.png"></p>
+<p>application.properties（redis配置信息自填）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redisson.password=xxx</span><br><span class="line">redisson.nodes=xxx.xxx.xxx.xxx:6379,xxx.xxx.xxx.xxx:6389,xxx.xxx.xxx.xxx:6399</span><br></pre></td></tr></table></figure>
+
+<p>测试类代码如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> RedissonClient redissonClient;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        winPrize();</span><br><span class="line">    &#125;, <span class="string">&quot;张三&quot;</span>);</span><br><span class="line">    Thread t2 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        winPrize();</span><br><span class="line">    &#125;, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line"></span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">winPrize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String lockKey = <span class="string">&quot;goods:1001&quot;</span>;</span><br><span class="line">    RLock lock = redissonClient.getLock(lockKey);</span><br><span class="line">    <span class="keyword">if</span> (lock.isLocked()) &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; 痛失大奖&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> lockFlag = lock.tryLock();</span><br><span class="line">    <span class="keyword">if</span> (!lockFlag) &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; 离中奖只差一步，别灰心，后面还有机会&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+ <span class="string">&quot; 他就是天选之子!&quot;</span>);</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行测试方法，观察控制台输出</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E6%B5%8B%E8%AF%95%E8%BE%93%E5%87%BA.png"></p>
+<p>使用Redis可视化工具（这里使用的Another Redis Desktop Manager）获取分布式锁的信息，发现其存活时间为30s，到期后锁被删除。如果需要多次运行测试方法，记得等待锁过期后再测试，否则会产生两个线程都获取不到锁的情况。</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>CentOS清理磁盘空间</title>
+    <url>/2022/11/15/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/</url>
+    <content><![CDATA[<ol>
+<li><p>起因</p>
+<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
+<li><p>分析</p>
+<ul>
+<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
+<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
+<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>清理</p>
+<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2022/11/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
 </search>
