@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-count">13</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,6 +181,120 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/22/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/22/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-12-22 17:36:33 / Modified: 17:37:31" itemprop="dateCreated datePublished" datetime="2022-12-22T17:36:33+08:00">2022-12-22</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
+<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
+</li>
+<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
+</li>
+</ol>
+<blockquote>
+<p>本机Linux版本为CentOS7</p>
+</blockquote>
+<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
+<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
+<li>从每一行信息中分离出对应的外部ip</li>
+<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
+<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
+<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
+</ol>
+<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
+<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存非法访问的ip</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存cron定时任务执行日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置定时任务，每天执行一次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>查看定时任务日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
+<li><p>查看ip是否被禁止访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1639,193 +1753,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">Markdown语法学习</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2020-11-15 20:27:40" itemprop="dateModified" datetime="2020-11-15T20:27:40+08:00">2020-11-15</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>385</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a target="_blank" rel="noopener" href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
-</ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a target="_blank" rel="noopener" href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1853,14 +1780,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">63k</span>
+    <span title="Symbols count total">65k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">57 mins.</span>
+    <span title="Reading time total">59 mins.</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>

@@ -1,6 +1,402 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Linux使用</title>
+    <url>/2022/11/15/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
+<li><p>修改root用户密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
+<li><p>停机和关机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
+<li><p>输入 ls -/  命令查看目录结构</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
+<li><p>目录结构的作用和含义</p>
+<ul>
+<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
+<li>/boot 存放启动linux需要的核心文件</li>
+<li>/dev 存放linux的外部设备</li>
+<li>/etc 存放系统管理需要的配置文件和子目录</li>
+<li>/home 用户主目录，以用户名命名，如 /codecho</li>
+<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
+<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
+<li>/media linux识别设备后将其挂载到此目录</li>
+<li>/mnt 系统临时挂载点</li>
+<li>/opt 存放安装的第三方软件</li>
+<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
+<li>/root <em><strong>root</strong></em>用户主目录</li>
+<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
+<li>/srv 存放一些服务启动后需要的数据</li>
+<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
+<li>/tmp 存放临时文件</li>
+<li>/usr 存放用户的程序和文件</li>
+<li>/usr/bin 存放一般的应用程序</li>
+<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
+<li>/usr/src 存放linux内核源码</li>
+<li>/var 存放经常会变化的文件，比如系统的日志</li>
+<li>/run 存放系统启动后的信息，重启时清空</li>
+</ul>
+</li>
+</ol>
+<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
+<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
+<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
+<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
+<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
+<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
+</ul>
+<ul>
+<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
+<li>r 表示读权限，- 表示没有读权限</li>
+<li>w 表示写权限，- 表示没有写权限</li>
+<li>x 表示执行权限，- 表示没有执行权限</li>
+<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
+</ul>
+</li>
+<li><p>更改文件属性的命令</p>
+<ul>
+<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
+</ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
+<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
+<li><p>linux根目录：/</p>
+</li>
+<li><p>文件/目录的常用操作命令</p>
+<ul>
+<li><p>ls：列出目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
+<li><p>cd：切换目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
+<li><p>pwd：显示当前目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
+<li><p>mkdir：创建目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
+<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
+<li><p>cp：复制文件/目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
+<li><p>rm：删除目录或文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：移动目录/文件，或者修改名称</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>linux文件内容查看</p>
+<ul>
+<li><p>cat：从第一行开始显示内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
+<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
+</li>
+<li><p>tail：显示文件最后 n 行内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
+<li><p>添加用户账号</p>
+<ul>
+<li><p>useradd [options] 用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>设置用户账号密码</p>
+<ul>
+<li><p>passwd [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户账号</p>
+<ul>
+<li><p>userdel [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改用户账号</p>
+<ul>
+<li><p>usermod [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加用户组</p>
+<ul>
+<li><p>groupadd [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户组</p>
+<ul>
+<li>groupdel 用户组</li>
+</ul>
+</li>
+<li><p>修改用户组</p>
+<ul>
+<li><p>groupmod [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
+<ul>
+<li>newgrp 要切换的用户组</li>
+</ul>
+</li>
+</ol>
+<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
+<li><p>df：查看文件系统的整体磁盘空间使用量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
+<li><p>du：查看文件和目录的磁盘使用空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
+<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
+<ul>
+<li><p>命令行模式：此时用户输入会被识别为命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
+</li>
+<li><p>底部命令行模式：输入命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
+<li><p>常用按键：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
+<li><p>yum：查找、安装、删除软件包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
+<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
+</li>
+<li><p>shell脚本：一种为shell编写的脚本程序</p>
+</li>
+<li><p>shell的分类：</p>
+<ul>
+<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
+<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
+<li>C Shell（/usr/bin/csh）</li>
+<li>K Shell（/usr/bin/ksh）</li>
+<li>Shell for Root（/sbin/sh）</li>
+</ul>
+</li>
+<li><p>查看系统可用的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前系统的默认shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
+<li><p>编写一个简单的shell脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>执行shell脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
+<li><p>文件管理</p>
+<ul>
+<li><p>cat [options] filename</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
+<li><p>chgrp：参考 三</p>
+</li>
+<li><p>chmod：同上</p>
+</li>
+<li><p>chown：同上</p>
+</li>
+<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：参考 三</p>
+</li>
+<li><p>rm：同上</p>
+</li>
+<li><p>tee  [-ai][file]</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Java序列化与反序列化</title>
+    <url>/2022/11/15/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
+    <content><![CDATA[<ol>
+<li><p>序列化</p>
+<ul>
+<li><p>概念：</p>
+<p>  将Java中的对象转换为字节序列</p>
+</li>
+<li><p>使用场景：</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
+<p>  在网络中传输对象</p>
+</li>
+<li><p>实现方式：</p>
+<p>  实现<code>java.io.Serializable</code>接口</p>
+</li>
+<li><p>注意点：</p>
+<p>  基本类型、数组、枚举等也会进行序列化</p>
+<p>  transient修饰的属性和静态属性不参与序列化</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>反序列化</p>
+<ul>
+<li><p>概念：</p>
+<p>  将字节序列转换为Java对象</p>
+</li>
+<li><p>使用场景</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
+<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
+</li>
+<li><p>注意点：</p>
+<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
+</li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>serialVersionUID</p>
+<ul>
+<li><p>概念：</p>
+<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
+</li>
+<li><p>作用：</p>
+<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
+
+<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
+  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
+
+<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Markdown语法学习</title>
+    <url>/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>MySQL学习</title>
     <url>/2022/11/15/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<ol>
@@ -1181,331 +1577,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Markdown语法学习</title>
-    <url>/2022/11/15/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
-</ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>正则表达式</title>
-    <url>/2022/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<ol>
-<li><p>介绍</p>
-<blockquote>
-<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
-<p>如：</p>
-<ul>
-<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
-<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
-</ul>
-</blockquote>
-</li>
-<li><p>普通字符和非打印字符参考<a href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
-</li>
-<li><p>元字符：</p>
-<ul>
-<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
-<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
-<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
-<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
-<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
-<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
-<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
-<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
-<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
-<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
-<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
-<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
-<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
-<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
-<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
-<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
-<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
-<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
-<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
-<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
-<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
-<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
-<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
-</ul>
-</li>
-<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
-<ul>
-<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
-<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
-<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
-<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
-<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
-<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
-<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
-<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
-<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
-<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
-<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
-</ul>
-</li>
-<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
-<ul>
-<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
-<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
-<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
-</ul>
-</li>
-<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
-</li>
-<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
-<ul>
-<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
-<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
-<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
-<li>\B：匹配一个非单词边界</li>
-<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
-</ul>
-</li>
-<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
-<ul>
-<li><p>\：转义符</p>
-</li>
-<li><p>(), (?:), (?=), []：圆括号和方括号</p>
-</li>
-<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
-</li>
-<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
-</li>
-<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
-</li>
-</ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Mybatis一知半解</title>
-    <url>/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
-    <content><![CDATA[<ol>
-<li><p>mybatis核心类及接口</p>
-<ol>
-<li><p>Configuration：</p>
-<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
-<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactoryBuilder：</p>
-<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
-<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSession：</p>
-<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>SqlSessionFactory：</p>
-<p> 创建SqlSession的工厂类接口</p>
-</li>
-<li><p>SqlNode：</p>
-<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Executor：</p>
-<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
-
-<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
-
-<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
-<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
-<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-</li>
-<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
-<ol>
-<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ol>
-</li>
-<li><p>mybatis缓存</p>
-<ol>
-<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
-
- <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
-<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
-</li>
-<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
- <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p> Cache对象之间的引用顺序为：</p>
-<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
-</li>
-</ol>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Java序列化与反序列化</title>
-    <url>/2022/11/15/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
-    <content><![CDATA[<ol>
-<li><p>序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将Java中的对象转换为字节序列</p>
-</li>
-<li><p>使用场景：</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
-<p>  在网络中传输对象</p>
-</li>
-<li><p>实现方式：</p>
-<p>  实现<code>java.io.Serializable</code>接口</p>
-</li>
-<li><p>注意点：</p>
-<p>  基本类型、数组、枚举等也会进行序列化</p>
-<p>  transient修饰的属性和静态属性不参与序列化</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>反序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将字节序列转换为Java对象</p>
-</li>
-<li><p>使用场景</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
-<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
-</li>
-<li><p>注意点：</p>
-<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
-</li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>serialVersionUID</p>
-<ul>
-<li><p>概念：</p>
-<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
-</li>
-<li><p>作用：</p>
-<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
-
-<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
-  <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
-
-<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
-</li>
-</ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>Centos安装Redis</title>
     <url>/2022/11/15/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
     <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
@@ -1685,229 +1756,105 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Linux使用</title>
-    <url>/2022/11/15/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
-<li><p>修改root用户密码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
-<li><p>停机和关机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
-<li><p>输入 ls -/  命令查看目录结构</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
-<li><p>目录结构的作用和含义</p>
-<ul>
-<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
-<li>/boot 存放启动linux需要的核心文件</li>
-<li>/dev 存放linux的外部设备</li>
-<li>/etc 存放系统管理需要的配置文件和子目录</li>
-<li>/home 用户主目录，以用户名命名，如 /codecho</li>
-<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
-<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
-<li>/media linux识别设备后将其挂载到此目录</li>
-<li>/mnt 系统临时挂载点</li>
-<li>/opt 存放安装的第三方软件</li>
-<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
-<li>/root <em><strong>root</strong></em>用户主目录</li>
-<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
-<li>/srv 存放一些服务启动后需要的数据</li>
-<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
-<li>/tmp 存放临时文件</li>
-<li>/usr 存放用户的程序和文件</li>
-<li>/usr/bin 存放一般的应用程序</li>
-<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
-<li>/usr/src 存放linux内核源码</li>
-<li>/var 存放经常会变化的文件，比如系统的日志</li>
-<li>/run 存放系统启动后的信息，重启时清空</li>
-</ul>
+    <title>Mybatis一知半解</title>
+    <url>/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
+    <content><![CDATA[<ol>
+<li><p>mybatis核心类及接口</p>
+<ol>
+<li><p>Configuration：</p>
+<p> mybatis核心配置类，用于管理mybatis相关的配置信息</p>
+<p> 当调用Configuration的getMapper方法时，会调用mapperRegistry.getMapper方法，该方法继续调用mapperProxyFactory.newInstance方法来生成一个具体的代理对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, org.apache.ibatis.session.SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> mapperRegistry.getMapper(type, sqlSession);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getMapper</span><span class="params">(Class&lt;T&gt; type, SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxyFactory&lt;T&gt; mapperProxyFactory = (MapperProxyFactory&lt;T&gt;) knownMappers.get(type);</span><br><span class="line">    <span class="keyword">if</span> (mapperProxyFactory == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Type &quot;</span> + type + <span class="string">&quot; is not known to the MapperRegistry.&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> mapperProxyFactory.newInstance(sqlSession);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> BindingException(<span class="string">&quot;Error getting mapper instance. Cause: &quot;</span> + e, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> T <span class="title">newInstance</span><span class="params">(MapperProxy&lt;T&gt; mapperProxy)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (T) Proxy.newProxyInstance(mapperInterface.getClassLoader(), <span class="keyword">new</span> Class[] &#123; mapperInterface &#125;, mapperProxy);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">(SqlSession sqlSession)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">final</span> MapperProxy&lt;T&gt; mapperProxy = <span class="keyword">new</span> MapperProxy&lt;&gt;(sqlSession, mapperInterface, methodCache);</span><br><span class="line">    <span class="keyword">return</span> newInstance(mapperProxy);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactoryBuilder：</p>
+<p> mybatis初始化时，调用XMLConfigBuilder读取所有的MybatisMapConfig.xml和所有的*Mapper.xml文件，构建mybatis运行的核心对象Configuration，然后将其作为参数构建一个SqlSessionFactory对象</p>
+<p> 其中XMLConfigBuilder在构建Configuration对象时，也会调用XMLMapperBuilder来读取*Mapper，XMLMapperBuilder会使用XMLStatementBuilder来读取和构建所有的SQL语句</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">XMLConfigBuilder parser = <span class="keyword">new</span> XMLConfigBuilder(inputStream, environment, properties);</span><br><span class="line"><span class="keyword">return</span> build(parser.parse());</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> SqlSessionFactory <span class="title">build</span><span class="params">(Configuration config)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">new</span> DefaultSqlSessionFactory(config);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSession：</p>
+<p> mybatis工作的主要接口，可以通过此接口执行SQL语句、获取mapper、管理事务等；SqlSession的执行，实际是通过对应Executor来进行的</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Configuration configuration;</span><br><span class="line">  	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>SqlSessionFactory：</p>
+<p> 创建SqlSession的工厂类接口</p>
 </li>
-</ol>
-<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
-<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
+<li><p>SqlNode：</p>
+<p> sql节点接口，相关实现类：IfSqlNode、TrimSqlNode、ChooseSqlNode、TextSqlNode等</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">SqlNode</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">apply</span><span class="params">(DynamicContext context)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Executor：</p>
+<p> SqlSession的Sql执行，都是委托给Executor实现的，</p>
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Executor</span><br><span class="line">BaseExecutor 									CachingExecutor</span><br><span class="line">SimpleExecutor ReuseExecutor BatchExecutor</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
-<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
-<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
-<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
-<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
-</ul>
-<ul>
-<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
-<li>r 表示读权限，- 表示没有读权限</li>
-<li>w 表示写权限，- 表示没有写权限</li>
-<li>x 表示执行权限，- 表示没有执行权限</li>
-<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
-</ul>
-</li>
-<li><p>更改文件属性的命令</p>
-<ul>
-<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
-</ul>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
+<p> 其中，BaseExecutor定义了几个抽象方法，该方法的具体实现交由子类完成</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(xxx)</span></span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> &lt;E&gt; List&lt;E&gt; <span class="title">doQuery</span><span class="params">(xxx)</span></span></span><br></pre></td></tr></table></figure>
 
-<ul>
-<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
-<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
+<p> SimpleExecutor：每次执行update或select时，会开启一个新的Statement对象，执行完立马关闭该对象</p>
+<p> ReuseExecutor：每次执行update或select时，先从StatementMap(Map&lt;String,Statement&gt;)中根据sql查找对应的Statement对象，如果存在，直接取出使用，如果不存在，新建一个Statement对象，执行完后不关闭，而是将其放置到StatementMap中</p>
+<p> BatchExecutor：执行update时，如果当前要执行的sql和Statement对象和保存的sql和Statement对象不相同，将当前要执行的Statement对象放到StatementList(List<Statement>)中，并保存此次执行的sql和Statement对象</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">doUpdate</span><span class="params">(MappedStatement ms, Object parameterObject)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    ......</span><br><span class="line">        <span class="keyword">if</span> (sql.equals(currentSql) &amp;&amp; ms.equals(currentStatement)) &#123;</span><br><span class="line">            <span class="keyword">int</span> last = statementList.size() - <span class="number">1</span>;</span><br><span class="line">            stmt = statementList.get(last);</span><br><span class="line">            applyTransactionTimeout(stmt);</span><br><span class="line">            handler.parameterize(stmt);<span class="comment">//fix Issues 322</span></span><br><span class="line">            org.apache.ibatis.executor.BatchResult batchResult = batchResultList.get(last);</span><br><span class="line">            batchResult.addParameterObject(parameterObject);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            Connection connection = getConnection(ms.getStatementLog());</span><br><span class="line">            stmt = handler.prepare(connection, transaction.getTimeout());</span><br><span class="line">            handler.parameterize(stmt);    <span class="comment">//fix Issues 322</span></span><br><span class="line">            currentSql = sql;</span><br><span class="line">            currentStatement = ms;</span><br><span class="line">            statementList.add(stmt);</span><br><span class="line">            batchResultList.add(<span class="keyword">new</span> org.apache.ibatis.executor.BatchResult(ms, sql, parameterObject));</span><br><span class="line">        &#125;</span><br><span class="line">	......    </span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 这里没有直接通过statement对象执行SQL操作</span></span><br><span class="line">	handler.batch(stmt);</span><br><span class="line">    <span class="keyword">return</span> BATCH_UPDATE_RETURN_VALUE;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 真正执行SQL操作是在doFlushStatements方法中进行的，当Executor执行doQuery方法或commit方法（如SqlSession执行commit方法）时，会调用flushStatements方法</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> List&lt;BatchResult&gt; <span class="title">doFlushStatements</span><span class="params">(<span class="keyword">boolean</span> isRollback)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line"> 	......</span><br><span class="line">    batchResult.setUpdateCounts(stmt.executeBatch());</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">BaseExecutor.<span class="function">java</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">commit</span><span class="params">(<span class="keyword">boolean</span> required)</span> <span class="keyword">throws</span> SQLException </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> ExecutorException(<span class="string">&quot;Cannot commit, transaction is already closed&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    clearLocalCache();</span><br><span class="line">    flushStatements();</span><br><span class="line">    <span class="keyword">if</span> (required) &#123;</span><br><span class="line">        transaction.commit();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
-</ul>
 </li>
 </ol>
-<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
-<li><p>linux根目录：/</p>
 </li>
-<li><p>文件/目录的常用操作命令</p>
-<ul>
-<li><p>ls：列出目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
-<li><p>cd：切换目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
-<li><p>pwd：显示当前目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
-<li><p>mkdir：创建目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
-<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
-<li><p>cp：复制文件/目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
-<li><p>rm：删除目录或文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：移动目录/文件，或者修改名称</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
-</ul>
+<li><p>SqlSession、Executor、PerpetualCache层级关系</p>
+<ol>
+<li><p>SqlSession &lt;&lt;&lt;&lt;&lt;&lt;  Executor &lt;&lt;&lt;&lt;&lt;&lt; PerpetualCache</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DefaultSqlSession</span> <span class="keyword">implements</span> <span class="title">SqlSession</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Executor executor;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">BaseExecutor</span> <span class="keyword">implements</span> <span class="title">Executor</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> PerpetualCache localCache;</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PerpetualCache</span> <span class="keyword">implements</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line"> 	<span class="keyword">private</span> <span class="keyword">final</span> Map&lt;Object, Object&gt; cache = <span class="keyword">new</span> HashMap&lt;&gt;();   </span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
 </li>
-<li><p>linux文件内容查看</p>
-<ul>
-<li><p>cat：从第一行开始显示内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
-<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
+<li><p>mybatis缓存</p>
+<ol>
+<li><p>mybatis中的缓存功能由根接口<code>Cache</code>定义，整个体系采用装饰器设计模式，数据存储和缓存的基本功能由<code>PerpetualCache</code>永久缓存实现，然后根据一系列的装饰器对<code>PerpetualCache</code>类进行缓存策略等方面的控制</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Cache</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span></span><br><span class="line"><span class="comment">    * <span class="doctag">@return</span> The identifier of this cache</span></span><br><span class="line"><span class="comment">    */</span></span><br><span class="line">  	<span class="function">String <span class="title">getId</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">&#125; </span><br></pre></td></tr></table></figure>
+
+ <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">FifoCache：先进先出算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">LoggingCache：输出缓存命中的日志信息</span><br><span class="line"></span><br><span class="line">LruCache：最近最少使用算法，缓存回收策略</span><br><span class="line"></span><br><span class="line">ScheduledCache：调度缓存，负责定时清空缓存</span><br><span class="line"></span><br><span class="line">SerializedCache：缓存序列化和反序列化存储</span><br><span class="line"></span><br><span class="line">SoftCache：基于软引用实现的缓存管理策略</span><br><span class="line"></span><br><span class="line">SynchronizedCache：同步的缓存装饰器，用于防止多线程并发访问</span><br><span class="line"></span><br><span class="line">WeakCache：基于弱引用实现的缓存管理策略 </span><br></pre></td></tr></table></figure></li>
+<li><p>一级缓存，又叫“本地缓存”，是<code>PerpetualCache</code>类型的永久缓存，位于<code>Executor</code>中，由1可知，Executor又位于<code>SqlSession</code>中，因此，一级缓存的生命周期和SqlSession的生命周期是一致的</p>
 </li>
-<li><p>tail：显示文件最后 n 行内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
-</ul>
+<li><p>二级缓存，又叫“自定义缓存”，实现了<code>Cache</code>接口的类都可以作为二级缓存；二级缓存根据<code>namespace</code>命名空间作为唯一标识，保存在<code>Configuration</code>核心配置对象中；二级缓存默认缓存类型为PerpetualCache，如果配置的缓存为默认类型，则mybatis会根据配置自动追加一系列装饰器</p>
+ <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Configuration</span> </span>&#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="keyword">final</span> Map&lt;String, Cache&gt; caches = <span class="keyword">new</span> StrictMap&lt;&gt;(<span class="string">&quot;Caches collection&quot;</span>);</span><br><span class="line">    ......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> Cache对象之间的引用顺序为：</p>
+<p> SynchronizedCache–&gt;LoggingCache–&gt;SerializedCache–&gt;ScheduledCache–&gt;LruCache–&gt;PerpetualCache</p>
 </li>
 </ol>
-<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
-<li><p>添加用户账号</p>
-<ul>
-<li><p>useradd [options] 用户名</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>设置用户账号密码</p>
-<ul>
-<li><p>passwd [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户账号</p>
-<ul>
-<li><p>userdel [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改用户账号</p>
-<ul>
-<li><p>usermod [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>添加用户组</p>
-<ul>
-<li><p>groupadd [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户组</p>
-<ul>
-<li>groupdel 用户组</li>
-</ul>
-</li>
-<li><p>修改用户组</p>
-<ul>
-<li><p>groupmod [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
-<ul>
-<li>newgrp 要切换的用户组</li>
-</ul>
 </li>
 </ol>
-<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
-<li><p>df：查看文件系统的整体磁盘空间使用量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
-<li><p>du：查看文件和目录的磁盘使用空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
-<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
-<ul>
-<li><p>命令行模式：此时用户输入会被识别为命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
-<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>编写shell脚本禁止非法访问的ip</title>
+    <url>/2022/12/22/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/</url>
+    <content><![CDATA[<h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
+<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
 </li>
-<li><p>底部命令行模式：输入命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
-<li><p>常用按键：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
-</ul>
+<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
+</li>
+<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
 </li>
 </ol>
-<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
-<li><p>yum：查找、安装、删除软件包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
+<blockquote>
+<p>本机Linux版本为CentOS7</p>
+</blockquote>
+<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
+<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
+<li>从每一行信息中分离出对应的外部ip</li>
+<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
+<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
+<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
 </ol>
-<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
-<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
-</li>
-<li><p>shell脚本：一种为shell编写的脚本程序</p>
-</li>
-<li><p>shell的分类：</p>
-<ul>
-<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
-<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
-<li>C Shell（/usr/bin/csh）</li>
-<li>K Shell（/usr/bin/ksh）</li>
-<li>Shell for Root（/sbin/sh）</li>
-</ul>
-</li>
-<li><p>查看系统可用的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
-<li><p>查看当前系统的默认shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
-<li><p>编写一个简单的shell脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>执行shell脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
-<li><p>文件管理</p>
-<ul>
-<li><p>cat [options] filename</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
-<li><p>chgrp：参考 三</p>
-</li>
-<li><p>chmod：同上</p>
-</li>
-<li><p>chown：同上</p>
-</li>
-<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：参考 三</p>
-</li>
-<li><p>rm：同上</p>
-</li>
-<li><p>tee  [-ai][file]</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
+<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
+<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存非法访问的ip</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存cron定时任务执行日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置定时任务，每天执行一次</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>查看定时任务日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
+<li><p>查看ip是否被禁止访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
 </ol>
 ]]></content>
   </entry>
@@ -2158,6 +2105,99 @@
 ]]></content>
   </entry>
   <entry>
+    <title>正则表达式</title>
+    <url>/2022/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<ol>
+<li><p>介绍</p>
+<blockquote>
+<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
+<p>如：</p>
+<ul>
+<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
+<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
+</ul>
+</blockquote>
+</li>
+<li><p>普通字符和非打印字符参考<a href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+</li>
+<li><p>元字符：</p>
+<ul>
+<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
+<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
+<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
+<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
+<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
+<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
+<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
+<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
+<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
+<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
+<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
+<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
+<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
+<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
+<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
+<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
+<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
+<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
+<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
+<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
+<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
+<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
+<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
+</ul>
+</li>
+<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<ul>
+<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
+<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
+<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
+<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
+<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
+<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
+<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
+<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
+<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
+<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
+<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+</ul>
+</li>
+<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<ul>
+<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
+<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
+<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
+</ul>
+</li>
+<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
+</li>
+<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
+<ul>
+<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
+<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
+<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
+<li>\B：匹配一个非单词边界</li>
+<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
+</ul>
+</li>
+<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
+<ul>
+<li><p>\：转义符</p>
+</li>
+<li><p>(), (?:), (?=), []：圆括号和方括号</p>
+</li>
+<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
+</li>
+<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
+</li>
+<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>如何创建自己的第一个springboot-starter</title>
     <url>/2022/11/28/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/</url>
     <content><![CDATA[<blockquote>
@@ -2223,6 +2263,24 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2022/11/15/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>CentOS清理磁盘空间</title>
     <url>/2022/11/15/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/</url>
     <content><![CDATA[<ol>
@@ -2243,24 +2301,6 @@
 <p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2022/11/15/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
 </search>
