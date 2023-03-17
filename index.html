@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -190,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/12/22/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/12/22/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
+          <a href="/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/" class="post-title-link" itemprop="url">使用IDEA构建docker镜像</a>
         </h2>
 
         <div class="post-meta-container">
@@ -215,7 +215,218 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2022-12-22 17:36:33 / Modified: 17:37:31" itemprop="dateCreated datePublished" datetime="2022-12-22T17:36:33+08:00">2022-12-22</time>
+      <time title="Created: 2023-03-17 18:36:15 / Modified: 18:49:37" itemprop="dateCreated datePublished" datetime="2023-03-17T18:36:15+08:00">2023-03-17</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>858</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
+<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
+<li>装有docker环境的Linux服务器（虚拟机）</li>
+</ol>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
+<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
+<p>配置docker服务器信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/IDEA%E9%85%8D%E7%BD%AEdocker1.png?q-sign-algorithm=sha1&q-ak=AKIDjOhWEt89RSTi7WoqKduyQbAOIkIr9lI1K3GP_ZND05RwAcIl5lsFgMLKEJojQ25v&q-sign-time=1679049666;1679053266&q-key-time=1679049666;1679053266&q-header-list=host&q-url-param-list=&q-signature=10a1b1abc380ab499f15382e4e3b313e527ab174&x-cos-security-token=9n6eHfUEfEsmCuoxixCVYZDIiIflzhta9980d8a99e70a15d78ff61573b6401fadCNbjcLy8Xg854Az6ZBt2CUQ_cStW3IzpArh658C8lKlQwP1qV5LjwYEJ6RQzdJaKfuOv_vOzoGpMuJjg7ntVze1jwZaCEkTO5JzWlaN9OM6ZE-FP3Jm6Pi3exQMWxkbVCNmhF2d4palizvy4gYPHVMfvfBXzba-U7AG34t6lmUsvn3PebclLo_RpTGfQA6T"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/IDEA%E9%85%8D%E7%BD%AEdocker2.png?q-sign-algorithm=sha1&q-ak=AKID4znEcRgqqwND3MKEer3kIJiZcuUJEg3ywuFqibBDBAQr2cXeuna0Knt53C-U_8F7&q-sign-time=1679049679;1679053279&q-key-time=1679049679;1679053279&q-header-list=host&q-url-param-list=&q-signature=f547d24599dff00690bc6e86cc914711cf42508a&x-cos-security-token=9n6eHfUEfEsmCuoxixCVYZDIiIflzhta8b4086b38eb055f2684373bc40849584dCNbjcLy8Xg854Az6ZBt2NIofLYTsNvA2HenxJq1bVMINCnfW4yPob15wFSL-Q8OzIiy_65QPQQB1Gn06mJ3a7rZeIQFkSt7rQVN6t-CHe8-6rzQaVG1JaHDencET1rRLoOEy8W2fBGoASFqDaTFtXjWmTiXOkY0p-YYkfgojvhZQEcFaLqSxiGR_-h5h5OJ"></p>
+<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/IDEA%E9%85%8D%E7%BD%AEdocker3.png?q-sign-algorithm=sha1&q-ak=AKIDZ-KXV7SEZ7wMXue2JkVbgVAskrS-zxSH0abaVjzUirq-L9B3tUSBICAVcuObL9nU&q-sign-time=1679049697;1679053297&q-key-time=1679049697;1679053297&q-header-list=host&q-url-param-list=&q-signature=8fe7c7176f8ff6cd5117d602b4733890351fe3c0&x-cos-security-token=9n6eHfUEfEsmCuoxixCVYZDIiIflzhta19cde59d0181cde54019b14c78dd97e9dCNbjcLy8Xg854Az6ZBt2JWKpvPkxzi7ZycTZPDwFfqSMXl1YyGJn6M_nC0ed49H6luTiO7iodgyYDHj1mB5IllLj-8M9EA-YR6dTXSaNhMIlaVJbEWqWrLbSIunJFpb9NL9UP0mKh614fYEbCECWK03QPgnIoJVQ71CXvgzXaXSfBD5bV5vp5M8MO9kTcu9"></p>
+</li>
+<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/IDEA%E8%BF%9E%E6%8E%A5docker.png?q-sign-algorithm=sha1&q-ak=AKID_3gYKYT2clsCihKNGESk7CSm7Xq7VhAMCodF5kgD9Udsbw0RFJQIaujMRQkSJNQf&q-sign-time=1679049819;1679053419&q-key-time=1679049819;1679053419&q-header-list=host&q-url-param-list=&q-signature=dcc0129d47323098ea4b52e2ba214a12fd7e7129&x-cos-security-token=9n6eHfUEfEsmCuoxixCVYZDIiIflzhtae5e41a6482d372841bfe3017707dbf59dCNbjcLy8Xg854Az6ZBt2LPzaqahVQ5YHu-trNifzOkrPmnjyzJrdBP2iTpDTWZiiOpXIRUH1etXcs6ytFUzY4nu8HepqPSmC99REIKo4imiXrPlPibZGdvS4IRDtis2qlxQC9PXQQTYKnOCQdzW3IJVXQ6-dDJL1wMI3nxZElcdyJ4AoGaqjZo6WLdMyP3v"></p>
+</li>
+<li><p>验证docker镜像是否部署成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png?q-sign-algorithm=sha1&q-ak=AKIDbwJIGeMD8q566r6Lz7ZEyV9Ahydm0ABakk7wNCcjyhUDRHQ0YZxn0Z0XHtaJqtYE&q-sign-time=1679050105;1679053705&q-key-time=1679050105;1679053705&q-header-list=host&q-url-param-list=&q-signature=81814dc52575d40cbaa3231d1e8085c5731ba4c3&x-cos-security-token=9n6eHfUEfEsmCuoxixCVYZDIiIflzhtace50cab76aa396b63819d8f4212a6cf7dCNbjcLy8Xg854Az6ZBt2PkgRjqjj7Cxi9gPVxURsmxdj3_-Vf8fMoHgxeWKSWGOUyGiRSrX1ePQM2ViAIq8yehXlB_wmzMlmHkPjRBNJLzPSWtXBivF5LjpWQAG_wl9xiWDLprATQnNR2pGWdI9neGw-mMPBjCN72Bve9rCaW_AEIxKoz7HxzM1TTwma4P_"></p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-15 18:26:15" itemprop="dateModified" datetime="2022-11-15T18:26:15+08:00">2022-11-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ol>
+<li><p>起因</p>
+<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
+<li><p>分析</p>
+<ul>
+<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
+<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
+<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>清理</p>
+<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-12-22 17:37:31" itemprop="dateModified" datetime="2022-12-22T17:37:31+08:00">2022-12-22</time>
     </span>
 
   
@@ -304,7 +515,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/28/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -317,7 +528,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/28/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/" class="post-title-link" itemprop="url">如何创建自己的第一个springboot-starter</a>
+          <a href="/2023/02/18/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
         </h2>
 
         <div class="post-meta-container">
@@ -327,9 +538,113 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-11-28 16:14:38 / Modified: 16:39:45" itemprop="dateCreated datePublished" datetime="2022-11-28T16:14:38+08:00">2022-11-28</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-01-27 16:58:25" itemprop="dateModified" datetime="2022-01-27T16:58:25+08:00">2022-01-27</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>367</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/" class="post-title-link" itemprop="url">如何创建自己的第一个springboot-starter</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-28 16:39:45" itemprop="dateModified" datetime="2022-11-28T16:39:45+08:00">2022-11-28</time>
     </span>
 
   
@@ -443,7 +758,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -456,7 +771,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
+          <a href="/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">正则表达式</a>
         </h2>
 
         <div class="post-meta-container">
@@ -466,9 +781,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-11-15 18:25:23 / Modified: 18:26:15" itemprop="dateCreated datePublished" datetime="2022-11-15T18:25:23+08:00">2022-11-15</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2020-11-15 20:27:27" itemprop="dateModified" datetime="2020-11-15T20:27:27+08:00">2020-11-15</time>
     </span>
 
   
@@ -478,14 +799,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.2k</span>
+      <span>3.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>3 mins.</span>
     </span>
 </div>
 
@@ -497,21 +818,91 @@
     
     <div class="post-body" itemprop="articleBody">
           <ol>
-<li><p>起因</p>
-<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
-<li><p>分析</p>
+<li><p>介绍</p>
+<blockquote>
+<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
+<p>如：</p>
 <ul>
-<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
-<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
-<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
+<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
+<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
+</ul>
+</blockquote>
+</li>
+<li><p>普通字符和非打印字符参考<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+</li>
+<li><p>元字符：</p>
+<ul>
+<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
+<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
+<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
+<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
+<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
+<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
+<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
+<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
+<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
+<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
+<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
+<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
+<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
+<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
+<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
+<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
+<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
+<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
+<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
+<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
+<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
+<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
+<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
 </ul>
 </li>
-<li><p>清理</p>
-<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
+<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<ul>
+<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
+<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
+<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
+<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
+<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
+<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
+<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
+<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
+<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
+<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
+<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+</ul>
+</li>
+<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<ul>
+<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
+<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
+<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
+</ul>
+</li>
+<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
+</li>
+<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
+<ul>
+<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
+<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
+<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
+<li>\B：匹配一个非单词边界</li>
+<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
+</ul>
+</li>
+<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
+<ul>
+<li><p>\：转义符</p>
+</li>
+<li><p>(), (?:), (?=), []：圆括号和方括号</p>
+</li>
+<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
+</li>
+<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
+</li>
+<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+</li>
+</ul>
 </li>
 </ol>
 
@@ -540,7 +931,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/hello-world/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -553,7 +944,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
+          <a href="/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/" class="post-title-link" itemprop="url">Centos安装Redis</a>
         </h2>
 
         <div class="post-meta-container">
@@ -564,105 +955,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-01-27 16:58:25" itemprop="dateModified" datetime="2022-01-27T16:58:25+08:00">2022-01-27</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>367</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/" class="post-title-link" itemprop="url">Centos安装Redis</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -769,7 +1062,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -782,7 +1075,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">arthas诊断工具简单使用</a>
+          <a href="/2023/02/18/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">arthas诊断工具简单使用</a>
         </h2>
 
         <div class="post-meta-container">
@@ -793,7 +1086,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1095,7 +1388,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1108,7 +1401,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">Linux下搭建Redis集群</a>
+          <a href="/2023/02/18/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/" class="post-title-link" itemprop="url">Mybatis一知半解</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1119,357 +1412,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-06 02:21:10" itemprop="dateModified" datetime="2022-02-06T02:21:10+08:00">2022-02-06</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS 7.5</li>
-<li>Redis版本：6.2.6，<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
-<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>启动<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看主从节点启动情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>测试主节点和从节点数据同步</p>
-<blockquote>
-<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
-</blockquote>
-<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
-
-<p>在连接主节点的窗口中插入一些数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
-
-<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
-</blockquote>
-<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
-<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
-
-<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
-<li><p>启动哨兵</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
-<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>模拟主节点挂掉的情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>的日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
-</li>
-<li><p>重新启动原来的主节点6379</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
-<p>也可以用<code>info</code>命令查看从节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
-</li>
-</ul>
-<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
-<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
-<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
-<blockquote>
-<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
-<li><p>启动上述6个节点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>查看节点是否启动成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-<li><p>创建真正的集群！！！</p>
-<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
-<blockquote>
-<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-<li><p>更简单快速地创建集群</p>
-<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
-
-<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
-</li>
-<li><p>连接集群并使用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
-</li>
-<li><p>模拟三个主节点中的一个挂掉</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-</ul>
-<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
-<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a target="_blank" rel="noopener" href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-title-link" itemprop="url">Java序列化与反序列化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2020-11-15 20:26:48" itemprop="dateModified" datetime="2020-11-15T20:26:48+08:00">2020-11-15</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <ol>
-<li><p>序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将Java中的对象转换为字节序列</p>
-</li>
-<li><p>使用场景：</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
-<p>  在网络中传输对象</p>
-</li>
-<li><p>实现方式：</p>
-<p>  实现<code>java.io.Serializable</code>接口</p>
-</li>
-<li><p>注意点：</p>
-<p>  基本类型、数组、枚举等也会进行序列化</p>
-<p>  transient修饰的属性和静态属性不参与序列化</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>反序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将字节序列转换为Java对象</p>
-</li>
-<li><p>使用场景</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
-<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
-</li>
-<li><p>注意点：</p>
-<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
-</li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>serialVersionUID</p>
-<ul>
-<li><p>概念：</p>
-<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
-</li>
-<li><p>作用：</p>
-<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
-
-<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
-
-<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
-</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/" class="post-title-link" itemprop="url">Mybatis一知半解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1588,7 +1531,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1601,7 +1544,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/15/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="post-title-link" itemprop="url">正则表达式</a>
+          <a href="/2023/02/18/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-title-link" itemprop="url">Java序列化与反序列化</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1612,14 +1555,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-11-15 17:00:41" itemprop="dateCreated datePublished" datetime="2022-11-15T17:00:41+08:00">2022-11-15</time>
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2020-11-15 20:27:27" itemprop="dateModified" datetime="2020-11-15T20:27:27+08:00">2020-11-15</time>
+      <time title="Modified: 2020-11-15 20:26:48" itemprop="dateModified" datetime="2020-11-15T20:26:48+08:00">2020-11-15</time>
     </span>
 
   
@@ -1629,14 +1572,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.7k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -1648,89 +1591,58 @@
     
     <div class="post-body" itemprop="articleBody">
           <ol>
-<li><p>介绍</p>
-<blockquote>
-<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
-<p>如：</p>
+<li><p>序列化</p>
 <ul>
-<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
-<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
-</ul>
-</blockquote>
+<li><p>概念：</p>
+<p>  将Java中的对象转换为字节序列</p>
 </li>
-<li><p>普通字符和非打印字符参考<a target="_blank" rel="noopener" href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+<li><p>使用场景：</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
+<p>  在网络中传输对象</p>
 </li>
-<li><p>元字符：</p>
-<ul>
-<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
-<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
-<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
-<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
-<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
-<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
-<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
-<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
-<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
-<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
-<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
-<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
-<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
-<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
-<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
-<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
-<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
-<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
-<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
-<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
-<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
-<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
-<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
+<li><p>实现方式：</p>
+<p>  实现<code>java.io.Serializable</code>接口</p>
+</li>
+<li><p>注意点：</p>
+<p>  基本类型、数组、枚举等也会进行序列化</p>
+<p>  transient修饰的属性和静态属性不参与序列化</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<li><p>反序列化</p>
 <ul>
-<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
-<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
-<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
-<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
-<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
-<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
-<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
-<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
-<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
-<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
-<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+<li><p>概念：</p>
+<p>  将字节序列转换为Java对象</p>
+</li>
+<li><p>使用场景</p>
+<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
+<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
+</li>
+<li><p>注意点：</p>
+<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
+</li>
+<li><p>代码实现：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
-<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<li><p>serialVersionUID</p>
 <ul>
-<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
-<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
-<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
-</ul>
+<li><p>概念：</p>
+<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
 </li>
-<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
-</li>
-<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
-<ul>
-<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
-<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
-<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
-<li>\B：匹配一个非单词边界</li>
-<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
-</ul>
-</li>
-<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
-<ul>
-<li><p>\：转义符</p>
-</li>
-<li><p>(), (?:), (?=), []：圆括号和方括号</p>
-</li>
-<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
-</li>
-<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
-</li>
-<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+<li><p>作用：</p>
+<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
+
+<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
+
+<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
 </li>
 </ul>
 </li>
@@ -1768,7 +1680,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -1780,14 +1692,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">65k</span>
+    <span title="Symbols count total">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">59 mins.</span>
+    <span title="Reading time total">1:01</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
