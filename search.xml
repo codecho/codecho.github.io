@@ -1,340 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Markdown语法学习</title>
-    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
-</ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Linux使用</title>
-    <url>/2023/02/18/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
-<li><p>修改root用户密码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
-<li><p>停机和关机</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
-<li><p>输入 ls -/  命令查看目录结构</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
-<li><p>目录结构的作用和含义</p>
-<ul>
-<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
-<li>/boot 存放启动linux需要的核心文件</li>
-<li>/dev 存放linux的外部设备</li>
-<li>/etc 存放系统管理需要的配置文件和子目录</li>
-<li>/home 用户主目录，以用户名命名，如 /codecho</li>
-<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
-<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
-<li>/media linux识别设备后将其挂载到此目录</li>
-<li>/mnt 系统临时挂载点</li>
-<li>/opt 存放安装的第三方软件</li>
-<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
-<li>/root <em><strong>root</strong></em>用户主目录</li>
-<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
-<li>/srv 存放一些服务启动后需要的数据</li>
-<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
-<li>/tmp 存放临时文件</li>
-<li>/usr 存放用户的程序和文件</li>
-<li>/usr/bin 存放一般的应用程序</li>
-<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
-<li>/usr/src 存放linux内核源码</li>
-<li>/var 存放经常会变化的文件，比如系统的日志</li>
-<li>/run 存放系统启动后的信息，重启时清空</li>
-</ul>
-</li>
-</ol>
-<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
-<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
-<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
-<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
-<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
-<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
-</ul>
-<ul>
-<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
-<li>r 表示读权限，- 表示没有读权限</li>
-<li>w 表示写权限，- 表示没有写权限</li>
-<li>x 表示执行权限，- 表示没有执行权限</li>
-<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
-</ul>
-</li>
-<li><p>更改文件属性的命令</p>
-<ul>
-<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
-</ul>
-  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
-<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
-<li><p>linux根目录：/</p>
-</li>
-<li><p>文件/目录的常用操作命令</p>
-<ul>
-<li><p>ls：列出目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
-<li><p>cd：切换目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
-<li><p>pwd：显示当前目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
-<li><p>mkdir：创建目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
-<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
-<li><p>cp：复制文件/目录</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
-<li><p>rm：删除目录或文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：移动目录/文件，或者修改名称</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>linux文件内容查看</p>
-<ul>
-<li><p>cat：从第一行开始显示内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
-<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
-</li>
-<li><p>tail：显示文件最后 n 行内容</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
-<li><p>添加用户账号</p>
-<ul>
-<li><p>useradd [options] 用户名</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>设置用户账号密码</p>
-<ul>
-<li><p>passwd [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户账号</p>
-<ul>
-<li><p>userdel [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改用户账号</p>
-<ul>
-<li><p>usermod [options] 账号</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>添加用户组</p>
-<ul>
-<li><p>groupadd [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>删除用户组</p>
-<ul>
-<li>groupdel 用户组</li>
-</ul>
-</li>
-<li><p>修改用户组</p>
-<ul>
-<li><p>groupmod [options] 用户组</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
-<ul>
-<li>newgrp 要切换的用户组</li>
-</ul>
-</li>
-</ol>
-<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
-<li><p>df：查看文件系统的整体磁盘空间使用量</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
-<li><p>du：查看文件和目录的磁盘使用空间</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
-<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
-<ul>
-<li><p>命令行模式：此时用户输入会被识别为命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
-<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
-</li>
-<li><p>底部命令行模式：输入命令</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
-<li><p>常用按键：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
-<li><p>yum：查找、安装、删除软件包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
-<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
-</li>
-<li><p>shell脚本：一种为shell编写的脚本程序</p>
-</li>
-<li><p>shell的分类：</p>
-<ul>
-<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
-<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
-<li>C Shell（/usr/bin/csh）</li>
-<li>K Shell（/usr/bin/ksh）</li>
-<li>Shell for Root（/sbin/sh）</li>
-</ul>
-</li>
-<li><p>查看系统可用的shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
-<li><p>查看当前系统的默认shell</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
-<li><p>编写一个简单的shell脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>执行shell脚本：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
-</ol>
-<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
-<li><p>文件管理</p>
-<ul>
-<li><p>cat [options] filename</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
-<li><p>chgrp：参考 三</p>
-</li>
-<li><p>chmod：同上</p>
-</li>
-<li><p>chown：同上</p>
-</li>
-<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
-<li><p>mv：参考 三</p>
-</li>
-<li><p>rm：同上</p>
-</li>
-<li><p>tee  [-ai][file]</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>MySQL学习</title>
     <url>/2023/02/18/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<ol>
@@ -1515,6 +1181,113 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Markdown语法学习</title>
+    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>Mybatis一知半解</title>
     <url>/2023/02/18/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
     <content><![CDATA[<ol>
@@ -1575,134 +1348,6 @@
 </ol>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Linux下搭建Redis集群</title>
-    <url>/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS 7.5</li>
-<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
-<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>启动<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看主从节点启动情况</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>测试主节点和从节点数据同步</p>
-<blockquote>
-<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
-</blockquote>
-<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
-
-<p>在连接主节点的窗口中插入一些数据</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
-
-<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
-</blockquote>
-<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
-<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
-
-<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
-<li><p>启动哨兵</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
-<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>模拟主节点挂掉的情况</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>的日志</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
-</li>
-<li><p>重新启动原来的主节点6379</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
-<p>也可以用<code>info</code>命令查看从节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
-</li>
-</ul>
-<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
-<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
-<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
-<blockquote>
-<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
-<li><p>启动上述6个节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>查看节点是否启动成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-<li><p>创建真正的集群！！！</p>
-<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
-<blockquote>
-<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-<li><p>更简单快速地创建集群</p>
-<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
-
-<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
-</li>
-<li><p>连接集群并使用</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
-</li>
-<li><p>模拟三个主节点中的一个挂掉</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-</ul>
-<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
-<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-</ul>
 ]]></content>
   </entry>
   <entry>
@@ -1861,94 +1506,358 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Centos安装Redis</title>
-    <url>/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
-    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS7.5</li>
-<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+    <title>Linux使用</title>
+    <url>/2023/02/18/2019-07-18-Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h5 id="一、linux系统启动"><a href="#一、linux系统启动" class="headerlink" title="一、linux系统启动"></a>一、linux系统启动</h5><ol>
+<li><p>修改root用户密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo passwd root</span><br></pre></td></tr></table></figure></li>
+<li><p>停机和关机</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">shutdown -H		停机</span><br><span class="line">shutdown -P 	关机（断电）</span><br><span class="line">shutdown -r 	重启</span><br><span class="line">shutdown -h		相当于 -P ，除非指定  -H</span><br><span class="line">shutdown [options] [time] 在指定时间执行操作</span><br><span class="line">shutdown -h now   马上关机</span><br><span class="line">shutdown -h +n    在 n 分钟后关机</span><br><span class="line">shutdown -h 13:14  在今天 13:14 关机</span><br><span class="line"></span><br><span class="line">shutdown -k		只发送 wall message</span><br><span class="line">shutdown -c		取消 shutdown 命令 执行</span><br><span class="line">shutdown --no-wall 执行 shutdown 命令前不发送 wall message</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="二、linux系统目录结构"><a href="#二、linux系统目录结构" class="headerlink" title="二、linux系统目录结构"></a>二、linux系统目录结构</h5><ol>
+<li><p>输入 ls -/  命令查看目录结构</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bin  boot  dev  etc  home  init  lib  lib64  media  mnt  opt  proc  root  run  sbin  snap  srv  sys  tmp  usr  var</span><br></pre></td></tr></table></figure></li>
+<li><p>目录结构的作用和含义</p>
+<ul>
+<li>/bin 存放常用的命令，如 cat、chmod、cp 等</li>
+<li>/boot 存放启动linux需要的核心文件</li>
+<li>/dev 存放linux的外部设备</li>
+<li>/etc 存放系统管理需要的配置文件和子目录</li>
+<li>/home 用户主目录，以用户名命名，如 /codecho</li>
+<li>/lib 存放系统最基本的动态链接共享库，作用和windows中的DLL文件类似，几乎每个程序都使用到这些共享库</li>
+<li>/lost+found 一般为空，当系统非法关机后，该目录存放一些<em><strong>“孤儿？？？”</strong></em>文件</li>
+<li>/media linux识别设备后将其挂载到此目录</li>
+<li>/mnt 系统临时挂载点</li>
+<li>/opt 存放安装的第三方软件</li>
+<li>/proc 虚拟的文件系统，非真实存在，记录和系统相关的信息</li>
+<li>/root <em><strong>root</strong></em>用户主目录</li>
+<li>/sbin 存放<em><strong>root</strong></em>用户使用的命令</li>
+<li>/srv 存放一些服务启动后需要的数据</li>
+<li>/sys 也是一个虚拟的文件系统，是对linux系统下所有设备的映射</li>
+<li>/tmp 存放临时文件</li>
+<li>/usr 存放用户的程序和文件</li>
+<li>/usr/bin 存放一般的应用程序</li>
+<li>/usr/sbin 存放<em><strong>root</strong></em>用户使用的应用程序</li>
+<li>/usr/src 存放linux内核源码</li>
+<li>/var 存放经常会变化的文件，比如系统的日志</li>
+<li>/run 存放系统启动后的信息，重启时清空</li>
 </ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
-<li><p>从官网获取Redis压缩包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
 </li>
-<li><p>编译安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
-<li><p>启动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
-<li><p>使用redis-cli连接redis-server</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
-<ul>
-<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
-</ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
-<ul>
-<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
+</ol>
+<h5 id="三、linux文件基本属性"><a href="#三、linux文件基本属性" class="headerlink" title="三、linux文件基本属性"></a>三、linux文件基本属性</h5><ol>
+<li><p>使用 ls -l 或 ll 命令显示文件/文件夹的属性</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ./</span><br><span class="line">drwxr-xr-x  23 root root      4096 Jan 25 19:47 ../</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:23 bin/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 12  2018 boot/</span><br><span class="line">drwxr-xr-x  18 root root      3740 Jan 25 16:29 dev/</span><br><span class="line">drwxr-xr-x  91 root root      4096 Jul 19 09:49 etc/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 26  2018 home/</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img -&gt; boot/initrd.img-4.15.0-42-generic</span><br><span class="line">lrwxrwxrwx   1 root root        33 Dec 12  2018 initrd.img.old -&gt; boot/initrd.img-4.15.0-20-generic</span><br><span class="line">drwxr-xr-x  19 root root      4096 Dec 12  2018 lib/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Jan 25 17:22 lib64/</span><br><span class="line">drwx------   2 root root     16384 Dec 12  2018 lost+found/</span><br><span class="line">drwxr-xr-x   4 root root      4096 Dec 12  2018 media/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 mnt/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Dec 27  2018 opt/</span><br><span class="line">dr-xr-xr-x 134 root root         0 Jan 25 16:29 proc/</span><br><span class="line">drwx------  11 root root      4096 Jul 16 20:19 root/</span><br><span class="line">drwxr-xr-x  25 root root       800 Jul 19 09:09 run/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Dec 27  2018 sbin/</span><br><span class="line">drwxr-xr-x   2 root root      4096 Apr 27  2018 srv/</span><br><span class="line">-rw-------   1 root root 993249280 Dec 12  2018 swapfile</span><br><span class="line">dr-xr-xr-x  13 root root         0 Jan 26 00:29 sys/</span><br><span class="line">drwxr-xr-x   3 root root      4096 Jan 25 19:47 <span class="built_in">test</span>/</span><br><span class="line">drwxrwxrwt  22 root root      4096 Jul 19 10:58 tmp/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jan 25 18:36 usr/</span><br><span class="line">drwxr-xr-x  12 root root      4096 Jun 18 15:40 var/</span><br></pre></td></tr></table></figure>
 
 <ul>
-<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+<li>第一个字符为 <em><strong>d</strong></em> 时，表示是目录</li>
+<li>第一个字符为 <em><strong>-</strong></em> 时，表示是文件</li>
+<li>第一个字符为 <em><strong>l</strong></em> 时，表示是链接文件</li>
+<li>第一个字符为 <em><strong>b</strong></em> 时，表示是装置文件里面的可供储存的接口设备(可随机存取装置)</li>
+<li>第一个字符是 <em><strong>c</strong></em> 时，表示是装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)</li>
 </ul>
-<blockquote>
-<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
-</blockquote>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+<ul>
+<li>rwx rwx rwx 分别表示 文件所有者(owner) 、所有者同组用户(group)、其他用户(others) 拥有该文件的权限</li>
+<li>r 表示读权限，- 表示没有读权限</li>
+<li>w 表示写权限，- 表示没有写权限</li>
+<li>x 表示执行权限，- 表示没有执行权限</li>
+<li><strong>特殊情况：</strong> t 表示 sticky bit ，可以理解为 防删除位，一般用在目录上，如 /temp 目录，用户只能删除自己的文件，不能删除其他用户的文件</li>
 </ul>
-<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
-<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
-<li><p>引入Redis依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>通过RedisTemplate操作Redis</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
 </li>
+<li><p>更改文件属性的命令</p>
+<ul>
+<li> chgrp：更改文件所属的用户组 -R 表示递归更改所属的用户组，更改某个目录下的所有文件的所属的用户组</li>
 </ul>
+  <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chgrp [-R] 所属的用户组 文件/目录</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>chown：更改文件所属用户，也可以同时更改文件的所属的用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">chown [-R] 所属的用户 文件/目录</span><br><span class="line">chown [-R] 所属的用户:所属的用户组 文件/目录</span><br></pre></td></tr></table></figure></li>
+<li><p>chmod：更改文件的9个属性 其中 xyz 表示三个权限的数字之和，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用数字改变文件的权限-----------------</span><br><span class="line">chmod [-R] xyz 文件/目录</span><br><span class="line">各权限代表的数字：r=4 w=2 x=1 -=0(没有权限则为0)</span><br><span class="line">x: [r+w+x] = [4+2+1] --&gt; 7  表示 owner 所拥有的权限</span><br><span class="line">y: [r+w+x] = [4+2+1] --&gt; 7  表示 group 所拥有的的权限</span><br><span class="line">z: [r+w+x] = [4+2+1] --&gt; 7  表示 others 所拥有的权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-----------------使用符号改变文件的权限-----------------</span><br><span class="line">将用户分为四种类型：a=all(所有用户) u=user(所属用户) g=group(所属用户组) o=others(其他用户)</span><br><span class="line">将操作分为 +(添加) -(去除) =(设置)</span><br><span class="line">chmod u=rw,g=wx,o=x test.txt 将test.txt文件的权限设为rw--wx--x </span><br><span class="line">chmod a-w test.txt 去除所有用户对test.txt文件的写权限</span><br><span class="line">chmod a+x test.txt 添加所有用户对test.txt文件的执行权限</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="四、linux文件与目录的操作"><a href="#四、linux文件与目录的操作" class="headerlink" title="四、linux文件与目录的操作"></a>四、linux文件与目录的操作</h5><ol>
+<li><p>linux根目录：/</p>
+</li>
+<li><p>文件/目录的常用操作命令</p>
+<ul>
+<li><p>ls：列出目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -a 列出所有的文件/目录，包括以 . 开头的文件</span><br><span class="line">ls -d 列出目录本身，不包括其内容</span><br><span class="line">ls -l 列出所有详细信息，包括权限、日期、所属用户等</span><br></pre></td></tr></table></figure></li>
+<li><p>cd：切换目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> [绝对路径/相对路径] </span><br><span class="line"><span class="built_in">cd</span> / 切换到根目录</span><br><span class="line"><span class="built_in">cd</span> .. 返回当前目录的上一级目录</span><br></pre></td></tr></table></figure></li>
+<li><p>pwd：显示当前目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">pwd</span>	显示当前目录</span><br></pre></td></tr></table></figure></li>
+<li><p>mkdir：创建目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir -m xyz 目录名 创建目录时同时设置目录的权限，如 mkdir -m 777 <span class="built_in">test</span></span><br><span class="line">mkdir -p 目录1/目录2/目录3 递归创建多级目录，如 test1/hello/world </span><br></pre></td></tr></table></figure></li>
+<li><p>rmdir：删除<em><strong>空目录</strong></em></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rmdir -p 目录1/目录2/目录3 连带其上级目录一起删除</span><br></pre></td></tr></table></figure></li>
+<li><p>cp：复制文件/目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cp [options] <span class="built_in">source</span> dest</span><br><span class="line">cp -r <span class="built_in">test</span> test1/test2 递归复制</span><br></pre></td></tr></table></figure></li>
+<li><p>rm：删除目录或文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rm [-fir] 文件/目录</span><br><span class="line">rm -f 文件/目录 直接删除文件/目录，没有警告信息</span><br><span class="line">rm -i 文件/目录，删除前显示警告</span><br><span class="line">rm -r 文件/目录，递归删除</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：移动目录/文件，或者修改名称</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mv [-<span class="keyword">fi</span>] <span class="built_in">source</span> dest</span><br><span class="line">mv -f <span class="built_in">source</span> dest 若目标文件存在，直接覆盖</span><br><span class="line">mv -i <span class="built_in">source</span> dest 若目标文件存在，询问是否覆盖</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>linux文件内容查看</p>
+<ul>
+<li><p>cat：从第一行开始显示内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat -b test.txt 列出行号，空白行不显示行号</span><br><span class="line">cat -n test.txt 列出行号，空白行也显示行号</span><br><span class="line">cat -E test.txt 显示结尾的断行字节 &amp; </span><br><span class="line">cat -T test.txt 将 tab 制表符显示为 ^|</span><br></pre></td></tr></table></figure></li>
+<li><p>tac：从最后一行开始显示内容，和 cat 相反</p>
+</li>
+<li><p>tail：显示文件最后 n 行内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail [-n number] 文件名 number 为要显示的行数</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="五、linux用户和用户组管理"><a href="#五、linux用户和用户组管理" class="headerlink" title="五、linux用户和用户组管理"></a>五、linux用户和用户组管理</h5><ol>
+<li><p>添加用户账号</p>
+<ul>
+<li><p>useradd [options] 用户名</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo useradd -d /home/pain -m pain</span><br><span class="line">-d 指定用户主目录 </span><br><span class="line">-m 如果主目录不存在则创建 </span><br><span class="line">-g 指定用户所属用户组</span><br><span class="line">-G 指定用户所属的附加组</span><br><span class="line">-s 指定用户登录shell</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>设置用户账号密码</p>
+<ul>
+<li><p>passwd [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-l 锁定账号</span><br><span class="line">-e 强制账号密码过期</span><br><span class="line">-d 强制删除账号密码</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户账号</p>
+<ul>
+<li><p>userdel [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">userdel -r pain </span><br><span class="line">-r 将账号的主目录也删除</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改用户账号</p>
+<ul>
+<li><p>usermod [options] 账号</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">usermod -s /bin/hello -d /home/hello -g <span class="built_in">test</span> pain</span><br><span class="line">-s 指定新的登录shell</span><br><span class="line">-d 指定新的用户主目录</span><br><span class="line">-g 指定新的用户组</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加用户组</p>
+<ul>
+<li><p>groupadd [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-g GID 指定用户组的id</span><br><span class="line">-o 表示新用户组的id可以和已有用户组的id相同</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>删除用户组</p>
+<ul>
+<li>groupdel 用户组</li>
+</ul>
+</li>
+<li><p>修改用户组</p>
+<ul>
+<li><p>groupmod [options] 用户组</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">groupmod -g 102 group2</span><br><span class="line">将group2的用户组id改为102</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>切换用户组（前提是该用户属于要切换的用户组）</p>
+<ul>
+<li>newgrp 要切换的用户组</li>
+</ul>
+</li>
+</ol>
+<h5 id="六、linux磁盘管理"><a href="#六、linux磁盘管理" class="headerlink" title="六、linux磁盘管理"></a>六、linux磁盘管理</h5><ol>
+<li><p>df：查看文件系统的整体磁盘空间使用量</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">df [options] 目录/文件</span><br><span class="line">-a 列出所有的文件系统</span><br><span class="line">-T 显示文件系统类型</span><br></pre></td></tr></table></figure></li>
+<li><p>du：查看文件和目录的磁盘使用空间</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">du [options] 文件/目录</span><br><span class="line">-a 列出所有的文件与目录容量</span><br><span class="line">-h 以易读的方式显示</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="七、linux-vi-vim"><a href="#七、linux-vi-vim" class="headerlink" title="七、linux vi/vim"></a>七、linux vi/vim</h5><ol>
+<li><p>vi/vim主要分为三种模式：命令行模式、编辑模式、底部命令行模式</p>
+<ul>
+<li><p>命令行模式：此时用户输入会被识别为命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">i 切换到编辑模式</span><br><span class="line">x 删除光标所在位置的字符</span><br><span class="line">: 切换到底部命令行模式</span><br></pre></td></tr></table></figure></li>
+<li><p>编辑模式：可以输入内容编辑文件，按下 esc ，退出编辑模式</p>
+</li>
+<li><p>底部命令行模式：输入命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">q 退出</span><br><span class="line">w 保存</span><br><span class="line">wq 保存退出</span><br><span class="line">q! 不保存退出</span><br></pre></td></tr></table></figure></li>
+<li><p>常用按键：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">—————————————底部命令行使用的复制粘贴、搜索替换等操作—————————————</span><br><span class="line">/key 寻找光标后方的名为 key 的字符串</span><br><span class="line">?key 寻找光标前方的名为 key 的字符串</span><br><span class="line">n 重复上一个寻找的操作，如执行 /key 寻找光标后方的名为 key 的字符串，按下 n 继续向光标后方寻找</span><br><span class="line">N 反向重复上一个寻找的操作，如上，按下 N 向光标前方寻找</span><br><span class="line">:n1,n2s/key1/key2/g 在n1行到n2行之间寻找名为key1的字符串，并将其替换为key2</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/g 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/g 同上，写法不同</span><br><span class="line">:1,<span class="variable">$s</span>/key1/key2/gc 从第一行到最后一行之间寻找key1的字符串，并将其替换为key2，取代之前会有提示信息，让用户确认是否替换</span><br><span class="line">:<span class="variable">$s</span>/word1/word2/gc 同上，写法不同</span><br><span class="line">dd 删除光标所在的一整行</span><br><span class="line">nx 连续向后删除 n 个字符</span><br><span class="line">ndd 删除光标后方的 n 行</span><br><span class="line">d$ 删除光标到该行最后一个字符</span><br><span class="line">d0 删除光标到改行第一个字符</span><br><span class="line">yy 复制光标所在行的内容</span><br><span class="line">nyy 复制光标后方的 n 行内容</span><br><span class="line">y$ 复制光标到该行最后一个字符</span><br><span class="line">y0 复制光标到该行第一个字符</span><br><span class="line">p,P p 将复制的内容粘贴到光标的下一行， P 将复制的内容粘贴到光标的上一行</span><br><span class="line">c 重复删除多个数据，如 10cj 删除光标下方10行</span><br><span class="line">u 复原前一个动作</span><br><span class="line">ctrl+r 重做前一个动作</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到编辑模式的操作—————————————</span><br><span class="line">i,I i 从光标处输入 I 从光标所在行第一个非空格符处输入</span><br><span class="line">a,A a 从光标处的下一个字符处输入 A 从光标所在行最后一个字符处输入</span><br><span class="line">o,O o 从光标处的下一行输入 O 从光标处的上一行输入</span><br><span class="line"></span><br><span class="line">—————————————编辑模式切换到底部命令行模式的操作—————————————</span><br><span class="line">ESC 从编辑模式退出到底部命令行模式</span><br><span class="line"></span><br><span class="line">—————————————底部命令行模式切换到命令行模式的操作—————————————</span><br><span class="line">:w 保存内容</span><br><span class="line">:w! 强制保存</span><br><span class="line">:q 不保存退出</span><br><span class="line">:q! 强制不保存退出</span><br><span class="line">:wq 保存并退出</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h5 id="八、linux-yum命令"><a href="#八、linux-yum命令" class="headerlink" title="八、linux yum命令"></a>八、linux yum命令</h5><ol>
+<li><p>yum：查找、安装、删除软件包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum [options] [<span class="built_in">command</span>] [package]</span><br><span class="line">-y 安装过程选择 yes</span><br><span class="line">-q 不显示安装过程</span><br><span class="line"><span class="built_in">command</span> 要执行的命令</span><br><span class="line">package 软件包</span><br><span class="line"></span><br><span class="line">yum check-update 列出可更新的软件</span><br><span class="line">yum update 更新所有软件</span><br><span class="line">yum list 列出可安装的软件</span><br><span class="line">yum install package 安装指定的软件</span><br><span class="line">yum update package 更新指定的软件</span><br><span class="line">yum remove package 删除指定的软件</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="九、Shell脚本"><a href="#九、Shell脚本" class="headerlink" title="九、Shell脚本"></a>九、Shell脚本</h5><ol>
+<li><p>shell：一种应用程序，它是用户和linux内核之间的桥梁，用户通过shell来间接地使用内核</p>
+</li>
+<li><p>shell脚本：一种为shell编写的脚本程序</p>
+</li>
+<li><p>shell的分类：</p>
+<ul>
+<li>Bourne Shell（/usr/bin/sh或/bin/sh）</li>
+<li>Bourne Again Shell（/bin/bash）是linux的默认shell</li>
+<li>C Shell（/usr/bin/csh）</li>
+<li>K Shell（/usr/bin/ksh）</li>
+<li>Shell for Root（/sbin/sh）</li>
+</ul>
+</li>
+<li><p>查看系统可用的shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/shells</span><br><span class="line"></span><br><span class="line">/bin/sh</span><br><span class="line">/bin/bash</span><br><span class="line">/bin/rbash</span><br><span class="line">/bin/dash</span><br><span class="line">/usr/bin/tmux</span><br><span class="line">/usr/bin/screen</span><br></pre></td></tr></table></figure></li>
+<li><p>查看当前系统的默认shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$SHELL</span></span><br><span class="line"></span><br><span class="line">/bin/bash</span><br></pre></td></tr></table></figure></li>
+<li><p>编写一个简单的shell脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;hello world,this is a shell script&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>执行shell脚本：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./helloworld.sh		注意要在shell脚本所在目录</span><br><span class="line">hello world,this is a shell script</span><br><span class="line"></span><br><span class="line">/bin/sh helloworld.sh	</span><br><span class="line">hello world,this is a shell script</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h5 id="十、linux命令（经常使用的）"><a href="#十、linux命令（经常使用的）" class="headerlink" title="十、linux命令（经常使用的）"></a>十、linux命令（经常使用的）</h5><ol>
+<li><p>文件管理</p>
+<ul>
+<li><p>cat [options] filename</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">-n | --number	从1开始对输出的行数编号</span><br><span class="line">-b | --number-nonblank	和-n相似，但是对空白行不编号</span><br><span class="line">-s | --squeeze-blank	连续两行以上空白行，替换为一行空白行</span><br><span class="line">-E | --show-ends	在每行结束处显示 $ </span><br><span class="line">-T | --show-tabs	将 TAB 符显示为 ^|</span><br><span class="line"></span><br><span class="line">cat test1.txt	显示test1.txt中的内容</span><br><span class="line">cat test1.txt test2.txt		同时显示test1.txt和test2.txt中的内容</span><br><span class="line">cat test1.txt test2.txt &gt; test3.txt	将test1.txt和test2.txt中的内容写到test3.txt中</span><br><span class="line">cat /dev/null &gt; test4.txt	将test4中的内容清空</span><br><span class="line"></span><br><span class="line">/dev/null 是一个特殊的设备文件，它丢弃一切写入其中的数据（报告写入成功），读取它则会立即得到一个 EOF</span><br></pre></td></tr></table></figure></li>
+<li><p>chgrp：参考 三</p>
+</li>
+<li><p>chmod：同上</p>
+</li>
+<li><p>chown：同上</p>
+</li>
+<li><p>find path [options]，命令行上第一个 -(),! 之前的部分为path，后面的是expression，如果path为空字符串，使用当前路径，如果expression为空字符串，使用-print为预设expression</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find . -name <span class="string">&quot;.txt&quot;</span>		在当前目录查找所有以 .txt 结尾的文件</span><br><span class="line">find . -iname <span class="string">&quot;T*&quot;</span>		查找文件名满足T*的文件，忽略大小写</span><br><span class="line">find . -cmin +10		查找修改时间超过10分钟的文件</span><br><span class="line">find . -amin +10		查找超过10分钟内被访问的文件</span><br><span class="line">find . -newer test3.txt	查找比test3.txt文件修改时间更晚的文件</span><br><span class="line">find . -anewer test3.txt	查找比test3.txt文件更晚被读取的文件</span><br><span class="line">find . -<span class="built_in">type</span> c		查找文件类型是 c 的文件</span><br><span class="line">c的取值</span><br><span class="line">	d	目录</span><br><span class="line">	l	符号链接</span><br><span class="line">	f	普通文件</span><br><span class="line">	c	字符设备</span><br><span class="line">	b	块设备</span><br><span class="line">	s	套接字</span><br></pre></td></tr></table></figure></li>
+<li><p>mv：参考 三</p>
+</li>
+<li><p>rm：同上</p>
+</li>
+<li><p>tee  [-ai][file]</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tee test1.txt -a	读取用户输入的内容，将其输出到test1.txt文件中</span><br><span class="line">-a | --append		附加到文件后面，而非覆盖</span><br><span class="line">-i | --ignore-interrupts	忽略中断信号</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
 ]]></content>
   </entry>
   <entry>
-    <title>编写shell脚本禁止非法访问的ip</title>
-    <url>/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/</url>
-    <content><![CDATA[<h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
-<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+    <title>Linux下搭建Redis集群</title>
+    <url>/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS 7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
+<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看主从节点启动情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
 </li>
-<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
+<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
 </li>
-<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
-</li>
-</ol>
+<li><p>测试主节点和从节点数据同步</p>
 <blockquote>
-<p>本机Linux版本为CentOS7</p>
+<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
 </blockquote>
-<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
-<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
-<li>从每一行信息中分离出对应的外部ip</li>
-<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
-<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
-<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
-</ol>
-<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
-<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存非法访问的ip</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存cron定时任务执行日志</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
-<li><p>编写脚本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>设置定时任务，每天执行一次</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>查看定时任务日志</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
-<li><p>查看ip是否被禁止访问</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
-</ol>
+<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
+
+<p>在连接主节点的窗口中插入一些数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
+</blockquote>
+<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
+<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
+
+<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
+<li><p>启动哨兵</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
+<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>模拟主节点挂掉的情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>的日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
+</li>
+<li><p>重新启动原来的主节点6379</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
+<p>也可以用<code>info</code>命令查看从节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
+</li>
+</ul>
+<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
+<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
+<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
+<blockquote>
+<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
+<li><p>启动上述6个节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>查看节点是否启动成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+<li><p>创建真正的集群！！！</p>
+<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
+<blockquote>
+<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+<li><p>更简单快速地创建集群</p>
+<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
+</li>
+<li><p>连接集群并使用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
+</li>
+<li><p>模拟三个主节点中的一个挂掉</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+</ul>
+<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
+<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+</ul>
 ]]></content>
   </entry>
   <entry>
@@ -2221,31 +2130,104 @@
 ]]></content>
   </entry>
   <entry>
-    <title>使用IDEA构建docker镜像</title>
-    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
-<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
-<li>装有Docker环境的Linux服务器/虚拟机</li>
+    <title>Centos安装Redis</title>
+    <url>/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
+<li><p>从官网获取Redis压缩包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
+<li><p>使用redis-cli连接redis-server</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
+<ul>
+<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
+<ul>
+<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+</ul>
+<blockquote>
+<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
+<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引入Redis依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过RedisTemplate操作Redis</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>编写shell脚本禁止非法访问的ip</title>
+    <url>/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/</url>
+    <content><![CDATA[<h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
+<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
+</li>
+<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
+</li>
 </ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
-<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
-<p>配置docker服务器信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
-<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
-</li>
-<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
-</li>
-<li><p>验证docker镜像是否部署成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
-</li>
+<blockquote>
+<p>本机Linux版本为CentOS7</p>
+</blockquote>
+<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
+<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
+<li>从每一行信息中分离出对应的外部ip</li>
+<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
+<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
+<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
 </ol>
+<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
+<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存非法访问的ip</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存cron定时任务执行日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置定时任务，每天执行一次</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>查看定时任务日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
+<li><p>查看ip是否被禁止访问</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>GitHub Page去除域名绑定后仍定向至以前的域名</title>
+    <url>/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/</url>
+    <content><![CDATA[<blockquote>
+<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
+</blockquote>
+<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
 ]]></content>
   </entry>
   <entry>
@@ -2347,13 +2329,31 @@
 ]]></content>
   </entry>
   <entry>
-    <title>GitHub Page去除域名绑定后仍定向至以前的域名</title>
-    <url>/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/</url>
-    <content><![CDATA[<blockquote>
-<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
-</blockquote>
-<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
+    <title>使用IDEA构建docker镜像</title>
+    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
+<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
+<li>装有Docker环境的Linux服务器/虚拟机</li>
+</ol>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
+<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
+<p>配置docker服务器信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
+<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
+</li>
+<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
+</li>
+<li><p>验证docker镜像是否部署成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
+</li>
+</ol>
 ]]></content>
   </entry>
 </search>
