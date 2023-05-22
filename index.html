@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,6 +181,144 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/22/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/05/22/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/" class="post-title-link" itemprop="url">如何减小Spring Boot项目jar包体积</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-05-22 15:55:09 / Modified: 15:53:43" itemprop="dateCreated datePublished" datetime="2023-05-22T15:55:09+08:00">2023-05-22</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>相信大部分Java开发者在使用SpringBoot开发项目时，经常会遇到代码频繁改动，每次打包部署到开发/测试环境时，由于jar包体积过大，上传jar包消耗了大量的时间，下面介绍如何给SpringBoot项目jar包减肥（使用maven作为打包工具）</p>
+</blockquote>
+<p><strong>注：Spring Boot版本：2.5.7、JDK版本：jdk8</strong></p>
+<h4 id="jar包体积"><a href="#jar包体积" class="headerlink" title="jar包体积"></a>jar包体积</h4><p><em>可以看到，一个普通的Spring Boot项目，其生成的jar包体积就高达几十近百兆</em></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/springboot%E7%9A%84jar%E5%8C%85%E4%BD%93%E7%A7%AF.png"></p>
+<hr>
+<h4 id="jar包结构"><a href="#jar包结构" class="headerlink" title="jar包结构"></a>jar包结构</h4><p><em>解压生成的jar包，查看其目录结构</em></p>
+<ul>
+<li><p>BOOT-INF</p>
+<ul>
+<li>classes    <strong>业务代码</strong></li>
+<li>lib            <strong>项目依赖</strong></li>
+</ul>
+</li>
+<li><p>META-INF</p>
+<ul>
+<li>maven    <strong>maven配置信息</strong></li>
+<li>MANIFEST.MF    <strong>jar包的描述信息和属性</strong></li>
+<li>spring-configuration-metadata.json    <strong>配置提示信息，使用IDE编写配置文件会有提示</strong></li>
+</ul>
+</li>
+<li><p>org</p>
+<ul>
+<li>springframework    <strong>启动jar包需要的class</strong></li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/springboot%E7%9A%84jar%E5%8C%85%E7%BB%93%E6%9E%84.png"></p>
+</li>
+</ul>
+<hr>
+<h4 id="修改maven打包配置"><a href="#修改maven打包配置" class="headerlink" title="修改maven打包配置"></a>修改maven打包配置</h4><ul>
+<li><p>修改项目pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">layout</span>&gt;</span>ZIP<span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">include</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>nothing<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nothing<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用maven重新打包，可以发现现在的jar包体积比原来要小很多</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E9%85%8D%E7%BD%AEmaven%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E4%B9%8B%E5%90%8Ejar%E5%8C%85%E4%BD%93%E7%A7%AF.png"></p>
+</li>
+</ul>
+<hr>
+<h4 id="准备jar包运行需要的依赖"><a href="#准备jar包运行需要的依赖" class="headerlink" title="准备jar包运行需要的依赖"></a>准备jar包运行需要的依赖</h4><ul>
+<li><p>不修改maven打包配置，生成带有<code>lib</code>目录的jar包，然后解压将<code>lib</code>目录单独提取出来</p>
+</li>
+<li><p>修改maven打包配置，将依赖copy到指定目录</p>
+<p>在plugins标签中添加下面内容，如果<code>maven-dependency-plugin</code>找不到，可以先引入该依赖，然后删除该依赖配置，以后每次打包后在target目录下会生成一个<code>lib</code>依赖目录</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-dependency-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>prepare-package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>$&#123;project.build.directory&#125;/lib<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="运行瘦身后的jar包（仅限JDK8版本）"><a href="#运行瘦身后的jar包（仅限JDK8版本）" class="headerlink" title="运行瘦身后的jar包（仅限JDK8版本）"></a>运行瘦身后的jar包（仅限JDK8版本）</h4><ul>
+<li><p>通过指定<code>loader.path</code>参数指定依赖目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dloader.path=./lib -jar user-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E8%BF%90%E8%A1%8C%E7%98%A6%E8%BA%AB%E5%90%8E%E7%9A%84jar%E5%8C%85.png"></p>
+</li>
+<li><p>通过指定<code>java.ext.dirs</code>参数，注意不能覆盖原有的依赖（<code>$JAVA_HOME/jre/lib/ext）</code>，可以通过<code>:</code>添加多个依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Djava.ext.dirs=<span class="variable">$JAVA_HOME</span>/jre/lib/ext:./lib -jar user-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E8%BF%90%E8%A1%8C%E7%98%A6%E8%BA%AB%E5%90%8E%E7%9A%84jar%E5%8C%852.png"></p>
+<p><strong>==注意：==</strong><code>java.ext.dirs</code>参数在JDK8以上版本好像不支持</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1291,128 +1429,8 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-12-22 17:37:31" itemprop="dateModified" datetime="2022-12-22T17:37:31+08:00">2022-12-22</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
-<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
-</li>
-<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
-</li>
-</ol>
-<blockquote>
-<p>本机Linux版本为CentOS7</p>
-</blockquote>
-<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
-<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
-<li>从每一行信息中分离出对应的外部ip</li>
-<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
-<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
-<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
-</ol>
-<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
-<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存非法访问的ip</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存cron定时任务执行日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
-<li><p>编写脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>设置定时任务，每天执行一次</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>查看定时任务日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
-<li><p>查看ip是否被禁止访问</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 </div>
@@ -1438,14 +1456,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">87k</span>
+    <span title="Symbols count total">89k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">1:19</span>
+    <span title="Reading time total">1:21</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
