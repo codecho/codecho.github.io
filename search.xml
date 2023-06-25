@@ -1408,6 +1408,206 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Markdown语法学习</title>
+    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>正则表达式</title>
+    <url>/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<ol>
+<li><p>介绍</p>
+<blockquote>
+<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
+<p>如：</p>
+<ul>
+<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
+<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
+</ul>
+</blockquote>
+</li>
+<li><p>普通字符和非打印字符参考<a href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
+</li>
+<li><p>元字符：</p>
+<ul>
+<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
+<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
+<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
+<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
+<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
+<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
+<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
+<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
+<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
+<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
+<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
+<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
+<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
+<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
+<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
+<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
+<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
+<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
+<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
+<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
+<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
+<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
+<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
+</ul>
+</li>
+<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
+<ul>
+<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
+<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
+<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
+<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
+<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
+<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
+<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
+<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
+<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
+<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
+<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
+</ul>
+</li>
+<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
+<ul>
+<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
+<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
+<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
+</ul>
+</li>
+<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
+</li>
+<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
+<ul>
+<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
+<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
+<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
+<li>\B：匹配一个非单词边界</li>
+<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
+</ul>
+</li>
+<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
+<ul>
+<li><p>\：转义符</p>
+</li>
+<li><p>(), (?:), (?=), []：圆括号和方括号</p>
+</li>
+<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
+</li>
+<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
+</li>
+<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
+</li>
+</ul>
+</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>Mybatis一知半解</title>
     <url>/2023/02/18/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/</url>
     <content><![CDATA[<ol>
@@ -1468,6 +1668,57 @@
 </ol>
 </li>
 </ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>Centos安装Redis</title>
+    <url>/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
+    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
+<li><p>从官网获取Redis压缩包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
+<li><p>使用redis-cli连接redis-server</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
+<ul>
+<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
+<ul>
+<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+</ul>
+<blockquote>
+<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
+<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引入Redis依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过RedisTemplate操作Redis</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
+</li>
+</ul>
 ]]></content>
   </entry>
   <entry>
@@ -1656,164 +1907,6 @@
 <h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
 <li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
 <p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Markdown语法学习</title>
-    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
-</ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Centos安装Redis</title>
-    <url>/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/</url>
-    <content><![CDATA[<h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS7.5</li>
-<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
-<li><p>从官网获取Redis压缩包</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
-
-<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
-</li>
-<li><p>编译安装</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
-<li><p>启动</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
-<li><p>使用redis-cli连接redis-server</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
-<ul>
-<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
-</ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
-<ul>
-<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
-</ul>
-<blockquote>
-<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
-</blockquote>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
-<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
-<li><p>引入Redis依赖</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>通过RedisTemplate操作Redis</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
 </li>
 </ul>
 ]]></content>
@@ -2193,127 +2286,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>正则表达式</title>
-    <url>/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<ol>
-<li><p>介绍</p>
-<blockquote>
-<p>正则表达式(regular expression)描述了一种字符串匹配的模式（pattern），可以用来检查一个串是否含有某种子串、将匹配的子串替换或者从某个串中取出符合某个条件的子串等。</p>
-<p>如：</p>
-<ul>
-<li>abc*d：可以匹配abd、abcd、abccd等，*表示它前面的字符出现零次或多次，所以可以匹配没有c字符、有一个或多个c字符的字符串</li>
-<li>abc+d：可以匹配abcd、abccd、abcccd等，+表示它前面的字符出现至少一次，所以可以匹配有一个c字符、有多个c字符的字符串</li>
-</ul>
-</blockquote>
-</li>
-<li><p>普通字符和非打印字符参考<a href="https://www.w3cschool.cn/zhengzebiaodashi/regexp-syntax.html">W3C正则表达式教程</a></p>
-</li>
-<li><p>元字符：</p>
-<ul>
-<li>(pattern)：匹配该pattern并获取匹配结果，获取的匹配可以从产生的Matches集合得到</li>
-<li>(?:pattern)：匹配该pattern但不获取匹配结果，这是一个非获取匹配，即不进行存储供以后使用，如<code>&#39;industr(?:y|ies)</code> 就是一个比 <code>&#39;industry|industries&#39;</code> 更简略的表达式</li>
-<li>(?=pattern)：正向肯定预查，在任何匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?=95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”</li>
-<li>(?!pattern)：正向否定预查，在任何不匹配pattern的字符串开始处匹配查找字符串，这是一个非获取匹配，即不进行存储供以后使用，如<code>&quot;Windows(?!95|98|NT|2000)&quot;</code>能匹配<code>&quot;Windows3.1&quot;</code>中的”Windows”，但不能匹配<code>&quot;Windows2000&quot;</code>中的”Windows”</li>
-<li>(?&lt;=pattern)：反向肯定预查，与正向肯定预查类似，只是方向相反，如”<code>(?&lt;=95|98|NT|2000)Windows</code>“能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“</li>
-<li>(?&lt;!pattern)：反向否定预查，与正向否定预查类似，只是方向相反，如”<code>(?&lt;!95|98|NT|2000)Windows</code>“能匹配”<code>3.1Windows</code>“中的”<code>Windows</code>“，但不能匹配”<code>2000Windows</code>“中的”<code>Windows</code>“</li>
-<li>x|y：匹配x或y，如<code>&#39;a|b&#39;</code>匹配<code>&#39;a&#39;</code>或<code>&#39;b&#39;</code>，<code>&#39;(a|b)c&#39;</code>匹配<code>&#39;ac&#39;</code>或<code>&#39;bc&#39;</code></li>
-<li>[xyz]：字符集合，匹配[]包含的任意字符，如<code>&#39;[abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的a、b、c</li>
-<li>[^xyz]：负值字符集合，匹配[]未包含的任意字符，如<code>&#39;[^abc]&#39;</code>匹配<code>&#39;abcde&#39;</code>中的d、e</li>
-<li>[a-z]：字符范围，匹配指定范围内的任意字符，如<code>&#39;[a-z]&#39;</code>匹配<code>&#39;a&#39;</code>~`’z’<code>范围内的任意小写字母，</code>[A-Z]`同理</li>
-<li>[^a-z]：负值字符范围，匹配不在指定范围内的任意字符，如<code>&#39;[^a-z]&#39;</code>匹配不在<code>&#39;a&#39;</code>~`’z’<code>范围内的任意字符，</code>‘[^A-Z]’`同理</li>
-<li>\cx：匹配由x指明的控制字符，如<code>&#39;\cM&#39;</code>匹配一个Control-M或回车符，x的值必须为a-z或A-Z之一，否则将c视为一个原义的<code>&#39;c&#39;</code>字符</li>
-<li>\d：匹配一个数字字符，等价于<code>&#39;[0-9]&#39;</code></li>
-<li>\D：匹配一个非数字字符，等价于<code>&#39;[^0-9]&#39;</code></li>
-<li>\f：匹配一个换页符，等价于<code>&#39;\x0c&#39;</code>和<code>&#39;\cL&#39;</code></li>
-<li>\n：匹配一个换行符，等价于<code>&#39;\x0a&#39;</code>和<code>&#39;\cJ&#39;</code></li>
-<li>\r：匹配一个回车符，等价于<code>&#39;\x0d&#39;</code>和<code>&#39;\cM&#39;</code></li>
-<li>\s：匹配任何空白符，包括空格、制表符、换页符等，等价于<code>&#39;[ \f\n\r\t\v]&#39;</code></li>
-<li>\S：匹配任何非空白符，等价于<code>&#39;[^ \f\n\r\t\v]&#39;</code></li>
-<li>\t：匹配一个制表符，等价于<code>&#39;\x09&#39;</code> 和 <code>&#39;\cI&#39;</code></li>
-<li>\v：匹配一个垂直制表符，等价于<code>&#39;\x0b&#39;</code> 和 <code>&#39;\cK&#39;</code></li>
-<li>\w：匹配字母、数字、下划线，等价于<code>&#39;[A-Za-z0-9_]&#39;</code></li>
-<li>\W：匹配非字母、数字、下划线，等价于<code>&#39;[^A-Za-z0-9]&#39;</code></li>
-</ul>
-</li>
-<li><p>特殊字符：有特殊含义的字符，比如*、+、?等</p>
-<ul>
-<li>^：匹配字符串开始位置，如<code>&#39;^abc&#39;</code>匹配abc开头的字符串，；如果在方括号表达式中使用，表示不接受后面的字符，如<code>&#39;[^abc]&#39;</code>匹配a、b、c之外的字符；如果要匹配字符本身，使用<code>&#39;\^&#39;</code>进行转义</li>
-<li>$：匹配字符串结束位置；如果设置了RegExp 对象的 Multiline 属性，也可以匹配<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>；如果要匹配字符本身，使用<code>&#39;\$&#39;</code>进行转义</li>
-<li>()：标记一个子表达式的开始和结束位置；子表达式可以获取供以后使用；如果要匹配字符本身，使用<code>&#39;\(&#39;</code>或<code>&#39;\)&#39;</code>进行转义</li>
-<li>*：匹配前面的子表达式<strong>零次或多次</strong>；如果要匹配字符本身，使用<code>&#39;\*&#39;</code>进行转义</li>
-<li>+：匹配前面的子表达式<strong>一次或多次（至少一次）</strong>；如果要匹配字符本身，使用<code>&#39;\+&#39;</code>进行转义</li>
-<li>?：匹配前面的子表达式<strong>零次或一次（最多一次）</strong>；指明一个非贪婪限定符；如果要匹配字符本身，使用<code>&#39;\?&#39;</code>进行转义</li>
-<li>.：匹配除换行符<code>&#39;\n&#39;</code>之外的任何<strong>单字符</strong>，如果要匹配字符本身，使用<code>&#39;\.&#39;</code>进行转义</li>
-<li>[：标记方括号表达式；如果要匹配字符本身，使用<code>&#39;\[&#39;</code>进行转义</li>
-<li>\：将下一个字符标记为特殊字符、原义字符、向后引用、八进制转义符，如<code>&#39;\n&#39;</code>匹配换行符，<code>&#39;\\&#39;</code>匹配<code>&#39;\&#39;</code></li>
-<li>{：标记限定符表达式开始位置；如果要匹配字符本身，使用<code>&#39;\&#123;&#39;</code>进行转义</li>
-<li>|：指明两项之间的一个选择；如果要匹配字符本身，使用<code>&#39;\|&#39;</code>进行转义</li>
-</ul>
-</li>
-<li><p>限定符：限定符用来指定正则表达式的一个给定组件必须要出现多少次才能满足匹配。有 ***** 或 <strong>+</strong> 或 <strong>?</strong> 或 <strong>{n}</strong> 或 <strong>{n,}</strong> 或 <strong>{n,m}</strong> 共6种，下面只介绍 <strong>{n}</strong> 、 <strong>{n,}</strong> 、 <strong>{n,m}</strong> </p>
-<ul>
-<li>{n}：n为非负整数，表示确切匹配n次，如<code>abc&#123;3&#125;</code>匹配<code>&#39;abccc&#39;</code>，不匹配<code>&#39;abcc&#39;</code></li>
-<li>{n,}：n为非负整数，表示至少匹配n次，如<code>&#39;abc&#123;3,&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的所有c</li>
-<li>{n,m}：n和m均为非负整数，且n&lt;=m，表示最少匹配n次，最多匹配m次，如<code>&#39;abc&#123;1,3&#125;&#39;</code>匹配<code>&#39;abcccc&#39;</code>中的前三个c</li>
-</ul>
-</li>
-<li><p>贪婪和非贪婪：*、+ 限定符都是贪婪的，因为它们会尽可能多的匹配文字，只有在它们的后面加上一个?就可以实现非贪婪或最小匹配。</p>
-</li>
-<li><p>定位符：定位符能够将正则表达式固定到行首或行尾。它们还使您能够创建这样的正则表达式，这些正则表达式出现在一个单词内、在一个单词的开头或者一个单词的结尾。定位符用来描述字符串或单词的边界，<strong>^</strong> 和 <strong>$</strong> 分别指字符串的开始与结束，<strong>\b</strong> 描述单词的前或后边界，<strong>\B</strong> 表示非单词边界。</p>
-<ul>
-<li>^：匹配字符串开始的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;^&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之后的位置匹配</li>
-<li>$：匹配字符串结束的位置；如果设置了RegExp 对象的 Multiline 属性，<code>&#39;$&#39;</code>还会和<code>&#39;\n&#39;</code>或<code>&#39;\r&#39;</code>之前的位置匹配</li>
-<li>\b：匹配一个单词边界，即单词和空格之间的位置</li>
-<li>\B：匹配一个非单词边界</li>
-<li><strong>注意：</strong>不能将限定符与定位符一起使用</li>
-</ul>
-</li>
-<li><p>运算符优先级：正则表达式从左到右进行计算，并遵循优先级顺序，相同优先级的从左到右进行运算，不同优先级的运算先高后低，下面按照最高到最低顺序说明</p>
-<ul>
-<li><p>\：转义符</p>
-</li>
-<li><p>(), (?:), (?=), []：圆括号和方括号</p>
-</li>
-<li><p>*, +, ?, {n}, {n,}, {n,m}：限定符</p>
-</li>
-<li><p>^, $, \任何元字符、任何字符：位置和顺序</p>
-</li>
-<li><p>|：替换，”或”操作，字符具有高于替换运算符的优先级，使得”m|food”匹配”m”或”food”。若要匹配”mood”或”food”，请使用括号创建子表达式，从而产生”(m|f)ood”</p>
-</li>
-</ul>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>使用IDEA构建docker镜像</title>
-    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
-<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
-<li>装有Docker环境的Linux服务器/虚拟机</li>
-</ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
-<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
-<p>配置docker服务器信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
-<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
-</li>
-<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
-</li>
-<li><p>验证docker镜像是否部署成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
-</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
     <title>SpringBoot项目不返回值为null的字段</title>
     <url>/2023/04/26/2023-04-26-SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/</url>
     <content><![CDATA[<h4 id="自定义配置类，注入ObjectMapper"><a href="#自定义配置类，注入ObjectMapper" class="headerlink" title="自定义配置类，注入ObjectMapper"></a>自定义配置类，注入ObjectMapper</h4><ul>
@@ -2329,16 +2301,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>GitHub Page去除域名绑定后仍定向至以前的域名</title>
-    <url>/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/</url>
-    <content><![CDATA[<blockquote>
-<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
-</blockquote>
-<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
-]]></content>
-  </entry>
-  <entry>
     <title>CentOS查找历史命令</title>
     <url>/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<blockquote>
@@ -2348,6 +2310,16 @@
 
 
 
+]]></content>
+  </entry>
+  <entry>
+    <title>GitHub Page去除域名绑定后仍定向至以前的域名</title>
+    <url>/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/</url>
+    <content><![CDATA[<blockquote>
+<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
+</blockquote>
+<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
 ]]></content>
   </entry>
   <entry>
@@ -2497,6 +2469,75 @@
 ]]></content>
   </entry>
   <entry>
+    <title>浅谈短链接设计</title>
+    <url>/2023/05/09/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/</url>
+    <content><![CDATA[<blockquote>
+<p>随着互联网的普及，尤其是移动互联网的发展，如今我们每个人都要和各种各样的网站、APP打交道，每天都会收到很多服务、营销等信息，有邮件、短信、微信推送等，其中短信应该是接触最频繁的，毕竟除了正经的短信外，还有很多不良信息甚至有害信息源源不断地发送到我们的手机上。</p>
+<p>不知道大家有没有注意，我们经常可以在服务类短信的最后可以看到一个链接，通常是xx活动链接或xx账单链接，而且基本上都很简短，有些甚至只有几个字母，如下图中的中国电信链接，当我们点击链接时，往往会跳转到另一个网址，并且网址链接会比短信中的要长很多，这里其实就是使用的短链接。</p>
+</blockquote>
+<ul>
+<li>短信中的短链接</li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E4%B8%AD%E7%9A%84%E7%9F%AD%E9%93%BE%E6%8E%A5.jpg"></p>
+<ul>
+<li><p>实际跳转网址</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E4%B8%AD%E7%9A%84%E7%9F%AD%E9%93%BE%E6%8E%A52.png"></p>
+</li>
+</ul>
+<hr>
+<h3 id="为什么要使用短链接"><a href="#为什么要使用短链接" class="headerlink" title="为什么要使用短链接"></a>为什么要使用短链接</h3><ol>
+<li><p>短信文本过长会拆分成多条计费，而网址链接一般都比较长，使用短链接能有效降低企业成本</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E5%8F%91%E9%80%81%E6%88%90%E6%9C%AC.png"></p>
+</li>
+<li><p>某些内容平台限制文本长度</p>
+</li>
+<li><p>降低网络传输成本，文本越长，消耗的网络资源也越多</p>
+</li>
+<li><p>将链接转为二维码，如果链接过长，生成的二维码会难以识别</p>
+</li>
+<li><p>某些平台对长链接识别不友好</p>
+</li>
+</ol>
+<hr>
+<h3 id="短链接原理"><a href="#短链接原理" class="headerlink" title="短链接原理"></a>短链接原理</h3><ol>
+<li>根据上面图片可以看到，点击短链接后，会向服务器发起一个请求，服务器返回的状态码为<code>302</code>，并且在<code>response</code>的<code>Location</code>属性返回了实际网址，这里用到的就是<strong>302重定向</strong></li>
+<li>重定向分为301重定向和302重定向，301是永久重定向，即首次访问后，每次访问不再请求服务器，而是直接根据浏览器缓存跳转到对应的页面；302是临时重定向，即每次访问都会重新请求服务器</li>
+<li>对长链接进行压缩，最常见的就是使用哈希，当然使用其他的算法也可以，比如MD5、SHA等，对于短链接我们关心的是效率，所以使用一般的哈希函数就可以了</li>
+<li>生成短链接后，我们需要在数据库保存短链接和长链接的映射关系，这样在重定向时才知道应该向浏览器返回哪个长链接</li>
+</ol>
+<p><em><strong>知道了原理后，我们可以自己模仿实现上面的效果</strong></em></p>
+<hr>
+<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
+<li><p>创建一个web工程，这里为了方便，直接创建一个SpringBoot项目，引入guava和redis依赖，我们使用guava的哈希算法生成哈希值，使用redis来保存链接数据</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>31.0.1-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>编写<code>BizController</code>负责生成短链接</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/biz&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BizController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/generateShortUrl&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">generateShorUrl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里使用SpringBoot的官方文档页面作为要重定向的长链接网址</span></span><br><span class="line">        String longUrl = <span class="string">&quot;https://docs.spring.io/spring-boot/docs/2.7.11/reference/html/getting-started.html#getting-started&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用guava提供的哈希工具类对长链接进行压缩，这里使用的是murmur3_32_fixed算法，它会生成32位的哈希值，当然也可以使用其他哈希算法，</span></span><br><span class="line">        String shortUrl = Hashing.murmur3_32_fixed().hashBytes(longUrl.getBytes()).toString();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 将短链接和长链接的映射关系保存到redis中，实际开发中可以保存到MySQL数据库，这里为了演示方便直接使用redis</span></span><br><span class="line">        stringRedisTemplate.opsForValue().set(shortUrl, longUrl);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;shorUrl: http://127.0.0.1:8080/short/&quot;</span> + shortUrl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>编写<code>ShortUrlController</code>负责重定向</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/short&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShortUrlController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/&#123;url&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">redirect</span><span class="params">(<span class="meta">@PathVariable(&quot;url&quot;)</span> String url, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 从数据库获取短链接对应的长链接，这里用redis演示</span></span><br><span class="line">        String longUrl = stringRedisTemplate.opsForValue().get(url);</span><br><span class="line">        <span class="keyword">if</span> (Strings.isEmpty(longUrl)) &#123;</span><br><span class="line">            response.setStatus(HttpStatus.NOT_FOUND.value());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置状态码为302</span></span><br><span class="line">        response.setStatus(HttpStatus.FOUND.value());</span><br><span class="line">        <span class="comment">// 设置Location为长链接</span></span><br><span class="line">        response.setHeader(HttpHeaders.LOCATION, longUrl);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>测试</p>
+<ul>
+<li><p>测试生成短链接</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E6%B5%8B%E8%AF%95%E7%94%9F%E6%88%90%E7%9F%AD%E9%93%BE%E6%8E%A5.png"></p>
+</li>
+<li><p>查看redis</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/redis%E4%BF%9D%E5%AD%98%E7%9F%AD%E9%93%BE%E6%8E%A5%E5%92%8C%E9%95%BF%E9%93%BE%E6%8E%A5.png"></p>
+</li>
+<li><p>测试重定向</p>
+<p>在浏览器输入<a href="http://localhost:8080/short/9591dfe4">http://localhost:8080/short/9591dfe4</a>，发现成功重定向至SpringBoot文档页面</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E6%B5%8B%E8%AF%95%E9%87%8D%E5%AE%9A%E5%90%91.png"></p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
+<li>使用短链接可以为我们带来很多好处</li>
+<li>生成短链接的方式有很多，除了哈希算法外，还可以使用数据库自增id、redis自增、UUID、雪花算法等，每种方法各有有点，根据自身需求合理选择</li>
+<li>生成的短链接需要保证其唯一性，使用MySQL数据库，可以为短链接字段设置唯一索引，使用其他方式需要自己实现方法保证短链接唯一</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>浅谈Java Agent</title>
     <url>/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/</url>
     <content><![CDATA[<blockquote>
@@ -2621,75 +2662,6 @@
 <li>Java Agent是JDK提供的一种技术，可以对Java程序进行增强、监测、分析等</li>
 <li>Java Agent主要有<code>premain</code>和<code>agentmain</code>两个入口方法，<code>Instrumentation</code>接口可以让我们在程序运行期间动态地更改字节码、替换class等</li>
 <li>可以通过<code>Javassist</code>或<code>ASM</code>等工具来方便地操作字节码</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅谈短链接设计</title>
-    <url>/2023/05/09/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/</url>
-    <content><![CDATA[<blockquote>
-<p>随着互联网的普及，尤其是移动互联网的发展，如今我们每个人都要和各种各样的网站、APP打交道，每天都会收到很多服务、营销等信息，有邮件、短信、微信推送等，其中短信应该是接触最频繁的，毕竟除了正经的短信外，还有很多不良信息甚至有害信息源源不断地发送到我们的手机上。</p>
-<p>不知道大家有没有注意，我们经常可以在服务类短信的最后可以看到一个链接，通常是xx活动链接或xx账单链接，而且基本上都很简短，有些甚至只有几个字母，如下图中的中国电信链接，当我们点击链接时，往往会跳转到另一个网址，并且网址链接会比短信中的要长很多，这里其实就是使用的短链接。</p>
-</blockquote>
-<ul>
-<li>短信中的短链接</li>
-</ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E4%B8%AD%E7%9A%84%E7%9F%AD%E9%93%BE%E6%8E%A5.jpg"></p>
-<ul>
-<li><p>实际跳转网址</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E4%B8%AD%E7%9A%84%E7%9F%AD%E9%93%BE%E6%8E%A52.png"></p>
-</li>
-</ul>
-<hr>
-<h3 id="为什么要使用短链接"><a href="#为什么要使用短链接" class="headerlink" title="为什么要使用短链接"></a>为什么要使用短链接</h3><ol>
-<li><p>短信文本过长会拆分成多条计费，而网址链接一般都比较长，使用短链接能有效降低企业成本</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E7%9F%AD%E4%BF%A1%E5%8F%91%E9%80%81%E6%88%90%E6%9C%AC.png"></p>
-</li>
-<li><p>某些内容平台限制文本长度</p>
-</li>
-<li><p>降低网络传输成本，文本越长，消耗的网络资源也越多</p>
-</li>
-<li><p>将链接转为二维码，如果链接过长，生成的二维码会难以识别</p>
-</li>
-<li><p>某些平台对长链接识别不友好</p>
-</li>
-</ol>
-<hr>
-<h3 id="短链接原理"><a href="#短链接原理" class="headerlink" title="短链接原理"></a>短链接原理</h3><ol>
-<li>根据上面图片可以看到，点击短链接后，会向服务器发起一个请求，服务器返回的状态码为<code>302</code>，并且在<code>response</code>的<code>Location</code>属性返回了实际网址，这里用到的就是<strong>302重定向</strong></li>
-<li>重定向分为301重定向和302重定向，301是永久重定向，即首次访问后，每次访问不再请求服务器，而是直接根据浏览器缓存跳转到对应的页面；302是临时重定向，即每次访问都会重新请求服务器</li>
-<li>对长链接进行压缩，最常见的就是使用哈希，当然使用其他的算法也可以，比如MD5、SHA等，对于短链接我们关心的是效率，所以使用一般的哈希函数就可以了</li>
-<li>生成短链接后，我们需要在数据库保存短链接和长链接的映射关系，这样在重定向时才知道应该向浏览器返回哪个长链接</li>
-</ol>
-<p><em><strong>知道了原理后，我们可以自己模仿实现上面的效果</strong></em></p>
-<hr>
-<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
-<li><p>创建一个web工程，这里为了方便，直接创建一个SpringBoot项目，引入guava和redis依赖，我们使用guava的哈希算法生成哈希值，使用redis来保存链接数据</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>31.0.1-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-starter-data-redis<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>编写<code>BizController</code>负责生成短链接</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/biz&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BizController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/generateShortUrl&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">generateShorUrl</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 这里使用SpringBoot的官方文档页面作为要重定向的长链接网址</span></span><br><span class="line">        String longUrl = <span class="string">&quot;https://docs.spring.io/spring-boot/docs/2.7.11/reference/html/getting-started.html#getting-started&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 使用guava提供的哈希工具类对长链接进行压缩，这里使用的是murmur3_32_fixed算法，它会生成32位的哈希值，当然也可以使用其他哈希算法，</span></span><br><span class="line">        String shortUrl = Hashing.murmur3_32_fixed().hashBytes(longUrl.getBytes()).toString();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 将短链接和长链接的映射关系保存到redis中，实际开发中可以保存到MySQL数据库，这里为了演示方便直接使用redis</span></span><br><span class="line">        stringRedisTemplate.opsForValue().set(shortUrl, longUrl);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;shorUrl: http://127.0.0.1:8080/short/&quot;</span> + shortUrl;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>编写<code>ShortUrlController</code>负责重定向</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/short&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShortUrlController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    StringRedisTemplate stringRedisTemplate;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/&#123;url&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">redirect</span><span class="params">(<span class="meta">@PathVariable(&quot;url&quot;)</span> String url, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 从数据库获取短链接对应的长链接，这里用redis演示</span></span><br><span class="line">        String longUrl = stringRedisTemplate.opsForValue().get(url);</span><br><span class="line">        <span class="keyword">if</span> (Strings.isEmpty(longUrl)) &#123;</span><br><span class="line">            response.setStatus(HttpStatus.NOT_FOUND.value());</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 设置状态码为302</span></span><br><span class="line">        response.setStatus(HttpStatus.FOUND.value());</span><br><span class="line">        <span class="comment">// 设置Location为长链接</span></span><br><span class="line">        response.setHeader(HttpHeaders.LOCATION, longUrl);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>测试</p>
-<ul>
-<li><p>测试生成短链接</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E6%B5%8B%E8%AF%95%E7%94%9F%E6%88%90%E7%9F%AD%E9%93%BE%E6%8E%A5.png"></p>
-</li>
-<li><p>查看redis</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/redis%E4%BF%9D%E5%AD%98%E7%9F%AD%E9%93%BE%E6%8E%A5%E5%92%8C%E9%95%BF%E9%93%BE%E6%8E%A5.png"></p>
-</li>
-<li><p>测试重定向</p>
-<p>在浏览器输入<a href="http://localhost:8080/short/9591dfe4">http://localhost:8080/short/9591dfe4</a>，发现成功重定向至SpringBoot文档页面</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/%E6%B5%8B%E8%AF%95%E9%87%8D%E5%AE%9A%E5%90%91.png"></p>
-</li>
-</ul>
-</li>
-</ol>
-<hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ol>
-<li>使用短链接可以为我们带来很多好处</li>
-<li>生成短链接的方式有很多，除了哈希算法外，还可以使用数据库自增id、redis自增、UUID、雪花算法等，每种方法各有有点，根据自身需求合理选择</li>
-<li>生成的短链接需要保证其唯一性，使用MySQL数据库，可以为短链接字段设置唯一索引，使用其他方式需要自己实现方法保证短链接唯一</li>
 </ol>
 ]]></content>
   </entry>
@@ -2899,6 +2871,53 @@
 <p><strong>==注意：==</strong><code>java.ext.dirs</code>参数在JDK8以上版本好像不支持</p>
 </li>
 </ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>Dubbo使用Nacos作为注册中心无法连接</title>
+    <url>/2023/06/26/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h4 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h4><ul>
+<li>Dubbo 3.X</li>
+<li>Nacos 2.X</li>
+</ul>
+<h4 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h4><blockquote>
+<p>Failed to create nacos naming service client. Reason: server status check failed</p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/dubbo%E8%BF%9E%E6%8E%A5nacos%E6%8A%A5%E9%94%99.png?q-sign-algorithm=sha1&q-ak=AKIDJYFWGoe8zVfy7H8yRzbk3k5DmJWBqxVaJS33T6LgPuTcZSUReDwBskGWpC1t9RLH&q-sign-time=1687714108;1687717708&q-key-time=1687714108;1687717708&q-header-list=host&q-url-param-list=ci-process&q-signature=104a6d843f9f68a6d0bff4910c1604d3a71ad422&x-cos-security-token=isTnh7EYKY10XDdh9LGclW33vE5uTinae6db1863a84cdec64a741d1dcddd61d1p06SBCu6N_Glu7gkjbwbx5NJJ37CvMOk0G2do2EJBKK4v9W7TramukJ0MXkTadf1hTfnwPRnez0WAYSBHqxetiTHsELwEFJN0AI96-5aA5EKME7H6jVDgwtC-8GyQ2sQZVevICp1XaIg02K0zed-08lEtGd_UN8jHa34TwmeVV8_TPpS3J-_w4RzUkmdmszg&ci-process=originImage"></p>
+<h4 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h4><blockquote>
+<p>Nacos2.X版本相比1.X新增了gRPC通信，因此添加了额外的端口，<a href="https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html">详见Nacos文档</a></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/nacos2%E7%89%88%E6%9C%AC%E5%8F%98%E5%8C%96.png?q-sign-algorithm=sha1&q-ak=AKIDteaO1u71CbFY_639ZSCVPpz3jH1w63OHFrr6m1HM2jEJN4Kv7nYZOu5sdlSiGjHb&q-sign-time=1687714123;1687717723&q-key-time=1687714123;1687717723&q-header-list=host&q-url-param-list=ci-process&q-signature=f11026972abd5b46648abc4527b364669ef6f49f&x-cos-security-token=isTnh7EYKY10XDdh9LGclW33vE5uTina6c4478b58ace1f2300734dddff01f17ap06SBCu6N_Glu7gkjbwbxzjtY18p0dHgHY6mITwYxlGrsqNArlBMqo7KHw0Yq1lV7cOF1uaaLeZAh-W0QhwrzEEnVW9-PIBy9k_640122iPu09ConM7mwFhDuEEEPLRIgCx14LdaWzvCp3TlNgAdCKY5PVptDoycZwpjbpOFNowub_Mumem8i_sJY2bQBbsL&ci-process=originImage"></p>
+<h4 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 防火墙开放9848端口</span></span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --add-port=9848/tcp --permanent </span></span><br><span class="line">success</span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --reload </span></span><br><span class="line">success</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>使用IDEA构建docker镜像</title>
+    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
+<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
+<li>装有Docker环境的Linux服务器/虚拟机</li>
+</ol>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
+<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
+<p>配置docker服务器信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
+<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
+</li>
+<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
+</li>
+<li><p>验证docker镜像是否部署成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
+</li>
+</ol>
 ]]></content>
   </entry>
 </search>
