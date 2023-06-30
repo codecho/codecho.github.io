@@ -228,6 +228,113 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Markdown语法学习</title>
+    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
+    <content><![CDATA[<p><em>斜体</em></p>
+<p><strong>粗体</strong></p>
+<p><em><strong>斜粗</strong></em></p>
+<p>段落1</p>
+<hr>
+<p>段落2</p>
+<hr>
+<p><del>段落3</del></p>
+<p><u>hello</u></p>
+<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
+<ul>
+<li>no.1</li>
+<li>no.2</li>
+</ul>
+<ol>
+<li>no.1</li>
+<li>no.2</li>
+</ol>
+<ol>
+<li>no.1<ul>
+<li>hello</li>
+</ul>
+</li>
+<li>no.2<ul>
+<li>world</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><p>要点1</p>
+<blockquote>
+<p>细心</p>
+<p>诚信</p>
+<p>勤奋</p>
+</blockquote>
+</li>
+<li><p>要点2</p>
+<blockquote>
+<p>能力</p>
+<blockquote>
+<p>学习能力</p>
+<p>解决问题能力</p>
+</blockquote>
+</blockquote>
+</li>
+</ul>
+<p><a href="hello.com">hello</a></p>
+<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
+<ul>
+<li><p>高级链接</p>
+<p><a href="www.jd.com">京东</a></p>
+<p><a href="www.taobao.com">淘宝</a></p>
+</li>
+</ul>
+<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
+<table>
+<thead>
+<tr>
+<th>参数名</th>
+<th align="center">类型</th>
+<th align="center">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>str</td>
+<td align="center">String</td>
+<td align="center">要比较的字符串</td>
+</tr>
+</tbody></table>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
+<p>部分HTML标签，可以直接在markdown中书写</p>
+</blockquote>
+<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
+<p><b>这是HTML的b标签</b></p>
+<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
+<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
+</blockquote>
+<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
+<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
+<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
+<hr>
+<hr>
+<hr>
+<hr>
+<p><span id="test">到我这里来</span></p>
+<ul>
+<li>hello<ul>
+<li>world<ul>
+<li>hh</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><input disabled="" type="checkbox"> 早餐</li>
+<li><input checked="" disabled="" type="checkbox"> 无参</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>MySQL学习</title>
     <url>/2023/02/18/2019-08-02-MySQL%E5%9F%BA%E7%A1%80/</url>
     <content><![CDATA[<ol>
@@ -1408,113 +1515,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Markdown语法学习</title>
-    <url>/2023/02/18/2019-08-31-markdown%E8%AF%AD%E6%B3%95%E5%AD%A6%E4%B9%A0/</url>
-    <content><![CDATA[<p><em>斜体</em></p>
-<p><strong>粗体</strong></p>
-<p><em><strong>斜粗</strong></em></p>
-<p>段落1</p>
-<hr>
-<p>段落2</p>
-<hr>
-<p><del>段落3</del></p>
-<p><u>hello</u></p>
-<p>详情请参考<a href="https://meizu.com/">^官网</a></p>
-<ul>
-<li>no.1</li>
-<li>no.2</li>
-</ul>
-<ol>
-<li>no.1</li>
-<li>no.2</li>
-</ol>
-<ol>
-<li>no.1<ul>
-<li>hello</li>
-</ul>
-</li>
-<li>no.2<ul>
-<li>world</li>
-</ul>
-</li>
-</ol>
-<ul>
-<li><p>要点1</p>
-<blockquote>
-<p>细心</p>
-<p>诚信</p>
-<p>勤奋</p>
-</blockquote>
-</li>
-<li><p>要点2</p>
-<blockquote>
-<p>能力</p>
-<blockquote>
-<p>学习能力</p>
-<p>解决问题能力</p>
-</blockquote>
-</blockquote>
-</li>
-</ul>
-<p><a href="hello.com">hello</a></p>
-<p>&lt;<a href="http://www.world.com&gt;/">www.world.com&gt;</a></p>
-<ul>
-<li><p>高级链接</p>
-<p><a href="www.jd.com">京东</a></p>
-<p><a href="www.taobao.com">淘宝</a></p>
-</li>
-</ul>
-<p><img src="D:\TyporaImg\runoob-logo-1567061411865.png" alt="菜鸟教程"></p>
-<table>
-<thead>
-<tr>
-<th>参数名</th>
-<th align="center">类型</th>
-<th align="center">含义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>str</td>
-<td align="center">String</td>
-<td align="center">要比较的字符串</td>
-</tr>
-</tbody></table>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">| 参数名 | 类型 | 含义 |</span><br><span class="line">| --- | :--: | :--: |</span><br><span class="line">| str | String | 要比较的字符串 |</span><br><span class="line"></span><br><span class="line">:- 左对齐</span><br><span class="line">-: 右对齐</span><br><span class="line">:-: 居中对齐</span><br></pre></td></tr></table></figure>
-
-
-
-<h5 id="markdown高级技巧"><a href="#markdown高级技巧" class="headerlink" title="markdown高级技巧"></a>markdown高级技巧</h5><blockquote>
-<p>部分HTML标签，可以直接在markdown中书写</p>
-</blockquote>
-<h6 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h6><p>使用 <kbd>win</kbd>+<kbd>L</kbd>锁定屏幕</p>
-<p><b>这是HTML的b标签</b></p>
-<h5 id="转义"><a href="#转义" class="headerlink" title="转义"></a>转义</h5><blockquote>
-<p>由于markdown使用了很多特殊符号表示格式，因此某些特殊符号的显示需要使用转义字符，markdown使用<em><strong>反斜杠</strong></em>转义字符</p>
-</blockquote>
-<h6 id="示例：-1"><a href="#示例：-1" class="headerlink" title="示例："></a>示例：</h6><p>显示** **</p>
-<h5 id="公式"><a href="#公式" class="headerlink" title="公式"></a>公式</h5><p>$$<br>x² + 4 = 20<br>$$</p>
-<h5 id="锚点"><a href="#锚点" class="headerlink" title="锚点"></a>锚点</h5><p><a href="#test">我来了</a></p>
-<hr>
-<hr>
-<hr>
-<hr>
-<p><span id="test">到我这里来</span></p>
-<ul>
-<li>hello<ul>
-<li>world<ul>
-<li>hh</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><input disabled="" type="checkbox"> 早餐</li>
-<li><input checked="" disabled="" type="checkbox"> 无参</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>正则表达式</title>
     <url>/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<ol>
@@ -1781,134 +1781,6 @@
 </ul>
 </li>
 </ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>Linux下搭建Redis集群</title>
-    <url>/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</url>
-    <content><![CDATA[<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS 7.5</li>
-<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
-<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>启动<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看主从节点启动情况</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>测试主节点和从节点数据同步</p>
-<blockquote>
-<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
-</blockquote>
-<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
-
-<p>在连接主节点的窗口中插入一些数据</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
-
-<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
-</blockquote>
-<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
-<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
-
-<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
-<li><p>启动哨兵</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
-<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>模拟主节点挂掉的情况</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>的日志</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
-</li>
-<li><p>重新启动原来的主节点6379</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
-<p>也可以用<code>info</code>命令查看从节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
-</li>
-</ul>
-<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
-<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
-<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
-<blockquote>
-<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
-<li><p>启动上述6个节点</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>查看节点是否启动成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-<li><p>创建真正的集群！！！</p>
-<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
-<blockquote>
-<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-<li><p>更简单快速地创建集群</p>
-<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
-
-<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
-</li>
-<li><p>连接集群并使用</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
-</li>
-<li><p>模拟三个主节点中的一个挂掉</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-</ul>
-<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
-<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-</ul>
 ]]></content>
   </entry>
   <entry>
@@ -2221,6 +2093,134 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Linux下搭建Redis集群</title>
+    <url>/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/</url>
+    <content><![CDATA[<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS 7.5</li>
+<li>Redis版本：6.2.6，<a href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
+<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看主从节点启动情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>测试主节点和从节点数据同步</p>
+<blockquote>
+<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
+</blockquote>
+<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
+
+<p>在连接主节点的窗口中插入一些数据</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
+</blockquote>
+<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
+<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
+
+<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
+<li><p>启动哨兵</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
+<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>模拟主节点挂掉的情况</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>的日志</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
+</li>
+<li><p>重新启动原来的主节点6379</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
+<p>也可以用<code>info</code>命令查看从节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
+</li>
+</ul>
+<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
+<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
+<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
+<blockquote>
+<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
+<li><p>启动上述6个节点</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>查看节点是否启动成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+<li><p>创建真正的集群！！！</p>
+<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
+<blockquote>
+<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+<li><p>更简单快速地创建集群</p>
+<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
+</li>
+<li><p>连接集群并使用</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
+</li>
+<li><p>模拟三个主节点中的一个挂掉</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+</ul>
+<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
+<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
     <title>如何创建自己的第一个springboot-starter</title>
     <url>/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/</url>
     <content><![CDATA[<blockquote>
@@ -2301,18 +2301,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>CentOS查找历史命令</title>
-    <url>/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<blockquote>
-<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
-</blockquote>
-<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-  </entry>
-  <entry>
     <title>GitHub Page去除域名绑定后仍定向至以前的域名</title>
     <url>/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/</url>
     <content><![CDATA[<blockquote>
@@ -2323,55 +2311,44 @@
 ]]></content>
   </entry>
   <entry>
-    <title>使用shell脚本切换JDK版本</title>
-    <url>/2023/05/09/2023-05-06-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/</url>
-    <content><![CDATA[<blockquote>
-<p>JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linux上的，所以这次我们通过shell脚本的方式来切换JDK版本。</p>
-</blockquote>
-<h3 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h3><ol>
-<li>安装JDK后需要在<code>/etc/profile</code>中配置环境变量，因此我们的目标就是更改配置文件</li>
-<li>想要更改配置文件，首先需要知道要修改的内容，我的配置是<code>export JAVA_HOME=/usr/java/jdk</code>，这里<code>=</code>后面的路径就是我们要修改的内容</li>
-<li>由于每个人的<code>/etc/profile</code>文件各不相同，因此上述配置项可能在x行，也可能在y行，所以我们需要找到该配置项所在的位置</li>
-<li>找到配置项位置后，我们将原JDK路径替换为目标JDK路径</li>
-<li>再使用<code>source</code>命令更新配置信息即可完成JDK版本的切换</li>
+    <title>使用IDEA构建docker镜像</title>
+    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
+    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
+<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
+<li>装有Docker环境的Linux服务器/虚拟机</li>
 </ol>
-<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
-<li><p>创建脚本文件</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch switch_jdk.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>编写脚本文件</p>
-<p>简要说一下思路</p>
-<ul>
-<li>定义一个数组来存放JDK版本和路径信息，使用==关联数组==，有点类似hashmap，key为JDK版本号，value为JDK安装路径</li>
-<li>执行脚本格式为<code>. switch_jdk.sh version</code>，其中version即为要切换的JDK版本号，在shell脚本中使用<code>$1</code>(脚本第一个参数)可以获取version的值</li>
-<li>获取到目标version后，在关联数组中获取其对应的JDK安装路径，如果获取不到，则表示目标version不存在，输出提示信息</li>
-<li>根据配置项<code>export JAVA_HOME</code>获取其所在的行位置信息，使用<code>grep</code>查找配置项所在行信息，使用<code>awk</code>提取行号</li>
-<li>使用<code>sed</code>命令替换该行配置内容，<code>-i</code>表示直接修改文件内容，<code>79c</code>表示替换第79行所在的内容</li>
-<li>使用<code>source</code>命令更新环境变量</li>
-</ul>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> here are jdk versions you installed</span></span><br><span class="line">my_versions=([8]=&quot;/usr/java/jdk&quot; [17]=&quot;/usr/java/jdk17&quot;)</span><br><span class="line"></span><br><span class="line">if [ -z $&#123;my_versions[$1]&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;jdk$1 does not exist! please check whether you installed&quot;</span><br><span class="line">else</span><br><span class="line">    # 79:export JAVA_HOME=/usr/java/jdk</span><br><span class="line">    line_number=`grep &quot;export JAVA_HOME&quot; -n profile | awk -F &quot;:&quot; &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">    sed -i &quot;79c export JAVA_HOME=$&#123;my_versions[$1]&#125;&quot; /etc/profile</span><br><span class="line"></span><br><span class="line">    source /etc/profile</span><br><span class="line"></span><br><span class="line">    echo &quot;switch to jdk$1 successfully!&quot;</span><br><span class="line"></span><br><span class="line">    java -version</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本并测试</p>
-<ul>
-<li><p>先查看当前JDK版本，我这里是JDK8</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本，切换到JDK17</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. switch_jdk.sh 17</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本，切换到不存在的版本</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. switch_jdk.sh 10</span><br></pre></td></tr></table></figure></li>
-</ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png"></p>
+<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
+<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
+<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
+<p>配置docker服务器信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
+<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
+</li>
+<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
+</li>
+<li><p>验证docker镜像是否部署成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
 </li>
 </ol>
-<h3 id="注意"><a href="#注意" class="headerlink" title="==注意=="></a>==注意==</h3><blockquote>
-<p>一开始，我使用<code>./switch_jdk.sh</code>来执行的脚本（已添加执行权限），控制台输出的JDK版本信息并没有更新，检查了下脚本，觉得思路没有什么问题，于是新开一个terminal测试，但是使用<code>java -version</code>查看JDK版本时，发现已经是新版本了。</p>
-<p>这时候我猜测可能是脚本在当前session没有生效，在开启的新session中生效了，那只有可能是source命令的问题了，其他命令和环境变量没有关系。</p>
-<p>查看了下相关信息，发现执行shell脚本的方式不同，其执行效果也是不同的，下面给出相关的信息</p>
+]]></content>
+  </entry>
+  <entry>
+    <title>CentOS查找历史命令</title>
+    <url>/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<blockquote>
+<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
 </blockquote>
-<ol>
-<li><code>./xxx.sh</code>，用此种方式执行脚本，会开启子shell来执行脚本，继承父shell环境变量，但是不会更改父shell环境变量，即更改只对子shell生效</li>
-<li><code>sh xxx.sh</code>，此种方式效果同上</li>
-<li><code>source xxx.sh</code>，等价于<code>. xxx.sh</code>，在当前shell执行脚本，环境变量更改对当前shell生效</li>
-</ol>
-<h4 id="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本"><a href="#对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本" class="headerlink" title="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或.来执行脚本"></a>对于脚本中存在<code>source</code>或其他会影响到环境变量的命令，最好使用<code>source</code>或<code>.</code>来执行脚本</h4>]]></content>
+<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
   </entry>
   <entry>
     <title>Spring Boot统一结果响应和异常处理</title>
@@ -2469,6 +2446,57 @@
 ]]></content>
   </entry>
   <entry>
+    <title>使用shell脚本切换JDK版本</title>
+    <url>/2023/05/09/2023-05-06-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/</url>
+    <content><![CDATA[<blockquote>
+<p>JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linux上的，所以这次我们通过shell脚本的方式来切换JDK版本。</p>
+</blockquote>
+<h3 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h3><ol>
+<li>安装JDK后需要在<code>/etc/profile</code>中配置环境变量，因此我们的目标就是更改配置文件</li>
+<li>想要更改配置文件，首先需要知道要修改的内容，我的配置是<code>export JAVA_HOME=/usr/java/jdk</code>，这里<code>=</code>后面的路径就是我们要修改的内容</li>
+<li>由于每个人的<code>/etc/profile</code>文件各不相同，因此上述配置项可能在x行，也可能在y行，所以我们需要找到该配置项所在的位置</li>
+<li>找到配置项位置后，我们将原JDK路径替换为目标JDK路径</li>
+<li>再使用<code>source</code>命令更新配置信息即可完成JDK版本的切换</li>
+</ol>
+<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
+<li><p>创建脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">touch switch_jdk.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本文件</p>
+<p>简要说一下思路</p>
+<ul>
+<li>定义一个数组来存放JDK版本和路径信息，使用==关联数组==，有点类似hashmap，key为JDK版本号，value为JDK安装路径</li>
+<li>执行脚本格式为<code>. switch_jdk.sh version</code>，其中version即为要切换的JDK版本号，在shell脚本中使用<code>$1</code>(脚本第一个参数)可以获取version的值</li>
+<li>获取到目标version后，在关联数组中获取其对应的JDK安装路径，如果获取不到，则表示目标version不存在，输出提示信息</li>
+<li>根据配置项<code>export JAVA_HOME</code>获取其所在的行位置信息，使用<code>grep</code>查找配置项所在行信息，使用<code>awk</code>提取行号</li>
+<li>使用<code>sed</code>命令替换该行配置内容，<code>-i</code>表示直接修改文件内容，<code>79c</code>表示替换第79行所在的内容</li>
+<li>使用<code>source</code>命令更新环境变量</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> here are jdk versions you installed</span></span><br><span class="line">my_versions=([8]=&quot;/usr/java/jdk&quot; [17]=&quot;/usr/java/jdk17&quot;)</span><br><span class="line"></span><br><span class="line">if [ -z $&#123;my_versions[$1]&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;jdk$1 does not exist! please check whether you installed&quot;</span><br><span class="line">else</span><br><span class="line">    # 79:export JAVA_HOME=/usr/java/jdk</span><br><span class="line">    line_number=`grep &quot;export JAVA_HOME&quot; -n profile | awk -F &quot;:&quot; &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">    sed -i &quot;79c export JAVA_HOME=$&#123;my_versions[$1]&#125;&quot; /etc/profile</span><br><span class="line"></span><br><span class="line">    source /etc/profile</span><br><span class="line"></span><br><span class="line">    echo &quot;switch to jdk$1 successfully!&quot;</span><br><span class="line"></span><br><span class="line">    java -version</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本并测试</p>
+<ul>
+<li><p>先查看当前JDK版本，我这里是JDK8</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本，切换到JDK17</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. switch_jdk.sh 17</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本，切换到不存在的版本</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">. switch_jdk.sh 10</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png"></p>
+</li>
+</ol>
+<h3 id="注意"><a href="#注意" class="headerlink" title="==注意=="></a>==注意==</h3><blockquote>
+<p>一开始，我使用<code>./switch_jdk.sh</code>来执行的脚本（已添加执行权限），控制台输出的JDK版本信息并没有更新，检查了下脚本，觉得思路没有什么问题，于是新开一个terminal测试，但是使用<code>java -version</code>查看JDK版本时，发现已经是新版本了。</p>
+<p>这时候我猜测可能是脚本在当前session没有生效，在开启的新session中生效了，那只有可能是source命令的问题了，其他命令和环境变量没有关系。</p>
+<p>查看了下相关信息，发现执行shell脚本的方式不同，其执行效果也是不同的，下面给出相关的信息</p>
+</blockquote>
+<ol>
+<li><code>./xxx.sh</code>，用此种方式执行脚本，会开启子shell来执行脚本，继承父shell环境变量，但是不会更改父shell环境变量，即更改只对子shell生效</li>
+<li><code>sh xxx.sh</code>，此种方式效果同上</li>
+<li><code>source xxx.sh</code>，等价于<code>. xxx.sh</code>，在当前shell执行脚本，环境变量更改对当前shell生效</li>
+</ol>
+<h4 id="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本"><a href="#对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本" class="headerlink" title="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或.来执行脚本"></a>对于脚本中存在<code>source</code>或其他会影响到环境变量的命令，最好使用<code>source</code>或<code>.</code>来执行脚本</h4>]]></content>
+  </entry>
+  <entry>
     <title>浅谈短链接设计</title>
     <url>/2023/05/09/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/</url>
     <content><![CDATA[<blockquote>
@@ -2534,134 +2562,6 @@
 <li>使用短链接可以为我们带来很多好处</li>
 <li>生成短链接的方式有很多，除了哈希算法外，还可以使用数据库自增id、redis自增、UUID、雪花算法等，每种方法各有有点，根据自身需求合理选择</li>
 <li>生成的短链接需要保证其唯一性，使用MySQL数据库，可以为短链接字段设置唯一索引，使用其他方式需要自己实现方法保证短链接唯一</li>
-</ol>
-]]></content>
-  </entry>
-  <entry>
-    <title>浅谈Java Agent</title>
-    <url>/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/</url>
-    <content><![CDATA[<blockquote>
-<p>在JDK5以后，官方提供了一种新特性 Java Agent，也叫Java 探针技术，它可以帮助我们构建一个和主程序独立的代理程序，通过代理程序可以在不修改主程序代码的情况下对主程序进行增强，如实现性能监测、日志记录、热加载等，很多著名的软件/工具都使用了这个技术，如arthas、skywalking等</p>
-<p>下面通过示例来学习如何使用Java Agent</p>
-</blockquote>
-<h4 id="关于Java-Agent的一些简要说明"><a href="#关于Java-Agent的一些简要说明" class="headerlink" title="关于Java Agent的一些简要说明"></a>关于Java Agent的一些简要说明</h4><ul>
-<li>通过<code>-javaagent:agent.jar</code>参数加载agent程序，可以多次使用以加载多个agent</li>
-<li>Java Agent有两个方法，一个是<code>premain(String [, Instrumentation])</code>，一个是<code>agentmain(String[, Instrumentation])</code>，<code>Instrumentation</code>参数可选</li>
-<li><code>premain</code>方法会在主程序JVM启动前执行，因此可以在此方法中进行一些初始化工作；<code>agentmain</code>方法会在主程序JVM启动后执行，但是不能使用<code>-javaagent</code>参数来加载，而是要使用<code>VirtualMachine</code>的<code>loadAgent</code>方法来进行加载</li>
-<li><code>Instrumentation</code>接口提供了在程序运行期间对程序进行动态调整的能力，比如修改字节码、替换class</li>
-</ul>
-<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><p><strong>前提：</strong></p>
-<p>创建两个maven项目，一个是主程序，一个是agent</p>
-<ul>
-<li><p>主程序</p>
-<ul>
-<li><p>Main.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.codecho.demo.Main<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>agent程序</p>
-<ul>
-<li><p>LogAgent.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml（这里的配置是为了生成MANIFEST.MF文件，里面有premain class的信息）</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-</ul>
-<p><strong>测试premain</strong></p>
-<ol>
-<li><p>使用<code>maven package</code>得到主程序和agent的jar包</p>
-</li>
-<li><p>通过<code>-javaagent</code>参数加载agent（这里我把两个jar包放到同一目录了）</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 不指定参数</span></span><br><span class="line">java -javaagent:log-agent-1.0-SNAPSHOT.jar -jar agent-demo-1.0-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定参数</span></span><br><span class="line">java -javaagent:log-agent-1.0-SNAPSHOT.jar=param1,param2,param3 -jar agent-demo-1.0-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE1.png"></p>
-</li>
-</ol>
-<p><strong>测试agentmain</strong></p>
-<ol>
-<li><p>修改agent程序的<code>LogAgent.java</code>和<code>pom.xml</code></p>
-<ul>
-<li><p>LogAgent.java</p>
-<p>添加<code>agentmain</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动后，代理后执行</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#agentmain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml</p>
-<p>将<code>Premain-Class</code>改为<code>Agent-Class</code></p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span>		</span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改主程序的<code>Main.java</code>和<code>pom.xml</code>，新增<code>Agent.java</code></p>
-<ul>
-<li><p>Main.java</p>
-<p>因为<code>agentmain</code>方法是在主程序JVM启动后执行，因此这里使用输入流保证main方法不会马上结束</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入jdk的tools--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.sun<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>system<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">systemPath</span>&gt;</span>$&#123;JAVA_HOME&#125;\lib\tools.jar<span class="tag">&lt;/<span class="name">systemPath</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>Attach.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Attach</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        VirtualMachine vm = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 这里的24816是Main主程序的进程号，运行Main.java后使用jps命令查看pid</span></span><br><span class="line">            vm = VirtualMachine.attach(<span class="string">&quot;24816&quot;</span>);</span><br><span class="line">            vm.loadAgent(<span class="string">&quot;D:/IdeaWorkspace/log-agent/target/log-agent-1.0-SNAPSHOT.jar&quot;</span>, <span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AttachNotSupportedException | IOException | AgentLoadException | AgentInitializationException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>先运行Main主程序，通过<code>jps</code>查看主程序pid，再运行Attach程序</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE2.png"></p>
-</li>
-</ol>
-<p><strong>测试Instrumentation#addTransformer方法(作用在premain方法)</strong></p>
-<ol>
-<li><p>修改agent程序的<code>LogAgent.java</code>和<code>pom.xml</code></p>
-<ul>
-<li><p>LogAgent.java</p>
-<p>修改<code>premain</code>方法</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line"></span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> ClassFileTransformer() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) &#123;</span><br><span class="line">                <span class="comment">// 当前类为com/codecho/demo/TrafficService时，才替换class</span></span><br><span class="line">                <span class="keyword">if</span> (!className.equals(<span class="string">&quot;com/codecho/demo/TrafficService&quot;</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">&quot;replace class: &quot;</span> + className);</span><br><span class="line">                ByteArrayOutputStream bos;</span><br><span class="line">                <span class="comment">// 类加载前替换新的class</span></span><br><span class="line">                <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:/IdeaWorkspace/agent-demo/target/classes/com/codecho/demo/TrafficService.class&quot;</span>)) &#123;</span><br><span class="line">                    bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[fis.available()];</span><br><span class="line">                    fis.read(buffer);</span><br><span class="line">                    bos.write(buffer, <span class="number">0</span>, buffer.length);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改主程序的<code>Main.java</code>，新增<code>TrafficService.java</code></p>
-<ul>
-<li><p>TrafficService</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the train&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Main.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String transport = <span class="keyword">new</span> TrafficService().transport();</span><br><span class="line">        System.out.println(<span class="string">&quot;transport: &quot;</span> + transport);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>单独运行<code>Main.java</code>，查看输出</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PS D:\IdeaWorkspace\agent-demo\target&gt; java -jar agent-demo-1.0-SNAPSHOT.jar</span><br><span class="line">transport: take the train</span><br></pre></td></tr></table></figure></li>
-<li><p>修改<code>TrafficService.java</code>并编译</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the plane&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>通过<code>-javaagent</code>参数加载agent，查看输出</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE3.png"></p>
-</li>
-</ol>
-<p><strong>测试Instrumentation#retransformClasses方法(作用在agentmain方法)</strong></p>
-<ol>
-<li><p>修改agent程序<code>LogAgent.java</code>和<code>pom.xml</code></p>
-<ul>
-<li><p>LogAgent.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动后，代理后执行</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args, Instrumentation instrumentation)</span> <span class="keyword">throws</span> ClassNotFoundException, UnmodifiableClassException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#agentmain executed, args: &quot;</span> + args);</span><br><span class="line"></span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> ClassFileTransformer() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) &#123;</span><br><span class="line">                <span class="comment">// 当前类为com/codecho/demo/TrafficService时，才替换class</span></span><br><span class="line">                <span class="keyword">if</span> (!className.equals(<span class="string">&quot;com/codecho/demo/TrafficService&quot;</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                ByteArrayOutputStream bos;</span><br><span class="line">                <span class="comment">// 类加载前替换新的class</span></span><br><span class="line">                <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:/IdeaWorkspace/agent-demo/target/classes/com/codecho/demo/TrafficService.class&quot;</span>)) &#123;</span><br><span class="line">                    bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[fis.available()];</span><br><span class="line">                    fis.read(buffer);</span><br><span class="line">                    bos.write(buffer, <span class="number">0</span>, buffer.length);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        instrumentation.retransformClasses(Class.forName(<span class="string">&quot;com.codecho.demo.TrafficService&quot;</span>, <span class="keyword">false</span>, ClassLoader.getSystemClassLoader()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>pom.xml</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--不加此配置会导致load失败--&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--Agent JAR loaded but agent failed to initialize--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改主程序的<code>Main.java</code></p>
-<ul>
-<li><p>Main.java</p>
-<p>通过死循环判断class是否重新加载</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            String transport = <span class="keyword">new</span> TrafficService().transport();</span><br><span class="line">            System.out.println(<span class="string">&quot;transport: &quot;</span> + transport);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>TrafficService.java</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the bus&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>先运行Main主程序，再修改<code>TrafficService</code>的<code>transport</code>方法，通过<code>jps</code>查看主程序pid，再运行Attach程序</p>
-<p>可以看到<code>TrafficService#transport</code>的输出从bus变为subway，表明<code>TrafficService</code>类确实重新加载了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE4.png"></p>
-</li>
-</ol>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ol>
-<li>Java Agent是JDK提供的一种技术，可以对Java程序进行增强、监测、分析等</li>
-<li>Java Agent主要有<code>premain</code>和<code>agentmain</code>两个入口方法，<code>Instrumentation</code>接口可以让我们在程序运行期间动态地更改字节码、替换class等</li>
-<li>可以通过<code>Javassist</code>或<code>ASM</code>等工具来方便地操作字节码</li>
 </ol>
 ]]></content>
   </entry>
@@ -2810,6 +2710,153 @@
 ]]></content>
   </entry>
   <entry>
+    <title>Dubbo使用Nacos作为注册中心无法连接</title>
+    <url>/2023/06/26/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<h4 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h4><ul>
+<li>Dubbo 3.X</li>
+<li>Nacos 2.X</li>
+</ul>
+<h4 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h4><blockquote>
+<p>Failed to create nacos naming service client. Reason: server status check failed</p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/dubbo%E8%BF%9E%E6%8E%A5nacos%E6%8A%A5%E9%94%99.png"></p>
+<h4 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h4><blockquote>
+<p>Nacos2.X版本相比1.X新增了gRPC通信，因此添加了额外的端口，<a href="https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html">详见Nacos文档</a></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/nacos2%E7%89%88%E6%9C%AC%E5%8F%98%E5%8C%96.png"></p>
+<h4 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 防火墙开放9848端口</span></span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --add-port=9848/tcp --permanent </span></span><br><span class="line">success</span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --reload </span></span><br><span class="line">success</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
+    <title>浅谈Java Agent</title>
+    <url>/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/</url>
+    <content><![CDATA[<blockquote>
+<p>在JDK5以后，官方提供了一种新特性 Java Agent，也叫Java 探针技术，它可以帮助我们构建一个和主程序独立的代理程序，通过代理程序可以在不修改主程序代码的情况下对主程序进行增强，如实现性能监测、日志记录、热加载等，很多著名的软件/工具都使用了这个技术，如arthas、skywalking等</p>
+<p>下面通过示例来学习如何使用Java Agent</p>
+</blockquote>
+<h4 id="关于Java-Agent的一些简要说明"><a href="#关于Java-Agent的一些简要说明" class="headerlink" title="关于Java Agent的一些简要说明"></a>关于Java Agent的一些简要说明</h4><ul>
+<li>通过<code>-javaagent:agent.jar</code>参数加载agent程序，可以多次使用以加载多个agent</li>
+<li>Java Agent有两个方法，一个是<code>premain(String [, Instrumentation])</code>，一个是<code>agentmain(String[, Instrumentation])</code>，<code>Instrumentation</code>参数可选</li>
+<li><code>premain</code>方法会在主程序JVM启动前执行，因此可以在此方法中进行一些初始化工作；<code>agentmain</code>方法会在主程序JVM启动后执行，但是不能使用<code>-javaagent</code>参数来加载，而是要使用<code>VirtualMachine</code>的<code>loadAgent</code>方法来进行加载</li>
+<li><code>Instrumentation</code>接口提供了在程序运行期间对程序进行动态调整的能力，比如修改字节码、替换class</li>
+</ul>
+<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><p><strong>前提：</strong></p>
+<p>创建两个maven项目，一个是主程序，一个是agent</p>
+<ul>
+<li><p>主程序</p>
+<ul>
+<li><p>Main.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifest</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">mainClass</span>&gt;</span>com.codecho.demo.Main<span class="tag">&lt;/<span class="name">mainClass</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifest</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>agent程序</p>
+<ul>
+<li><p>LogAgent.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml（这里的配置是为了生成MANIFEST.MF文件，里面有premain class的信息）</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p><strong>测试premain</strong></p>
+<ol>
+<li><p>使用<code>maven package</code>得到主程序和agent的jar包</p>
+</li>
+<li><p>通过<code>-javaagent</code>参数加载agent（这里我把两个jar包放到同一目录了）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 不指定参数</span></span><br><span class="line">java -javaagent:log-agent-1.0-SNAPSHOT.jar -jar agent-demo-1.0-SNAPSHOT.jar</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定参数</span></span><br><span class="line">java -javaagent:log-agent-1.0-SNAPSHOT.jar=param1,param2,param3 -jar agent-demo-1.0-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE1.png"></p>
+</li>
+</ol>
+<p><strong>测试agentmain</strong></p>
+<ol>
+<li><p>修改agent程序的<code>LogAgent.java</code>和<code>pom.xml</code></p>
+<ul>
+<li><p>LogAgent.java</p>
+<p>添加<code>agentmain</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动后，代理后执行</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#agentmain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml</p>
+<p>将<code>Premain-Class</code>改为<code>Agent-Class</code></p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span>		</span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改主程序的<code>Main.java</code>和<code>pom.xml</code>，新增<code>Agent.java</code></p>
+<ul>
+<li><p>Main.java</p>
+<p>因为<code>agentmain</code>方法是在主程序JVM启动后执行，因此这里使用输入流保证main方法不会马上结束</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        System.in.read();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--引入jdk的tools--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.sun<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>tools<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.8<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">scope</span>&gt;</span>system<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">systemPath</span>&gt;</span>$&#123;JAVA_HOME&#125;\lib\tools.jar<span class="tag">&lt;/<span class="name">systemPath</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>Attach.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Attach</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        VirtualMachine vm = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 这里的24816是Main主程序的进程号，运行Main.java后使用jps命令查看pid</span></span><br><span class="line">            vm = VirtualMachine.attach(<span class="string">&quot;24816&quot;</span>);</span><br><span class="line">            vm.loadAgent(<span class="string">&quot;D:/IdeaWorkspace/log-agent/target/log-agent-1.0-SNAPSHOT.jar&quot;</span>, <span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (AttachNotSupportedException | IOException | AgentLoadException | AgentInitializationException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>先运行Main主程序，通过<code>jps</code>查看主程序pid，再运行Attach程序</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE2.png"></p>
+</li>
+</ol>
+<p><strong>测试Instrumentation#addTransformer方法(作用在premain方法)</strong></p>
+<ol>
+<li><p>修改agent程序的<code>LogAgent.java</code>和<code>pom.xml</code></p>
+<ul>
+<li><p>LogAgent.java</p>
+<p>修改<code>premain</code>方法</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line"></span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> ClassFileTransformer() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) &#123;</span><br><span class="line">                <span class="comment">// 当前类为com/codecho/demo/TrafficService时，才替换class</span></span><br><span class="line">                <span class="keyword">if</span> (!className.equals(<span class="string">&quot;com/codecho/demo/TrafficService&quot;</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">&quot;replace class: &quot;</span> + className);</span><br><span class="line">                ByteArrayOutputStream bos;</span><br><span class="line">                <span class="comment">// 类加载前替换新的class</span></span><br><span class="line">                <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:/IdeaWorkspace/agent-demo/target/classes/com/codecho/demo/TrafficService.class&quot;</span>)) &#123;</span><br><span class="line">                    bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[fis.available()];</span><br><span class="line">                    fis.read(buffer);</span><br><span class="line">                    bos.write(buffer, <span class="number">0</span>, buffer.length);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Premain-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Premain-Class</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改主程序的<code>Main.java</code>，新增<code>TrafficService.java</code></p>
+<ul>
+<li><p>TrafficService</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the train&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Main.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        String transport = <span class="keyword">new</span> TrafficService().transport();</span><br><span class="line">        System.out.println(<span class="string">&quot;transport: &quot;</span> + transport);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>单独运行<code>Main.java</code>，查看输出</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PS D:\IdeaWorkspace\agent-demo\target&gt; java -jar agent-demo-1.0-SNAPSHOT.jar</span><br><span class="line">transport: take the train</span><br></pre></td></tr></table></figure></li>
+<li><p>修改<code>TrafficService.java</code>并编译</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the plane&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过<code>-javaagent</code>参数加载agent，查看输出</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE3.png"></p>
+</li>
+</ol>
+<p><strong>测试Instrumentation#retransformClasses方法(作用在agentmain方法)</strong></p>
+<ol>
+<li><p>修改agent程序<code>LogAgent.java</code>和<code>pom.xml</code></p>
+<ul>
+<li><p>LogAgent.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LogAgent</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动前，代理先执行，如果代理抛出异常，主程序无法正常启动</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">premain</span><span class="params">(String args, Instrumentation instrumentation)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#premain executed, args: &quot;</span> + args);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 主程序启动后，代理后执行</span></span><br><span class="line">    <span class="comment">// 参数 Instrumentation 可选</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">agentmain</span><span class="params">(String args, Instrumentation instrumentation)</span> <span class="keyword">throws</span> ClassNotFoundException, UnmodifiableClassException </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;LogAgent#agentmain executed, args: &quot;</span> + args);</span><br><span class="line"></span><br><span class="line">        instrumentation.addTransformer(<span class="keyword">new</span> ClassFileTransformer() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">byte</span>[] transform(ClassLoader loader, String className, Class&lt;?&gt; classBeingRedefined, ProtectionDomain protectionDomain, <span class="keyword">byte</span>[] classfileBuffer) &#123;</span><br><span class="line">                <span class="comment">// 当前类为com/codecho/demo/TrafficService时，才替换class</span></span><br><span class="line">                <span class="keyword">if</span> (!className.equals(<span class="string">&quot;com/codecho/demo/TrafficService&quot;</span>)) &#123;</span><br><span class="line">                    <span class="keyword">return</span> classfileBuffer;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                ByteArrayOutputStream bos;</span><br><span class="line">                <span class="comment">// 类加载前替换新的class</span></span><br><span class="line">                <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:/IdeaWorkspace/agent-demo/target/classes/com/codecho/demo/TrafficService.class&quot;</span>)) &#123;</span><br><span class="line">                    bos = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">                    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[fis.available()];</span><br><span class="line">                    fis.read(buffer);</span><br><span class="line">                    bos.write(buffer, <span class="number">0</span>, buffer.length);</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">                    <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> bos.toByteArray();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;, <span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">        instrumentation.retransformClasses(Class.forName(<span class="string">&quot;com.codecho.demo.TrafficService&quot;</span>, <span class="keyword">false</span>, ClassLoader.getSystemClassLoader()));</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-jar-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">archive</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Agent-Class</span>&gt;</span>com.codecho.agent.LogAgent<span class="tag">&lt;/<span class="name">Agent-Class</span>&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--不加此配置会导致load失败--&gt;</span></span><br><span class="line">                        <span class="comment">&lt;!--Agent JAR loaded but agent failed to initialize--&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">Can-Retransform-Classes</span>&gt;</span>true<span class="tag">&lt;/<span class="name">Can-Retransform-Classes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">manifestEntries</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">archive</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改主程序的<code>Main.java</code></p>
+<ul>
+<li><p>Main.java</p>
+<p>通过死循环判断class是否重新加载</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;</span><br><span class="line">            String transport = <span class="keyword">new</span> TrafficService().transport();</span><br><span class="line">            System.out.println(<span class="string">&quot;transport: &quot;</span> + transport);</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>TrafficService.java</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TrafficService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">transport</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;take the bus&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>先运行Main主程序，再修改<code>TrafficService</code>的<code>transport</code>方法，通过<code>jps</code>查看主程序pid，再运行Attach程序</p>
+<p>可以看到<code>TrafficService#transport</code>的输出从bus变为subway，表明<code>TrafficService</code>类确实重新加载了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE4.png"></p>
+</li>
+</ol>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><ol>
+<li>Java Agent是JDK提供的一种技术，可以对Java程序进行增强、监测、分析等</li>
+<li>Java Agent主要有<code>premain</code>和<code>agentmain</code>两个入口方法，<code>Instrumentation</code>接口可以让我们在程序运行期间动态地更改字节码、替换class等</li>
+<li>可以通过<code>Javassist</code>或<code>ASM</code>等工具来方便地操作字节码</li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
     <title>如何减小Spring Boot项目jar包体积</title>
     <url>/2023/05/22/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/</url>
     <content><![CDATA[<blockquote>
@@ -2871,53 +2918,6 @@
 <p><strong>==注意：==</strong><code>java.ext.dirs</code>参数在JDK8以上版本好像不支持</p>
 </li>
 </ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>Dubbo使用Nacos作为注册中心无法连接</title>
-    <url>/2023/06/26/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/</url>
-    <content><![CDATA[<h4 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h4><ul>
-<li>Dubbo 3.X</li>
-<li>Nacos 2.X</li>
-</ul>
-<h4 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h4><blockquote>
-<p>Failed to create nacos naming service client. Reason: server status check failed</p>
-</blockquote>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/dubbo%E8%BF%9E%E6%8E%A5nacos%E6%8A%A5%E9%94%99.png?q-sign-algorithm=sha1&q-ak=AKIDJYFWGoe8zVfy7H8yRzbk3k5DmJWBqxVaJS33T6LgPuTcZSUReDwBskGWpC1t9RLH&q-sign-time=1687714108;1687717708&q-key-time=1687714108;1687717708&q-header-list=host&q-url-param-list=ci-process&q-signature=104a6d843f9f68a6d0bff4910c1604d3a71ad422&x-cos-security-token=isTnh7EYKY10XDdh9LGclW33vE5uTinae6db1863a84cdec64a741d1dcddd61d1p06SBCu6N_Glu7gkjbwbx5NJJ37CvMOk0G2do2EJBKK4v9W7TramukJ0MXkTadf1hTfnwPRnez0WAYSBHqxetiTHsELwEFJN0AI96-5aA5EKME7H6jVDgwtC-8GyQ2sQZVevICp1XaIg02K0zed-08lEtGd_UN8jHa34TwmeVV8_TPpS3J-_w4RzUkmdmszg&ci-process=originImage"></p>
-<h4 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h4><blockquote>
-<p>Nacos2.X版本相比1.X新增了gRPC通信，因此添加了额外的端口，<a href="https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html">详见Nacos文档</a></p>
-</blockquote>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/nacos2%E7%89%88%E6%9C%AC%E5%8F%98%E5%8C%96.png?q-sign-algorithm=sha1&q-ak=AKIDteaO1u71CbFY_639ZSCVPpz3jH1w63OHFrr6m1HM2jEJN4Kv7nYZOu5sdlSiGjHb&q-sign-time=1687714123;1687717723&q-key-time=1687714123;1687717723&q-header-list=host&q-url-param-list=ci-process&q-signature=f11026972abd5b46648abc4527b364669ef6f49f&x-cos-security-token=isTnh7EYKY10XDdh9LGclW33vE5uTina6c4478b58ace1f2300734dddff01f17ap06SBCu6N_Glu7gkjbwbxzjtY18p0dHgHY6mITwYxlGrsqNArlBMqo7KHw0Yq1lV7cOF1uaaLeZAh-W0QhwrzEEnVW9-PIBy9k_640122iPu09ConM7mwFhDuEEEPLRIgCx14LdaWzvCp3TlNgAdCKY5PVptDoycZwpjbpOFNowub_Mumem8i_sJY2bQBbsL&ci-process=originImage"></p>
-<h4 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 防火墙开放9848端口</span></span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --add-port=9848/tcp --permanent </span></span><br><span class="line">success</span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --reload </span></span><br><span class="line">success</span><br></pre></td></tr></table></figure>
-
-]]></content>
-  </entry>
-  <entry>
-    <title>使用IDEA构建docker镜像</title>
-    <url>/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/</url>
-    <content><![CDATA[<h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
-<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
-<li>装有Docker环境的Linux服务器/虚拟机</li>
-</ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
-<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
-<p>配置docker服务器信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
-<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
-</li>
-<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
-</li>
-<li><p>验证docker镜像是否部署成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
-</li>
-</ol>
 ]]></content>
   </entry>
 </search>

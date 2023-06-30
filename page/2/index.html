@@ -1255,214 +1255,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">Linux下搭建Redis集群</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-06 02:21:10" itemprop="dateModified" datetime="2022-02-06T02:21:10+08:00">2022-02-06</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>3.7k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>3 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
-<li>操作系统：CentOS 7.5</li>
-<li>Redis版本：6.2.6，<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
-</ul>
-<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
-<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
-<li><p>启动<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看主从节点启动情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
-</li>
-<li><p>测试主节点和从节点数据同步</p>
-<blockquote>
-<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
-</blockquote>
-<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
-
-<p>在连接主节点的窗口中插入一些数据</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
-
-<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
-</blockquote>
-<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
-<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
-
-<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
-<li><p>启动哨兵</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
-<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>模拟主节点挂掉的情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
-
-<p>查看<code>sentinel1</code>的日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
-</li>
-<li><p>重新启动原来的主节点6379</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
-
-<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
-<p>也可以用<code>info</code>命令查看从节点信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
-</li>
-</ul>
-<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
-<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
-<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
-<blockquote>
-<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
-<li><p>启动上述6个节点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-<p>查看节点是否启动成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-<li><p>创建真正的集群！！！</p>
-<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
-<blockquote>
-<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-<li><p>更简单快速地创建集群</p>
-<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
-
-<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
-</li>
-<li><p>连接集群并使用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
-</li>
-<li><p>模拟三个主节点中的一个挂掉</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
-
-<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
-<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
-</li>
-</ul>
-<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
-<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a target="_blank" rel="noopener" href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
-</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1763,6 +1555,214 @@
 <p> 关闭arthas服务端，所有arthas客户端都会退出，关闭前增强类会被重置，使用<code>redefine</code>、<code>redefine</code>重加载的类不会被重置</p>
 </li>
 </ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">Linux下搭建Redis集群</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-02-06 02:21:10" itemprop="dateModified" datetime="2022-02-06T02:21:10+08:00">2022-02-06</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS 7.5</li>
+<li>Redis版本：6.2.6，<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
+<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看主从节点启动情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>测试主节点和从节点数据同步</p>
+<blockquote>
+<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
+</blockquote>
+<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
+
+<p>在连接主节点的窗口中插入一些数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
+</blockquote>
+<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
+<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
+
+<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
+<li><p>启动哨兵</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
+<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>模拟主节点挂掉的情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
+</li>
+<li><p>重新启动原来的主节点6379</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
+<p>也可以用<code>info</code>命令查看从节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
+</li>
+</ul>
+<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
+<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
+<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
+<blockquote>
+<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
+<li><p>启动上述6个节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>查看节点是否启动成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+<li><p>创建真正的集群！！！</p>
+<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
+<blockquote>
+<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+<li><p>更简单快速地创建集群</p>
+<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
+</li>
+<li><p>连接集群并使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
+</li>
+<li><p>模拟三个主节点中的一个挂掉</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+</ul>
+<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
+<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a target="_blank" rel="noopener" href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+</ul>
 
       
     </div>
