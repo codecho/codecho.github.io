@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,6 +181,379 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/05/2023-09-05-Redisson%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/09/05/2023-09-05-Redisson%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" class="post-title-link" itemprop="url">Redisson分布式锁入门使用及源码浅析</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-09-05 00:00:00" itemprop="dateCreated datePublished" datetime="2023-09-05T00:00:00+08:00">2023-09-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-09-12 23:01:32" itemprop="dateModified" datetime="2023-09-12T23:01:32+08:00">2023-09-12</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>11 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>作为JAVA开发者，一提到锁，我们第一时间想到的应该是synchronized关键字、ReentrantLock和juc包下的各种并发工具类。随着业务的增长和微服务的流行，系统由单体应用拆分为独立的模块，每个模块服务都运行在独立的JVM中，此时JDK提供的锁就显得力不从心了，于是分布式锁这样一把利器就应运而生了。</p>
+</blockquote>
+<h3 id="分布式锁的特性"><a href="#分布式锁的特性" class="headerlink" title="分布式锁的特性"></a>分布式锁的特性</h3><ul>
+<li><p>互斥</p>
+<p>同一时刻只能有一个客户端持有</p>
+</li>
+<li><p>可重入</p>
+<p>同一个客户端获取到锁后可以再次加锁</p>
+</li>
+<li><p>避免死锁</p>
+<p>通过设置过期时间或其他方式保证即使客户端崩溃也不会影响锁的释放</p>
+</li>
+<li><p>加锁解锁同一人</p>
+<p>每个客户端只能释放自己加的锁</p>
+</li>
+<li><p>容错</p>
+<p>允许若干个锁节点发生故障仍能正常加锁和解锁</p>
+</li>
+</ul>
+<h3 id="分布式锁实现方式"><a href="#分布式锁实现方式" class="headerlink" title="分布式锁实现方式"></a>分布式锁实现方式</h3><ul>
+<li><p>数据库</p>
+<p>select xxx for update</p>
+</li>
+<li><p>zookeeper</p>
+<p>临时顺序节点</p>
+</li>
+<li><p>redis</p>
+<p>setnx、lua脚本</p>
+</li>
+</ul>
+<h3 id="使用Redis作为分布式锁"><a href="#使用Redis作为分布式锁" class="headerlink" title="使用Redis作为分布式锁"></a>使用Redis作为分布式锁</h3><h4 id="伪代码实现"><a href="#伪代码实现" class="headerlink" title="伪代码实现"></a>伪代码实现</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成分布式锁的key，使用业务id代替</span></span><br><span class="line">lockKey = <span class="string">&quot;lock:&quot;</span> + bizId;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用setnx命令进行加锁，setnx即set if not exist，不存在则设置</span></span><br><span class="line">result = redis.setnx(lockKey, value);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (result == <span class="number">1</span>) &#123;</span><br><span class="line">    <span class="comment">// 加锁成功，设置过期时间</span></span><br><span class="line">	redis.expire(key, <span class="number">10</span>);</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 执行业务操作</span></span><br><span class="line">    doSomething();</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 释放锁</span></span><br><span class="line">    redis.del(lockKey);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="存在的问题"><a href="#存在的问题" class="headerlink" title="存在的问题"></a>存在的问题</h4><ol>
+<li>加锁和设置过期时间不是原子操作，如果加锁成功但设置过期时间失败，则锁会一直存在</li>
+<li>锁的过期时间是固定的，如果设置过小，业务耗时较久，锁会提前释放，被其他线程获取，造成业务混乱和异常；如果设置过大，业务操作发生异常，造成锁长时间无法释放且无法获取</li>
+<li>可能存在误释放其他线程的锁，线程1加锁并设置过期时间成功，但是由于业务耗时较久，锁已经过期，所以线程2能够获取到锁并执行业务操作，此时线程1执行完业务后释放了本该属于线程2的锁，然后线程3又获取到了锁……很明显，这种情况页会造成业务的混乱和异常</li>
+</ol>
+<h4 id="如何解决"><a href="#如何解决" class="headerlink" title="如何解决"></a>如何解决</h4><ol>
+<li><p>Redis的set命令提供了nx和ex、px参数，相当于将setnx + expire合并为一个操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">// ex 过期时间单位为秒</span><br><span class="line">// px 过期时间单位为毫秒</span><br><span class="line">set key value nx ex|px time</span><br></pre></td></tr></table></figure></li>
+<li><p>通过类似TimerTask之类的定时工具类来对锁进行自动续期（Redisson中的看门狗机制），每隔一段时间进行检查，如果锁存在，重新设置过期时间保证业务能够正常完成</p>
+</li>
+<li><p>线程加锁时将线程id作为value存入Redis，解锁时判断锁中的value是否和当前线程id一致，一致则删除锁</p>
+<p>伪代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">threadId = Threads.currentThread().getId();</span><br><span class="line"></span><br><span class="line">......</span><br><span class="line">    </span><br><span class="line"><span class="keyword">if</span> (threadId == redis.get(lockKey)) &#123;</span><br><span class="line">	redis.del(lockKey);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>这里仍然存在几个问题：</strong></p>
+<ul>
+<li>上述删除锁一共三个操作，获取锁的value、判断value和线程id是否相等、删除锁，如果线程1在执行完前两步操作后锁刚好过期，此时线程2成功获取到锁，然后执行业务操作，接着线程1执行删除操作，就会释放掉线程2的锁。因此需要上述操作为原子性操作，可以使用lua脚本将三个操作合在一起执行</li>
+<li>在不同的JVM中，线程id是会重复的，因此不能只使用线程id作为锁的value，可以使用UUID或分布式ID（如使用雪花算法生成的id）</li>
+</ul>
+</li>
+</ol>
+<p>到这里，我们设计的分布式锁才算勉强满足我们的需求。</p>
+<h3 id="Redis部署方式带来的问题"><a href="#Redis部署方式带来的问题" class="headerlink" title="Redis部署方式带来的问题"></a>Redis部署方式带来的问题</h3><ol>
+<li>上述的分布式锁在Redis单节点环境下是能够正常使用的，但是单节点部署注定无法提供高可用性</li>
+<li>Redis除了单节点部署外，还支持主从（哨兵）、分片集群两种部署方式，而这两种方式都是需要进行主从同步的，如果某个master节点在客户端获取锁后下线，而slave节点又未及时同步锁数据，经过选举后slave节点成为新的master节点，但是客户端锁数据已经丢失，其他客户端可以正常获取锁，这样会造成程序和业务上的混乱</li>
+<li>为了解决上述问题，Redis作者提出了一种算法来保证即使在主从（哨兵）、分片集群环境下也能保证分布式锁的正常使用</li>
+</ol>
+<h3 id="Redlock算法"><a href="#Redlock算法" class="headerlink" title="Redlock算法"></a>Redlock算法</h3><p>简单概括来说，将上述的操作在每个master节点上分别执行，如果在容忍时间内，至少有一半以上的master节点能够加锁成功，则认为分布式锁获取成功</p>
+<p><a target="_blank" rel="noopener" href="https://redis.io/docs/manual/patterns/distributed-locks/">详情查看官网</a></p>
+<h3 id="Redisson分布式锁简单使用"><a href="#Redisson分布式锁简单使用" class="headerlink" title="Redisson分布式锁简单使用"></a>Redisson分布式锁简单使用</h3><blockquote>
+<p>Redisson是一个方便我们连接和使用Redis的客户端，它提供了很多常用功能，其中就包括分布式锁。Redisson分布式锁支持单实例、主从、哨兵、分片集群等部署模式，详见<a target="_blank" rel="noopener" href="https://github.com/redisson/redisson/wiki/2.-Configuration">wiki</a></p>
+</blockquote>
+<ol>
+<li><p>创建SpringBoot Web项目，引入redisson依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.redisson<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>redisson<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>3.16.7<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>在application.properties配置文件中添加redis连接信息</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">spring.redis.host</span>=<span class="string">xxx.xxx.xxx.xxx</span></span><br><span class="line"><span class="meta">spring.redis.port</span>=<span class="string">6379</span></span><br><span class="line"><span class="meta">spring.redis.password</span>=<span class="string">password</span></span><br></pre></td></tr></table></figure></li>
+<li><p>编写Redisson配置类，创建RedissonClient对象实例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedissonConfig</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;spring.redis.host&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String host;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;spring.redis.port&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String port;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Value(&quot;$&#123;spring.redis.password&#125;&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedissonClient <span class="title">redissonClient</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        Config config = <span class="keyword">new</span> Config();</span><br><span class="line">        <span class="comment">// 这里使用单实例模式</span></span><br><span class="line">        config.useSingleServer().setAddress(<span class="string">&quot;redis://&quot;</span> + host + <span class="string">&quot;:&quot;</span> + port).setPassword(password);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> Redisson.create(config);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>编写controller类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="meta">@RequestMapping(value = &quot;/lottery&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LotteryController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> RedissonClient redissonClient;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@PostMapping(value = &quot;/draw&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">draw</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        RLock lock = redissonClient.getLock(<span class="string">&quot;prize:1001&quot;</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (!lock.tryLock()) &#123;</span><br><span class="line">                log.info(<span class="string">&quot;===&gt; &#123;&#125; didn&#x27;t get lock&quot;</span>, Thread.currentThread().getName());</span><br><span class="line">                </span><br><span class="line">                <span class="keyword">return</span> <span class="string">&quot;离大奖只差一步，别灰心，下次还有机会！&quot;</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            log.info(<span class="string">&quot;===&gt; &#123;&#125; got lock&quot;</span>, Thread.currentThread().getName());</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">                log.info(<span class="string">&quot;===&gt; &#123;&#125; unlock&quot;</span>, Thread.currentThread().getName());</span><br><span class="line">                lock.unlock();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;你就是天选之子！&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用Jmeter工具模拟并发请求</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-07-04-Redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%2Fjmeter%E6%A8%A1%E6%8B%9F%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81.png"></p>
+</li>
+<li><p>查看Redis中分布式锁信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-07-04-Redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%2Fredisson%E9%94%81%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>查看控制台日志</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-07-04-Redisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90%2Fredisson%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E6%97%A5%E5%BF%97.png"></p>
+</li>
+</ol>
+<blockquote>
+<p>可以看到，在并发场景下，Redisson分布式锁可以保证同一时刻只有一个线程能够获取锁，可以满足我们的业务需求。</p>
+</blockquote>
+<h3 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h3><p><em><strong>加锁源码</strong></em></p>
+<ul>
+<li><p>tryLock()：==带过期时间参数的tryLock()和lock()方法逻辑和以下类似，多了重试和订阅/取消订阅channel的操作==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">tryLock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(tryLockAsync());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> RFuture&lt;Boolean&gt; <span class="title">tryLockAsync</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tryLockAsync(Thread.currentThread().getId());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> RFuture&lt;Boolean&gt; <span class="title">tryLockAsync</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> tryAcquireOnceAsync(-<span class="number">1</span>, -<span class="number">1</span>, <span class="keyword">null</span>, threadId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>tryAcquireOnceAsync()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> RFuture&lt;Boolean&gt; <span class="title">tryAcquireOnceAsync</span><span class="params">(<span class="keyword">long</span> waitTime, <span class="keyword">long</span> leaseTime, TimeUnit unit, <span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    RFuture&lt;Boolean&gt; ttlRemainingFuture; </span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 如果自己设置了锁租借时间</span></span><br><span class="line">    <span class="keyword">if</span> (leaseTime != -<span class="number">1</span>) &#123;</span><br><span class="line">        ttlRemainingFuture = tryLockInnerAsync(waitTime, leaseTime, unit, threadId, RedisCommands.EVAL_NULL_BOOLEAN);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 没有设置锁租借时间，默认为30s</span></span><br><span class="line">        ttlRemainingFuture = tryLockInnerAsync(waitTime, internalLockLeaseTime,</span><br><span class="line">                                               TimeUnit.MILLISECONDS, threadId, RedisCommands.EVAL_NULL_BOOLEAN);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    ttlRemainingFuture.onComplete((ttlRemaining, e) -&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// lock acquired</span></span><br><span class="line">        <span class="keyword">if</span> (ttlRemaining) &#123;</span><br><span class="line">            <span class="comment">// 设置自定义锁租借时间</span></span><br><span class="line">            <span class="keyword">if</span> (leaseTime != -<span class="number">1</span>) &#123;</span><br><span class="line">                internalLockLeaseTime = unit.toMillis(leaseTime);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="comment">// 未设置，开启锁续期定时任务（看门狗）</span></span><br><span class="line">                scheduleExpirationRenewal(threadId);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="keyword">return</span> ttlRemainingFuture;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>tryLockInnerAsync()：==加锁核心逻辑==</p>
+<p><span id="param"><strong>解释一下lua脚本中的参数</strong></span></p>
+<ul>
+<li>KEYS[1]    prize:1001   锁对应的key，即 Collections.singletonList(getRawName())</li>
+<li>ARGV[1]   30000        锁过期时间，未设置则默认为30000</li>
+<li>ARGV[2]   d5f6-xxxxx:107   锁的field，即 getLockName(threadId)，格式为 uuid:threadId</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 加锁逻辑：</span></span><br><span class="line"><span class="comment">// 1.如果redis中不存在名为 prize:1001 的key，创建key为 prize:1001 的hash，并将field为 d5f646f3-c3ea-47d7-89fb-199d561f4084:107 的value值加一，最后设置过期时间，返回nil，表示加锁成功</span></span><br><span class="line"><span class="comment">// 2.如果存在并且该key存在指定的field ，将field对应的value值加一并设置过期时间，返回nil，表示加锁成功</span></span><br><span class="line"><span class="comment">// 3.如果key存在但不存在指定的field，返回锁的剩余过期时间，表示加锁失败</span></span><br><span class="line"></span><br><span class="line">&lt;T&gt; <span class="function">RFuture&lt;T&gt; <span class="title">tryLockInnerAsync</span><span class="params">(<span class="keyword">long</span> waitTime, <span class="keyword">long</span> leaseTime, TimeUnit unit, <span class="keyword">long</span> threadId, RedisStrictCommand&lt;T&gt; command)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> evalWriteAsync(getRawName(), LongCodec.INSTANCE, command,</span><br><span class="line">                          <span class="string">&quot;if (redis.call(&#x27;exists&#x27;, KEYS[1]) == 0) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[2]) == 1) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[2], 1); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return redis.call(&#x27;pttl&#x27;, KEYS[1]);&quot;</span>,</span><br><span class="line">                          Collections.singletonList(getRawName()), unit.toMillis(leaseTime), getLockName(threadId));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><em><strong>续约源码</strong></em></p>
+<ul>
+<li><p>scheduleExpirationRenewal()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 需要设置过期续约的锁的集合</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ConcurrentMap&lt;String, ExpirationEntry&gt; EXPIRATION_RENEWAL_MAP = <span class="keyword">new</span> ConcurrentHashMap&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">scheduleExpirationRenewal</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    ExpirationEntry entry = <span class="keyword">new</span> ExpirationEntry();</span><br><span class="line">    <span class="comment">// 如果当前锁第一次设置过期续约，向EXPIRATION_RENEWAL_MAP中添加一个续约信息；如果不是第一次设置，返回已有的续约信息</span></span><br><span class="line">    ExpirationEntry oldEntry = EXPIRATION_RENEWAL_MAP.putIfAbsent(getEntryName(), entry);</span><br><span class="line">    <span class="comment">// 如果不是第一次设置过期续约，将当前线程id添加到原续约信息的线程id集合中</span></span><br><span class="line">    <span class="keyword">if</span> (oldEntry != <span class="keyword">null</span>) &#123;</span><br><span class="line">        oldEntry.addThreadId(threadId);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 如果第一次设置，将当前线程id添加到刚创建的续约信息的线程id集合中</span></span><br><span class="line">        entry.addThreadId(threadId);</span><br><span class="line">        <span class="comment">// 开启锁过期续约定时任务，即看门狗任务</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            renewExpiration();</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="comment">// 如果检测到线程中断，取消续期</span></span><br><span class="line">            <span class="keyword">if</span> (Thread.currentThread().isInterrupted()) &#123;</span><br><span class="line">                cancelExpirationRenewal(threadId);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>renewExpiration()：==看门狗核心逻辑==</p>
+<p>Timeout是netty工具包下的一个关于定时任务的接口，它可以设置定时任务和定时信息</p>
+<p>TimerTask同上，它是定时任务的抽象接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">renewExpiration</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取锁续约信息，不存在则返回</span></span><br><span class="line">    ExpirationEntry ee = EXPIRATION_RENEWAL_MAP.get(getEntryName());</span><br><span class="line">    <span class="keyword">if</span> (ee == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 创建定时任务，周期为 internalLockLeaseTime/3 ，未设置锁租借时间，默认为 10s</span></span><br><span class="line">    <span class="comment">// Config.java: private long lockWatchdogTimeout = 30 * 1000;</span></span><br><span class="line">    Timeout task = commandExecutor.getConnectionManager().newTimeout(<span class="keyword">new</span> TimerTask() &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">(Timeout timeout)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">            <span class="comment">// 获取锁续约信息（线程id+过期时间）</span></span><br><span class="line">            ExpirationEntry ent = EXPIRATION_RENEWAL_MAP.get(getEntryName());</span><br><span class="line">            <span class="keyword">if</span> (ent == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            </span><br><span class="line">            <span class="comment">// 获取第一个添加的线程id</span></span><br><span class="line">            Long threadId = ent.getFirstThreadId();</span><br><span class="line">            <span class="keyword">if</span> (threadId == <span class="keyword">null</span>) &#123;</span><br><span class="line">                <span class="keyword">return</span>;</span><br><span class="line">            &#125;</span><br><span class="line">			</span><br><span class="line">            <span class="comment">// 执行锁续期lua脚本</span></span><br><span class="line">            RFuture&lt;Boolean&gt; future = renewExpirationAsync(threadId);</span><br><span class="line">            future.onComplete((res, e) -&gt; &#123;</span><br><span class="line">                <span class="comment">// 续期失败，删除续约信息</span></span><br><span class="line">                <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">                    log.error(<span class="string">&quot;Can&#x27;t update lock &quot;</span> + getRawName() + <span class="string">&quot; expiration&quot;</span>, e);</span><br><span class="line">                    EXPIRATION_RENEWAL_MAP.remove(getEntryName());</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">			   <span class="comment">// 续期成功后自己调用自己，即重复创建并执行看门狗任务</span></span><br><span class="line">                <span class="keyword">if</span> (res) &#123;</span><br><span class="line">                    <span class="comment">// reschedule itself</span></span><br><span class="line">                    renewExpiration();</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="comment">// 续期失败后取消续期</span></span><br><span class="line">                    cancelExpirationRenewal(<span class="keyword">null</span>);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, internalLockLeaseTime / <span class="number">3</span>, TimeUnit.MILLISECONDS);</span><br><span class="line"></span><br><span class="line">    ee.setTimeout(task);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>renewExpirationAsync()：==锁续期核心逻辑==</p>
+<p>lua脚本参数参考<a href="#param">这里</a></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 续期逻辑：</span></span><br><span class="line"><span class="comment">// 1.判断锁中指定的field是否存在，如果存在，使用pexpire指令重新设置过期时间（单位毫秒），返回1，表示续期成功</span></span><br><span class="line"><span class="comment">// 2.如果指定的field不存在，返回0，表示续期失败</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> RFuture&lt;Boolean&gt; <span class="title">renewExpirationAsync</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> evalWriteAsync(getRawName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN,</span><br><span class="line">                          <span class="string">&quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[2]) == 1) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 1; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 0;&quot;</span>,</span><br><span class="line">                          Collections.singletonList(getRawName()),</span><br><span class="line">                          internalLockLeaseTime, getLockName(threadId));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>cancelExpirationRenewal()：取消续约</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">cancelExpirationRenewal</span><span class="params">(Long threadId)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 获取续约信息</span></span><br><span class="line">    ExpirationEntry task = EXPIRATION_RENEWAL_MAP.get(getEntryName());</span><br><span class="line">    <span class="keyword">if</span> (task == <span class="keyword">null</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 若线程id存在，则从续约信息的线程id集合中移除</span></span><br><span class="line">    <span class="keyword">if</span> (threadId != <span class="keyword">null</span>) &#123;</span><br><span class="line">        task.removeThreadId(threadId);</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// 如果线程id不存在或者续约信息中无线程id，取消定时任务和其关联，从过期续约集合中移除该续约信息</span></span><br><span class="line">    <span class="keyword">if</span> (threadId == <span class="keyword">null</span> || task.hasNoThreads()) &#123;</span><br><span class="line">        Timeout timeout = task.getTimeout();</span><br><span class="line">        <span class="keyword">if</span> (timeout != <span class="keyword">null</span>) &#123;</span><br><span class="line">            timeout.cancel();</span><br><span class="line">        &#125;</span><br><span class="line">        EXPIRATION_RENEWAL_MAP.remove(getEntryName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><em><strong>解锁源码</strong></em></p>
+<ul>
+<li><p>unlock()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">unlock</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        get(unlockAsync(Thread.currentThread().getId()));</span><br><span class="line">    &#125; <span class="keyword">catch</span> (RedisException e) &#123;</span><br><span class="line">        <span class="keyword">if</span> (e.getCause() <span class="keyword">instanceof</span> IllegalMonitorStateException) &#123;</span><br><span class="line">            <span class="keyword">throw</span> (IllegalMonitorStateException) e.getCause();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>unlockAsync()</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> RFuture&lt;Void&gt; <span class="title">unlockAsync</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    RPromise&lt;Void&gt; result = <span class="keyword">new</span> RedissonPromise&lt;&gt;();</span><br><span class="line">    <span class="comment">// 实际解锁操作</span></span><br><span class="line">    RFuture&lt;Boolean&gt; future = unlockInnerAsync(threadId);</span><br><span class="line"></span><br><span class="line">    future.onComplete((opStatus, e) -&gt; &#123;</span><br><span class="line">        <span class="comment">// 解锁完成后取消续约，这部分逻辑参考之前的解锁源码部分</span></span><br><span class="line">        cancelExpirationRenewal(threadId);</span><br><span class="line">		</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            result.tryFailure(e);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (opStatus == <span class="keyword">null</span>) &#123;</span><br><span class="line">            IllegalMonitorStateException cause = <span class="keyword">new</span> IllegalMonitorStateException(<span class="string">&quot;attempt to unlock lock, not locked by current thread by node id: &quot;</span></span><br><span class="line">                                                                                  + id + <span class="string">&quot; thread-id: &quot;</span> + threadId);</span><br><span class="line">            result.tryFailure(cause);</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        result.trySuccess(<span class="keyword">null</span>);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>unlockInnerAsync()：==解锁核心逻辑==</p>
+<p><strong>解释一下lua脚本中的参数</strong></p>
+<ul>
+<li>KEYS[1]    prize:1001   锁对应的key，即 getRawName()</li>
+<li>KEYS[2]    redisson_lock__channel:{prize:1001}    锁的channel</li>
+<li>ARGV[1]   0                  锁的channel发布的信息</li>
+<li>ARGV[2]   30000         锁过期时间</li>
+<li>ARGV[3]   d5f6-xxxxx:107    锁的field，即 getLockName(threadId)，格式为 uuid:threadId</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解锁逻辑：</span></span><br><span class="line"><span class="comment">// 1.如果redis中不存在指定的key和field，返回nil，表示解锁成功（锁已经不存在了）</span></span><br><span class="line"><span class="comment">// 2.如果存在，将field对应的value值减一，如果减一后的value值大于0，使用pexpire指令重新设置过期时间（单位毫秒），即重入次数减一，返回0</span></span><br><span class="line"><span class="comment">// 3.如果减一后的value值小于或等于0，删除指定的key，发布解锁信息到指定的channel，订阅了该channel并设置了监听事件的客户端会执行回调和释放信号量，唤醒等待的线程重新获取锁（这部分内容下次我会详细写一篇文章进行分析），返回1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> RFuture&lt;Boolean&gt; <span class="title">unlockInnerAsync</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> evalWriteAsync(getRawName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN,</span><br><span class="line">                          <span class="string">&quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[3]) == 0) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil;&quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;local counter = redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[3], -1); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;if (counter &gt; 0) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[2]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 0; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;else &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;del&#x27;, KEYS[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;publish&#x27;, KEYS[2], ARGV[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 1; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil;&quot;</span>,</span><br><span class="line">                          Arrays.asList(getRawName(), getChannelName()), LockPubSub.UNLOCK_MESSAGE, internalLockLeaseTime, getLockName(threadId));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    从零开始使用Redis作为分布式锁会遇到各种各样的问题，通过一步步的分析，我们慢慢摸索到了分布式锁的雏形，而Redlock算法就是为了解决这些问题而提出的。但是它仍然不是完美的，比如过渡依赖时钟、网络、设计过重等，具体可以网上搜索Redis作者<strong>Antirez</strong>和分布式系统专家<strong>Martin</strong>的论战。在实际使用时，应该根据我们的业务场景和需求来决定采用何种解决方案。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/08/12/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/08/12/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8/" class="post-title-link" itemprop="url">ShardingSphere-JDBC入门使用</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-08-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-12T00:00:00+08:00">2023-08-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-09-12 22:50:17" itemprop="dateModified" datetime="2023-09-12T22:50:17+08:00">2023-09-12</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9.1k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="什么是ShardingSphere？"><a href="#什么是ShardingSphere？" class="headerlink" title="什么是ShardingSphere？"></a>什么是ShardingSphere？</h4><blockquote>
+<p>Apache ShardingSphere 是一款分布式的数据库生态系统， 可以将任意数据库转换为分布式数据库，并通过数据分片、弹性伸缩、加密等能力对原有数据库进行增强。 它主要由ShardingSphere-JDBC和ShardingSphere-Proxy两个可独立使用、也可混合使用的产品组成。</p>
+<p><a target="_blank" rel="noopener" href="https://shardingsphere.apache.org/document/current/cn/overview/#%E4%BB%80%E4%B9%88%E6%98%AF-shardingsphere">官网</a></p>
+</blockquote>
+<h4 id="什么是ShardingSphere-Proxy？"><a href="#什么是ShardingSphere-Proxy？" class="headerlink" title="什么是ShardingSphere-Proxy？"></a>什么是ShardingSphere-Proxy？</h4><blockquote>
+<p>ShardingSphere-Proxy 定位为透明化的数据库代理端，通过实现数据库二进制协议，对异构语言提供支持。 目前提供 MySQL 和 PostgreSQL 协议，透明化数据库操作，对 DBA 更加友好。</p>
+<ul>
+<li>向应用程序完全透明，可直接当做 MySQL/PostgreSQL 使用；</li>
+<li>兼容 MariaDB 等基于 MySQL 协议的数据库，以及 openGauss 等基于 PostgreSQL 协议的数据库；</li>
+<li>适用于任何兼容 MySQL/PostgreSQL 协议的的客户端，如：MySQL Command Client, MySQL Workbench, Navicat 等。</li>
+</ul>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-proxy.png"></p>
+<h4 id="什么是ShardingSphere-JDBC？"><a href="#什么是ShardingSphere-JDBC？" class="headerlink" title="什么是ShardingSphere-JDBC？"></a>什么是ShardingSphere-JDBC？</h4><blockquote>
+<p>ShardingSphere-JDBC 定位为轻量级 Java 框架，在 Java 的 JDBC 层提供的额外服务。 它使用客户端直连数据库，以 jar 包形式提供服务，无需额外部署和依赖，可理解为增强版的 JDBC 驱动，完全兼容 JDBC 和各种 ORM 框架。</p>
+<ul>
+<li>适用于任何基于 JDBC 的 ORM 框架，如：JPA, Hibernate, Mybatis, Spring JDBC Template 或直接使用 JDBC；</li>
+<li>支持任何第三方的数据库连接池，如：DBCP, C3P0, BoneCP, HikariCP 等；</li>
+<li>支持任意实现 JDBC 规范的数据库，目前支持 MySQL，PostgreSQL，Oracle，SQLServer 以及任何可使用 JDBC 访问的数据库。</li>
+</ul>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-jdbc.png"></p>
+<h4 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h4><ol>
+<li><p>创建Spring Boot项目，引入MySQL、ShardingSphere-JDBC等依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.shardingsphere<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>shardingsphere-jdbc-core-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.2.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>8.0.28<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.22<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建若干张表，根据表创建controller、service、dao等代码</p>
+</li>
+</ol>
+<h4 id="使用ShardingSphere-JDBC进行读写分离"><a href="#使用ShardingSphere-JDBC进行读写分离" class="headerlink" title="使用ShardingSphere-JDBC进行读写分离"></a>使用ShardingSphere-JDBC进行读写分离</h4><ol>
+<li><p>数据库：master、slave；表：t_user</p>
+</li>
+<li><p>创建<code>application.properties</code>作为基础配置文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">server.port</span>=<span class="string">9090</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 使用读写分离配置文件</span></span><br><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">separate</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.application.name</span>=<span class="string">demo</span></span><br><span class="line"></span><br><span class="line"><span class="meta">mybatis.mapper-locations</span>=<span class="string">classpath*:**/sql/*.xml</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 打印sql日志</span></span><br><span class="line"><span class="meta">spring.shardingsphere.props.sql-show</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建<code>application-separate.properties</code>作为读写分离配置文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据源名称</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.names</span>=<span class="string">master,slave</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 数据源1（主数据源）</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.master.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.master.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.master.url</span>=<span class="string">jdbc:mysql://host1:3306/practice?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.master.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.master.password</span>=<span class="string">password</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 数据源2（从数据源）</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.slave.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.slave.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.slave.url</span>=<span class="string">jdbc:mysql://host2:3306/practice?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.slave.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.slave.password</span>=<span class="string">password</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># spring.shardingsphere.rules.readwrite-splitting.data-sources.&lt;readwrite-splitting-data-source-name&gt;.type=Static</span></span><br><span class="line"><span class="comment"># 读写分离类型，如: Static，Dynamic</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.type</span>=<span class="string">Static</span></span><br><span class="line"><span class="comment"># 写数据源名称</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.props.write-data-source-name</span>=<span class="string">master</span></span><br><span class="line"><span class="comment"># 读数据源名称，多个从数据源用逗号分隔</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.props.read-data-source-names</span>=<span class="string">slave</span></span><br><span class="line"><span class="comment"># 负载均衡算法名称</span></span><br><span class="line"><span class="comment"># 自定义轮询算法名称</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.load-balancer-name</span>=<span class="string">round_alg</span></span><br><span class="line"><span class="comment"># 自定义随机算法名称</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.load-balancer-name=random_alg</span></span><br><span class="line"><span class="comment"># 自定义权重算法名称</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.rules.readwrite-splitting.data-sources.my_ds.load-balancer-name=weight_alg</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># spring.shardingsphere.rules.readwrite-splitting.load-balancers.&lt;load-balance-algorithm-name&gt;.type= # ????????</span></span><br><span class="line"><span class="comment"># 负载均衡算法类型</span></span><br><span class="line"><span class="comment"># 使用轮询算法</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.readwrite-splitting.load-balancers.round_alg.type</span>=<span class="string">ROUND_ROBIN</span></span><br><span class="line"><span class="comment"># 负载均衡算法属性配置</span></span><br><span class="line"><span class="comment"># 权重算法配置</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.rules.readwrite-splitting.load-balancers.weight_alg.props.slave1=1</span></span><br><span class="line"><span class="comment">#spring.shardingsphere.rules.readwrite-splitting.load-balancers.weight_alg.props.slave2=2</span></span><br></pre></td></tr></table></figure></li>
+<li><p>分别测试查询和插入接口，查看数据源是否正常路由</p>
+<ul>
+<li><p>查询sql路由到从数据源</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-jdbc%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB1.png"></p>
+</li>
+<li><p>写入sql路由到主数据源</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-jdbc%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB2.png"></p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="使用ShardingSphere-JDBC进行分库分表"><a href="#使用ShardingSphere-JDBC进行分库分表" class="headerlink" title="使用ShardingSphere-JDBC进行分库分表"></a>使用ShardingSphere-JDBC进行分库分表</h4><ol>
+<li><p>数据库：ds_0、ds_1；表：t_order_0/1(ds_0/1)、t_order_item_0/1(ds_0/1)</p>
+</li>
+<li><p>创建<code>application.properties</code>作为基础配置文件</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">server.port</span>=<span class="string">9090</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.profiles.active</span>=<span class="string">horizontal</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.application.name</span>=<span class="string">demo</span></span><br><span class="line"></span><br><span class="line"><span class="meta">mybatis.mapper-locations</span>=<span class="string">classpath*:**/sql/*.xml</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 打印sql日志</span></span><br><span class="line"><span class="meta">spring.shardingsphere.props.sql-show</span>=<span class="string">true</span></span><br></pre></td></tr></table></figure></li>
+<li><p>创建<code>application-horizontal.properties</code>作为读写分离配置文件</p>
+<p><em><strong>分库分表策略：</strong></em></p>
+<p><strong>分库</strong>：订单表根据id对2取模，结果为0，路由到<code>ds_0</code>数据库；结果为1，路由到<code>ds_1</code>数据库。订单明细表根据<code>order_id</code>对2取模，结果为0，路由到<code>ds_0</code>数据库；结果为1，路由到<code>ds_1</code>数据库，即和订单表保持一致</p>
+<p><strong>分表</strong>：订单表、订单明细表根据<code>user_id</code>对2取模，结果为0，路由到<code>t_order_0</code>、<code>t_order_item_0</code>；结果为1，路由到<code>t_order_1</code>、<code>t_order_item_1</code>表</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据源名称</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.names</span>=<span class="string">ds_0,ds_1</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 数据源1</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_0.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_0.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_0.url</span>=<span class="string">jdbc:mysql://host1:3306/practice?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_0.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_0.password</span>=<span class="string">password</span></span><br><span class="line"></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_1.type</span>=<span class="string">com.alibaba.druid.pool.DruidDataSource</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_1.driver-class-name</span>=<span class="string">com.mysql.cj.jdbc.Driver</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_1.url</span>=<span class="string">jdbc:mysql://host2:3306/practice?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_1.username</span>=<span class="string">root</span></span><br><span class="line"><span class="meta">spring.shardingsphere.datasource.ds_1.password</span>=<span class="string">password</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 数据节点，由数据源名 + 表名组成，以小数点分隔。多个表以逗号分隔，支持 inline 表达式。缺省表示使用已知数据源与逻辑表名称生成数据节点</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order.actual-data-nodes</span>=<span class="string">ds_$-&gt;&#123;[0,1]&#125;.t_order_$-&gt;&#123;0..1&#125;</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order_item.actual-data-nodes</span>=<span class="string">ds_$-&gt;&#123;[0,1]&#125;.t_order_item_$-&gt;&#123;0..1&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 分库策略</span></span><br><span class="line"><span class="comment"># 订单表根据id对2取模，路由到ds_0或ds_1数据库</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order.database-strategy.standard.sharding-column</span>=<span class="string">id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order.database-strategy.standard.sharding-algorithm-name</span>=<span class="string">alg_inline_id</span></span><br><span class="line"><span class="comment"># 订单明细表根据order_id对2取模，路由到ds_0或ds_1数据库，和订单表保持一致</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order_item.database-strategy.standard.sharding-column</span>=<span class="string">order_id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order_item.database-strategy.standard.sharding-algorithm-name</span>=<span class="string">alg_inline_order_id</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 分表策略</span></span><br><span class="line"><span class="comment"># 订单表根据user_id对2取模，路由到t_order_0或t_order_1表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order.table-strategy.standard.sharding-column</span>=<span class="string">user_id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order.table-strategy.standard.sharding-algorithm-name</span>=<span class="string">alg_mod_id</span></span><br><span class="line"><span class="comment"># 订单明细表根据user_id对2取模，路由到t_order_item_0或t_order_item_1表</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order_item.table-strategy.standard.sharding-column</span>=<span class="string">user_id</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.tables.t_order_item.table-strategy.standard.sharding-algorithm-name</span>=<span class="string">alg_mod_id</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 分片算法</span></span><br><span class="line"><span class="comment"># 订单表，行表达式分片算法</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_inline_id.type</span>=<span class="string">INLINE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_inline_id.props.algorithm-expression</span>=<span class="string">ds_$-&gt;&#123;id % 2&#125;</span></span><br><span class="line"><span class="comment"># 订单表、订单明细表，取模分片算法</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_mod_id.type</span>=<span class="string">MOD</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_mod_id.props.sharding-count</span>=<span class="string">2</span></span><br><span class="line"><span class="comment"># 订单明细表，行表达式分片算法</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_inline_order_id.type</span>=<span class="string">INLINE</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.sharding-algorithms.alg_inline_order_id.props.algorithm-expression</span>=<span class="string">ds_$-&gt;&#123;order_id % 2&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment"># 绑定表：分片规则一致的一组分片表。使用绑定表进行多表关联查询时，必须使用分片键进行关联，否则会出现笛卡尔积关联或跨库关联，从而影响查询效率</span></span><br><span class="line"><span class="meta">spring.shardingsphere.rules.sharding.binding-tables[0]</span>=<span class="string">t_order,t_order_item</span></span><br></pre></td></tr></table></figure></li>
+<li><p>编写插入订单和订单行的代码，查看分库分表策略是否生效</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">mockInsert</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    OrderDO order1 = <span class="keyword">new</span> OrderDO().setId(snowflake.nextId())</span><br><span class="line">        .setOrderNo(snowflake.nextIdStr())</span><br><span class="line">        .setUserId(<span class="number">202001L</span>)</span><br><span class="line">        .setCreateTime(<span class="string">&quot;2023-08-12 17:35:11&quot;</span>)</span><br><span class="line">        .setCreateTime(<span class="string">&quot;2023-08-12 17:35:11&quot;</span>)</span><br><span class="line">        .setPayAmount(<span class="keyword">new</span> BigDecimal(<span class="string">&quot;10889.0&quot;</span>));</span><br><span class="line">    OrderItemDO orderItem1 = <span class="keyword">new</span> OrderItemDO().setId(snowflake.nextId())</span><br><span class="line">        .setOrderId(order1.getId())</span><br><span class="line">        .setUserId(<span class="number">202001L</span>)</span><br><span class="line">        .setProductName(<span class="string">&quot;MacBook Pro&quot;</span>)</span><br><span class="line">        .setAmount(<span class="keyword">new</span> BigDecimal(<span class="string">&quot;10889.0&quot;</span>));</span><br><span class="line"></span><br><span class="line">    orderMapper.insert(order1);</span><br><span class="line">    orderItemService.insert(orderItem1);</span><br><span class="line"></span><br><span class="line">    OrderDO order2 = <span class="keyword">new</span> OrderDO().setId(snowflake.nextId())</span><br><span class="line">        .setOrderNo(snowflake.nextIdStr())</span><br><span class="line">        .setUserId(<span class="number">202000L</span>)</span><br><span class="line">        .setCreateTime(<span class="string">&quot;2023-08-12 17:41:54&quot;</span>)</span><br><span class="line">        .setCreateTime(<span class="string">&quot;2023-08-12 17:41:54&quot;</span>)</span><br><span class="line">        .setPayAmount(<span class="keyword">new</span> BigDecimal(<span class="string">&quot;3899.0&quot;</span>));</span><br><span class="line">    OrderItemDO orderItem2 = <span class="keyword">new</span> OrderItemDO()</span><br><span class="line">        .setId(snowflake.nextId())</span><br><span class="line">        .setOrderId(order2.getId())</span><br><span class="line">        .setUserId(<span class="number">202000L</span>)</span><br><span class="line">        .setProductName(<span class="string">&quot;iWatch S8&quot;</span>)</span><br><span class="line">        .setAmount(<span class="keyword">new</span> BigDecimal(<span class="string">&quot;3899.0&quot;</span>));</span><br><span class="line"></span><br><span class="line">    orderMapper.insert(order2);</span><br><span class="line">    orderItemService.insert(orderItem2);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>查看分库分表情况</p>
+<ul>
+<li><p><code>order_id</code>为偶数、<code>user_id</code>为奇数</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-jdbc%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A81.png"></p>
+</li>
+<li><p>order_id为偶数、user_id为偶数</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-08-07-ShardingSphere-JDBC%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%2Fshardingsphere-jdbc%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A82.png"></p>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1424,176 +1797,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">CentOS查找历史命令</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2023-05-05 15:50:59 / Modified: 15:52:38" itemprop="dateCreated datePublished" datetime="2023-05-05T15:50:59+08:00">2023-05-05</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>279</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
-</blockquote>
-<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/" class="post-title-link" itemprop="url">GitHub Page去除域名绑定后仍定向至以前的域名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-      
-
-      <time title="Created: 2023-04-27 17:24:20 / Modified: 17:30:40" itemprop="dateCreated datePublished" datetime="2023-04-27T17:24:20+08:00">2023-04-27</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>261</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
-</blockquote>
-<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1621,14 +1824,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">110k</span>
+    <span title="Symbols count total">131k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">1:40</span>
+    <span title="Reading time total">1:59</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
