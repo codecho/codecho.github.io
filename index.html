@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -1680,7 +1680,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/09/2023-05-06-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1693,7 +1693,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/05/09/2023-05-06-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">使用shell脚本切换JDK版本</a>
+          <a href="/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/" class="post-title-link" itemprop="url">如何创建自己的第一个springboot-starter</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1703,9 +1703,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2023-05-09 03:01:26 / Modified: 15:18:04" itemprop="dateCreated datePublished" datetime="2023-05-09T03:01:26+08:00">2023-05-09</time>
+      <time title="Created: 2023-05-09 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-09T00:00:00+08:00">2023-05-09</time>
     </span>
 
   
@@ -1715,14 +1714,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.9k</span>
+      <span>3.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
+      <span>4 mins.</span>
     </span>
 </div>
 
@@ -1734,52 +1733,66 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linux上的，所以这次我们通过shell脚本的方式来切换JDK版本。</p>
+<p>对于SpringBoot我们一定不会陌生，由于其快速方便的开发方式让我们从各种繁琐的配置中解放出来，让我们的开发效率得到了大大提升，而各种starter则是其最重要的组成部分之一</p>
 </blockquote>
-<h3 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h3><ol>
-<li>安装JDK后需要在<code>/etc/profile</code>中配置环境变量，因此我们的目标就是更改配置文件</li>
-<li>想要更改配置文件，首先需要知道要修改的内容，我的配置是<code>export JAVA_HOME=/usr/java/jdk</code>，这里<code>=</code>后面的路径就是我们要修改的内容</li>
-<li>由于每个人的<code>/etc/profile</code>文件各不相同，因此上述配置项可能在x行，也可能在y行，所以我们需要找到该配置项所在的位置</li>
-<li>找到配置项位置后，我们将原JDK路径替换为目标JDK路径</li>
-<li>再使用<code>source</code>命令更新配置信息即可完成JDK版本的切换</li>
-</ol>
-<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
-<li><p>创建脚本文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch switch_jdk.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>编写脚本文件</p>
-<p>简要说一下思路</p>
+<h3 id="什么是starter？"><a href="#什么是starter？" class="headerlink" title="什么是starter？"></a>什么是starter？</h3><p>我觉得可以简单认为starter是不同场景下（如MySQL、Redis、RocketMQ等）需要的一系列依赖的集合，就像是一个个可以单独引用的模块，有了starter，我们就可以使用其内置的各种依赖完成当前场景下的需求开发</p>
+<h3 id="starter的结构？"><a href="#starter的结构？" class="headerlink" title="starter的结构？"></a>starter的结构？</h3><ol>
+<li><p>在IDEA中打开一个SpringBoot项目，选择一个starter依赖展开查看，这里以MyBatis为例</p>
 <ul>
-<li>定义一个数组来存放JDK版本和路径信息，使用==关联数组==，有点类似hashmap，key为JDK版本号，value为JDK安装路径</li>
-<li>执行脚本格式为<code>. switch_jdk.sh version</code>，其中version即为要切换的JDK版本号，在shell脚本中使用<code>$1</code>(脚本第一个参数)可以获取version的值</li>
-<li>获取到目标version后，在关联数组中获取其对应的JDK安装路径，如果获取不到，则表示目标version不存在，输出提示信息</li>
-<li>根据配置项<code>export JAVA_HOME</code>获取其所在的行位置信息，使用<code>grep</code>查找配置项所在行信息，使用<code>awk</code>提取行号</li>
-<li>使用<code>sed</code>命令替换该行配置内容，<code>-i</code>表示直接修改文件内容，<code>79c</code>表示替换第79行所在的内容</li>
-<li>使用<code>source</code>命令更新环境变量</li>
+<li><p><code>pom.properties</code>：记录了starter的artifactId、groupId和version信息</p>
+</li>
+<li><p><code>pom.xml</code>：是starter所需的依赖，比如mybatis-spring、mybatis-spring-boot-autoconfigure</p>
+<p>等</p>
+</li>
+<li><p><code>MANIFEST.MF</code>：记录了jar包的构建信息，比如jdk版本等</p>
+</li>
 </ul>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> here are jdk versions you installed</span></span><br><span class="line">my_versions=([8]=&quot;/usr/java/jdk&quot; [17]=&quot;/usr/java/jdk17&quot;)</span><br><span class="line"></span><br><span class="line">if [ -z $&#123;my_versions[$1]&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;jdk$1 does not exist! please check whether you installed&quot;</span><br><span class="line">else</span><br><span class="line">    # 79:export JAVA_HOME=/usr/java/jdk</span><br><span class="line">    line_number=`grep &quot;export JAVA_HOME&quot; -n profile | awk -F &quot;:&quot; &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">    sed -i &quot;79c export JAVA_HOME=$&#123;my_versions[$1]&#125;&quot; /etc/profile</span><br><span class="line"></span><br><span class="line">    source /etc/profile</span><br><span class="line"></span><br><span class="line">    echo &quot;switch to jdk$1 successfully!&quot;</span><br><span class="line"></span><br><span class="line">    java -version</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本并测试</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter%2Fspringboot-starter%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>用同样的方式打开<code>mybatis-spring-boot-autoconfigure</code>的依赖</p>
 <ul>
-<li><p>先查看当前JDK版本，我这里是JDK8</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本，切换到JDK17</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. switch_jdk.sh 17</span><br></pre></td></tr></table></figure></li>
-<li><p>执行脚本，切换到不存在的版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. switch_jdk.sh 10</span><br></pre></td></tr></table></figure></li>
+<li><code>additional-spring-configuration-metadata.json</code>：手动添加IDE配置提示</li>
+<li><code>spring.factories</code>：key-value键值对形式，记录需要被加载的配置类信息</li>
+<li><code>spring-configuration-metadata.json</code>：自动生成的IDE配置提示</li>
+<li><code>spring-autoconfigure-metadata.properties</code>：自动配置类是否被加载的条件</li>
+<li>除了上述，还有若干Class，如<code>MybatisAutoConfiguration</code>配置类，<code>MybatisProperties</code>属性类等等</li>
 </ul>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/mybatis-configure%E4%BE%9D%E8%B5%96%E7%BB%93%E6%9E%84.png"></p>
 </li>
 </ol>
-<h3 id="注意"><a href="#注意" class="headerlink" title="==注意=="></a>==注意==</h3><blockquote>
-<p>一开始，我使用<code>./switch_jdk.sh</code>来执行的脚本（已添加执行权限），控制台输出的JDK版本信息并没有更新，检查了下脚本，觉得思路没有什么问题，于是新开一个terminal测试，但是使用<code>java -version</code>查看JDK版本时，发现已经是新版本了。</p>
-<p>这时候我猜测可能是脚本在当前session没有生效，在开启的新session中生效了，那只有可能是source命令的问题了，其他命令和环境变量没有关系。</p>
-<p>查看了下相关信息，发现执行shell脚本的方式不同，其执行效果也是不同的，下面给出相关的信息</p>
+<h3 id="如何创建自己的springboot-starter？"><a href="#如何创建自己的springboot-starter？" class="headerlink" title="如何创建自己的springboot-starter？"></a>如何创建自己的springboot-starter？</h3><blockquote>
+<p>简单来说，分成如下几个步骤</p>
+<p>1.创建一个maven项目，名字为xxx-springboot-autoconfigure（不固定），里面包含XxxAutoConfiguration配置类、XxxProperties属性类（非必须）、spring.factories文件（key为org.xxx.EnableAutoConfiguration，value为XxxAutoConfiguration）</p>
+<p>2.创建一个空的maven项目，名字为xxx-springboot-starter（不固定），在pom.xml中引入上述的xxx-springboot-autoconfigure项目</p>
+<p>2.创建一个springboot项目，引入xxx-springboot-starter项目，创建测试类使用starter中提供的功能类验证是否成功</p>
 </blockquote>
-<ol>
-<li><code>./xxx.sh</code>，用此种方式执行脚本，会开启子shell来执行脚本，继承父shell环境变量，但是不会更改父shell环境变量，即更改只对子shell生效</li>
-<li><code>sh xxx.sh</code>，此种方式效果同上</li>
-<li><code>source xxx.sh</code>，等价于<code>. xxx.sh</code>，在当前shell执行脚本，环境变量更改对当前shell生效</li>
+<h3 id="实例演示"><a href="#实例演示" class="headerlink" title="实例演示"></a>实例演示</h3><ol>
+<li><p>创建一个名为<code>redisson-util-springboot-autoconfigure</code>的maven项目，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/autoconfigure%E7%BB%93%E6%9E%84.png"></p>
+<p>RedissonUtilAutoConfiguration.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="meta">@EnableConfigurationProperties(RedissonUtilProperties.class)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedissonUtilAutoConfiguration</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> RedissonUtilProperties properties;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 创建RedissonClient</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> RedissonClient <span class="title">redissonClient</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        String password = properties.getPassword();</span><br><span class="line">        List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">        List&lt;String&gt; nodes = properties.getNodes();</span><br><span class="line">        <span class="keyword">for</span> (String node : nodes) &#123;</span><br><span class="line">            list.add(<span class="string">&quot;redis://&quot;</span> + node);</span><br><span class="line">        &#125;</span><br><span class="line">        Config config = <span class="keyword">new</span> Config();</span><br><span class="line">        config.useClusterServers().setPassword(password).setScanInterval(<span class="number">5000</span>).setNodeAddresses(list);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> Redisson.create(config);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>RedissonUtilProperties.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@ConfigurationProperties(prefix = RedissonUtilProperties.PREFIX)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RedissonUtilProperties</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String PREFIX = <span class="string">&quot;redisson&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// redis密码</span></span><br><span class="line">    <span class="keyword">private</span> String password;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// redis集群地址（ip:port）</span></span><br><span class="line">    <span class="keyword">private</span> List&lt;String&gt; nodes;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPassword</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPassword</span><span class="params">(String password)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.password = password;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;String&gt; <span class="title">getNodes</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> nodes;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setNodes</span><span class="params">(List&lt;String&gt; nodes)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.nodes = nodes;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>spring.factories</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.codecho.RedissonUtilAutoConfiguration</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个名为<code>redisson-util-springboot-starter</code>的maven项目，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/starter%E7%BB%93%E6%9E%84.png"></p>
+</li>
+<li><p>创建一个名为<code>test-starter</code>的springboot项目，引入<code>redisson-util-springboot-starter</code>项目依赖，结构如下</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E7%BB%93%E6%9E%84.png"></p>
+<p>application.properties（redis配置信息自填）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redisson.password=xxx</span><br><span class="line">redisson.nodes=xxx.xxx.xxx.xxx:6379,xxx.xxx.xxx.xxx:6389,xxx.xxx.xxx.xxx:6399</span><br></pre></td></tr></table></figure>
+
+<p>测试类代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Resource</span></span><br><span class="line"><span class="keyword">private</span> RedissonClient redissonClient;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t1 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        winPrize();</span><br><span class="line">    &#125;, <span class="string">&quot;张三&quot;</span>);</span><br><span class="line">    Thread t2 = <span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">        winPrize();</span><br><span class="line">    &#125;, <span class="string">&quot;李四&quot;</span>);</span><br><span class="line"></span><br><span class="line">    t1.start();</span><br><span class="line">    t2.start();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">winPrize</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    String lockKey = <span class="string">&quot;goods:1001&quot;</span>;</span><br><span class="line">    RLock lock = redissonClient.getLock(lockKey);</span><br><span class="line">    <span class="keyword">if</span> (lock.isLocked()) &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; 痛失大奖&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">boolean</span> lockFlag = lock.tryLock();</span><br><span class="line">    <span class="keyword">if</span> (!lockFlag) &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName() + <span class="string">&quot; 离中奖只差一步，别灰心，后面还有机会&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        System.out.println(Thread.currentThread().getName()+ <span class="string">&quot; 他就是天选之子!&quot;</span>);</span><br><span class="line">        TimeUnit.SECONDS.sleep(<span class="number">5</span>);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (lock.isHeldByCurrentThread()) &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行测试方法，观察控制台输出</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E6%B5%8B%E8%AF%95%E8%BE%93%E5%87%BA.png"></p>
+<p>使用Redis可视化工具（这里使用的Another Redis Desktop Manager）获取分布式锁的信息，发现其存活时间为30s，到期后锁被删除。如果需要多次运行测试方法，记得等待锁过期后再测试，否则会产生两个线程都获取不到锁的情况。</p>
+</li>
 </ol>
-<h4 id="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本"><a href="#对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本" class="headerlink" title="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或.来执行脚本"></a>对于脚本中存在<code>source</code>或其他会影响到环境变量的命令，最好使用<code>source</code>或<code>.</code>来执行脚本</h4>
+
       
     </div>
 
@@ -1824,14 +1837,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">131k</span>
+    <span title="Symbols count total">134k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">1:59</span>
+    <span title="Reading time total">2:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>

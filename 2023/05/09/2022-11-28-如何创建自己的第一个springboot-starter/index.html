@@ -22,7 +22,7 @@
 <meta name="description" content="对于SpringBoot我们一定不会陌生，由于其快速方便的开发方式让我们从各种繁琐的配置中解放出来，让我们的开发效率得到了大大提升，而各种starter则是其最重要的组成部分之一  什么是starter？我觉得可以简单认为starter是不同场景下（如MySQL、Redis、RocketMQ等）需要的一系列依赖的集合，就像是一个个可以单独引用的模块，有了starter，我们就可以使用其内置的各种">
 <meta property="og:type" content="article">
 <meta property="og:title" content="如何创建自己的第一个springboot-starter">
-<meta property="og:url" content="http://example.com/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/index.html">
+<meta property="og:url" content="http://example.com/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/index.html">
 <meta property="og:site_name" content="抓住那只蝉">
 <meta property="og:description" content="对于SpringBoot我们一定不会陌生，由于其快速方便的开发方式让我们从各种繁琐的配置中解放出来，让我们的开发效率得到了大大提升，而各种starter则是其最重要的组成部分之一  什么是starter？我觉得可以简单认为starter是不同场景下（如MySQL、Redis、RocketMQ等）需要的一系列依赖的集合，就像是一个个可以单独引用的模块，有了starter，我们就可以使用其内置的各种">
 <meta property="og:locale" content="en_US">
@@ -32,18 +32,18 @@
 <meta property="og:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/starter%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E7%BB%93%E6%9E%84.png">
 <meta property="og:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/test-starter%E6%B5%8B%E8%AF%95%E8%BE%93%E5%87%BA.png">
-<meta property="article:published_time" content="2023-02-18T06:05:27.579Z">
-<meta property="article:modified_time" content="2022-11-28T08:39:45.943Z">
+<meta property="article:published_time" content="2023-05-08T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-08T16:00:00.000Z">
 <meta property="article:author" content="codecho">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter%2Fspringboot-starter%E7%BB%93%E6%9E%84.png">
 
 
-<link rel="canonical" href="http://example.com/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
+<link rel="canonical" href="http://example.com/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/","path":"2023/02/18/2022-11-28-如何创建自己的第一个springboot-starter/","title":"如何创建自己的第一个springboot-starter"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/","path":"2023/05/09/2022-11-28-如何创建自己的第一个springboot-starter/","title":"如何创建自己的第一个springboot-starter"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>如何创建自己的第一个springboot-starter | 抓住那只蝉</title>
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -203,7 +203,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -227,14 +227,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-11-28 16:39:45" itemprop="dateModified" datetime="2022-11-28T16:39:45+08:00">2022-11-28</time>
+      <time title="Created: 2023-05-09 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-09T00:00:00+08:00">2023-05-09</time>
     </span>
 
   
@@ -335,13 +328,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/02/18/2019-11-21-%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="正则表达式">
-                  <i class="fa fa-chevron-left"></i> 正则表达式
+                <a href="/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/" rel="prev" title="CentOS查找历史命令">
+                  <i class="fa fa-chevron-left"></i> CentOS查找历史命令
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" rel="next" title="编写shell脚本禁止非法访问的ip">
-                  编写shell脚本禁止非法访问的ip <i class="fa fa-chevron-right"></i>
+                <a href="/2023/05/09/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/" rel="next" title="浅谈短链接设计">
+                  浅谈短链接设计 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -377,14 +370,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">131k</span>
+    <span title="Symbols count total">134k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">1:59</span>
+    <span title="Reading time total">2:02</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
