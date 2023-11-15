@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -423,6 +423,139 @@
 <p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/%E9%85%8D%E7%BD%AEjackson%E5%90%8E.png"></p>
 </li>
 </ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/04/23/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/04/23/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">浅拷贝与深拷贝</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-04-23 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-23T00:00:00+08:00">2023-04-23</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>5 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>在工作开发中，我们有时候需要将一份原始数据复制成一份新数据，再对新数据进行部分修改，这里就引出浅拷贝与深拷贝两个概念。</p>
+<p>需要注意的是，浅拷贝和深拷贝是编程中的概念，它们并不局限于某一种语言，每种语言都有自己的浅拷贝/深拷贝方式。</p>
+</blockquote>
+<h4 id="什么是浅拷贝？"><a href="#什么是浅拷贝？" class="headerlink" title="什么是浅拷贝？"></a>什么是浅拷贝？</h4><ul>
+<li><p>对于基本类型数据，浅拷贝复制了数据本身，而对于对象类型数据，浅拷贝只复制了对象的引用，而不是对象本身</p>
+</li>
+<li><p>因此，如果修改了浅拷贝后数据中的对象，那么原始数据中的对象也会受到影响</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D%2F%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D1.png"></p>
+</li>
+</ul>
+<h4 id="什么是深拷贝"><a href="#什么是深拷贝" class="headerlink" title="什么是深拷贝"></a>什么是深拷贝</h4><ul>
+<li><p>对于基本类型数据，深拷贝复制了数据本身，而对于对象类型数据，深拷贝会递归复制对象的所有元素，包括对象类型</p>
+</li>
+<li><p>深拷贝后的数据是完全和原始数据独立的，因此对它进行任何操作都是安全的</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D%2F%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D2.png"></p>
+</li>
+</ul>
+<h4 id="Java中实现浅拷贝"><a href="#Java中实现浅拷贝" class="headerlink" title="Java中实现浅拷贝"></a>Java中实现浅拷贝</h4><ol>
+<li><p>使用Object.clone()方法</p>
+<ul>
+<li><p>代码示例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> <span class="keyword">implements</span> <span class="title">Cloneable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String orderName;</span><br><span class="line">    <span class="keyword">private</span> Long orderNo;</span><br><span class="line">    <span class="keyword">private</span> Address address;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略getter/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> Object <span class="title">clone</span><span class="params">()</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.clone();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String country;</span><br><span class="line">    <span class="keyword">private</span> String province;</span><br><span class="line">    <span class="keyword">private</span> String city;</span><br><span class="line">    <span class="keyword">private</span> String district;</span><br><span class="line">    <span class="keyword">private</span> String detailAddress;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略getter/setter</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopy</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> CloneNotSupportedException </span>&#123;</span><br><span class="line">        Address address = <span class="keyword">new</span> Address();</span><br><span class="line">        address.setCountry(<span class="string">&quot;中国&quot;</span>);</span><br><span class="line">        address.setProvince(<span class="string">&quot;浙江省&quot;</span>);</span><br><span class="line">        address.setCity(<span class="string">&quot;杭州市&quot;</span>);</span><br><span class="line">        address.setDistrict(<span class="string">&quot;西湖区&quot;</span>);</span><br><span class="line">        address.setDetailAddress(<span class="string">&quot;凤起路&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Order order = <span class="keyword">new</span> Order();</span><br><span class="line">        order.setOrderName(<span class="string">&quot;双十一好物订单&quot;</span>);</span><br><span class="line">        order.setOrderNo(<span class="number">202300156L</span>);</span><br><span class="line">        order.setAddress(address);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;order: &quot;</span> + order);</span><br><span class="line">        System.out.println(<span class="string">&quot;address: &quot;</span> + address);</span><br><span class="line">        System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line"></span><br><span class="line">        Order copyOrder = (Order) order.clone();</span><br><span class="line">        </span><br><span class="line">        System.out.println(<span class="string">&quot;copyOrder: &quot;</span> + copyOrder);</span><br><span class="line">        System.out.println(<span class="string">&quot;copyAddress: &quot;</span> + copyOrder.getAddress());</span><br><span class="line"></span><br><span class="line">        copyOrder.getAddress().setDetailAddress(<span class="string">&quot;武林广场&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">order: com.codecho.copy.Order@677327b6</span><br><span class="line">address: com.codecho.copy.Address@14ae5a5</span><br><span class="line">detailAddress: 凤起路</span><br><span class="line">copyOrder: com.codecho.copy.Order@7f31245a</span><br><span class="line">copyAddress: com.codecho.copy.Address@14ae5a5</span><br><span class="line">detailAddress: 武林广场</span><br></pre></td></tr></table></figure>
+
+<p>==可以看出，使用Object.clone()方法复制出了一个新的Order对象，但是Order对象内部的Address还是原来的Address对象，并且对新Order对象内部Address进行修改会影响到原Address对象，说明Object.clone()方法只是拷贝了对象的引用，并没有拷贝对象本身。==</p>
+</li>
+</ul>
+</li>
+<li><p>使用apache或spring提供的BeanUtils工具类</p>
+<ul>
+<li><p>代码示例</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-beanutils<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-beanutils<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.9.4<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestCopy</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InvocationTargetException, IllegalAccessException </span>&#123;</span><br><span class="line">        Address address = <span class="keyword">new</span> Address();</span><br><span class="line">        address.setCountry(<span class="string">&quot;中国&quot;</span>);</span><br><span class="line">        address.setProvince(<span class="string">&quot;浙江省&quot;</span>);</span><br><span class="line">        address.setCity(<span class="string">&quot;杭州市&quot;</span>);</span><br><span class="line">        address.setDistrict(<span class="string">&quot;西湖区&quot;</span>);</span><br><span class="line">        address.setDetailAddress(<span class="string">&quot;凤起路&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Order order = <span class="keyword">new</span> Order();</span><br><span class="line">        order.setOrderName(<span class="string">&quot;双十一好物订单&quot;</span>);</span><br><span class="line">        order.setOrderNo(<span class="number">202300156L</span>);</span><br><span class="line">        order.setAddress(address);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;order: &quot;</span> + order);</span><br><span class="line">        System.out.println(<span class="string">&quot;address: &quot;</span> + address);</span><br><span class="line">        System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line"></span><br><span class="line">        Order copyOrder = <span class="keyword">new</span> Order();</span><br><span class="line">        BeanUtils.copyProperties(copyOrder, order);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;copyOrder: &quot;</span> + copyOrder);</span><br><span class="line">        System.out.println(<span class="string">&quot;copyAddress: &quot;</span> + copyOrder.getAddress());</span><br><span class="line"></span><br><span class="line">        copyOrder.getAddress().setDetailAddress(<span class="string">&quot;武林广场&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">order: com.codecho.copy.Order@330bedb4</span><br><span class="line">address: com.codecho.copy.Address@2503dbd3</span><br><span class="line">detailAddress: 凤起路</span><br><span class="line">copyOrder: com.codecho.copy.Order@685f4c2e</span><br><span class="line">copyAddress: com.codecho.copy.Address@2503dbd3</span><br><span class="line">detailAddress: 武林广场</span><br></pre></td></tr></table></figure>
+
+<p>==和Object.clone()方法一样，BeanUtils.copyProperties()方法也是浅拷贝==</p>
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="Java中实现深拷贝"><a href="#Java中实现深拷贝" class="headerlink" title="Java中实现深拷贝"></a>Java中实现深拷贝</h4><ol>
+<li><p>序列化和反序列化</p>
+<ul>
+<li><p>代码示例</p>
+<p>==注意：Order和Address需要实现Serializable接口==</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Order</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Address</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">    Address address = <span class="keyword">new</span> Address();</span><br><span class="line">    address.setCountry(<span class="string">&quot;中国&quot;</span>);</span><br><span class="line">    address.setProvince(<span class="string">&quot;浙江省&quot;</span>);</span><br><span class="line">    address.setCity(<span class="string">&quot;杭州市&quot;</span>);</span><br><span class="line">    address.setDistrict(<span class="string">&quot;西湖区&quot;</span>);</span><br><span class="line">    address.setDetailAddress(<span class="string">&quot;凤起路&quot;</span>);</span><br><span class="line"></span><br><span class="line">    Order order = <span class="keyword">new</span> Order();</span><br><span class="line">    order.setOrderName(<span class="string">&quot;双十一好物订单&quot;</span>);</span><br><span class="line">    order.setOrderNo(<span class="number">202300156L</span>);</span><br><span class="line">    order.setAddress(address);</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;order: &quot;</span> + order);</span><br><span class="line">    System.out.println(<span class="string">&quot;address: &quot;</span> + address);</span><br><span class="line">    System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line"></span><br><span class="line">    Order copyOrder = deepCopy(order);</span><br><span class="line">	</span><br><span class="line">    System.out.println(<span class="string">&quot;copyOrder: &quot;</span> + copyOrder);</span><br><span class="line">    System.out.println(<span class="string">&quot;copyAddress: &quot;</span> + copyOrder.getAddress());</span><br><span class="line"></span><br><span class="line">    copyOrder.getAddress().setDetailAddress(<span class="string">&quot;武林广场&quot;</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;detailAddress: &quot;</span> + address.getDetailAddress());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Order <span class="title">deepCopy</span><span class="params">(Order source)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException </span>&#123;</span><br><span class="line">    ByteArrayOutputStream outputStream = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">    ObjectOutputStream out = <span class="keyword">new</span> ObjectOutputStream(outputStream);</span><br><span class="line">    out.writeObject(source);</span><br><span class="line"></span><br><span class="line">    ByteArrayInputStream inputStream = <span class="keyword">new</span> ByteArrayInputStream(outputStream.toByteArray());</span><br><span class="line">    ObjectInputStream in = <span class="keyword">new</span> ObjectInputStream(inputStream);</span><br><span class="line"></span><br><span class="line">    Order copy = (Order) in.readObject();</span><br><span class="line">    <span class="keyword">return</span> copy;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>运行结果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">order: com.codecho.copy.Order@330bedb4</span><br><span class="line">address: com.codecho.copy.Address@2503dbd3</span><br><span class="line">detailAddress: 凤起路</span><br><span class="line">copyOrder: com.codecho.copy.Order@7e6cbb7a</span><br><span class="line">copyAddress: com.codecho.copy.Address@7c3df479</span><br><span class="line">detailAddress: 凤起路</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
 
       
     </div>
@@ -805,109 +938,6 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-11-15 18:26:15" itemprop="dateModified" datetime="2022-11-15T18:26:15+08:00">2022-11-15</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>1.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <ol>
-<li><p>起因</p>
-<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
-<li><p>分析</p>
-<ul>
-<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
-<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
-<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>清理</p>
-<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1001,6 +1031,109 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
 <li><p>查看ip是否被禁止访问</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-15 18:26:15" itemprop="dateModified" datetime="2022-11-15T18:26:15+08:00">2022-11-15</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <ol>
+<li><p>起因</p>
+<p>在centos上发现mysql容器启动不起来，于是用<code>docker logs mysql</code>看了下日志，发现有报错信息，显示磁盘没有空间了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Error writing file &#x27;/var/lib/mysql/auto.cnf&#x27; (OS errno 28 - No space left on device) </span><br></pre></td></tr></table></figure></li>
+<li><p>分析</p>
+<ul>
+<li><p>使用<code>df -h</code>可以看到<code>/</code>目录的磁盘使用率已经达到100%</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br><span class="line">Filesystem      Size  Used Avail Use% Mounted on</span><br><span class="line">devtmpfs        3.8G     0  3.8G   0% /dev</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /dev/shm</span><br><span class="line">tmpfs           3.8G  796K  3.8G   1% /run</span><br><span class="line">tmpfs           3.8G     0  3.8G   0% /sys/fs/cgroup</span><br><span class="line">/dev/vda1        50G   48G     0 100% /</span><br><span class="line">tmpfs           768M     0  768M   0% /run/user/0</span><br></pre></td></tr></table></figure></li>
+<li><p>进入<code>/</code>目录，使用<code>du -sh *</code>查看各个目录所占用的空间大小，可以看到其中<code>usr</code>和<code>var</code>两个目录占用的空间最大</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /</span><br><span class="line">du -sh *</span><br><span class="line">..........</span><br><span class="line">26G     usr</span><br><span class="line">21G     var</span><br></pre></td></tr></table></figure></li>
+<li><p>继续查看<code>usr</code>和<code>var</code>目录的空间占用情况，这里使用<code>sort</code>命令按照空间占用从大到小的顺序进行排列，并且通过<code>head</code>命令只展示前10项</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">du /usr/ | sort -nr | head</span><br><span class="line">20092340        /usr/</span><br><span class="line">5654140 /usr/elasticsearch</span><br><span class="line">4665460 /usr/nacos</span><br><span class="line">4562944 /usr/nacos/bin</span><br><span class="line">4562900 /usr/nacos/bin/logs</span><br><span class="line">2743372 /usr/elasticsearch/node-0</span><br><span class="line">2022416 /usr/elasticsearch/node-1</span><br><span class="line">1571536 /usr/from_pc</span><br><span class="line">1359084 /usr/elasticsearch/node-0/logs</span><br><span class="line">1349160 /usr/share</span><br><span class="line"></span><br><span class="line">du -h var</span><br><span class="line">13778628        /var/</span><br><span class="line">7738316 /var/lib</span><br><span class="line">6870460 /var/lib/docker</span><br><span class="line">5616924 /var/<span class="built_in">log</span></span><br><span class="line">4220916 /var/<span class="built_in">log</span>/journal</span><br><span class="line">4220908 /var/<span class="built_in">log</span>/journal/20200817140600710641424667768813</span><br><span class="line">3852356 /var/lib/docker/containers</span><br><span class="line">3825708 /var/lib/docker/containers/67a37780732bd46633f1ef94ad3ba9ea389f41bee9e929fc63c7e96fe1d3d57c</span><br><span class="line">2789052 /var/lib/docker/overlay2</span><br><span class="line">1007108 /var/<span class="built_in">log</span>/redis</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>清理</p>
+<p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
+</li>
 </ol>
 
       
@@ -1163,148 +1296,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" class="post-title-link" itemprop="url">Java序列化与反序列化</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2020-11-15 20:26:48" itemprop="dateModified" datetime="2020-11-15T20:26:48+08:00">2020-11-15</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>4.2k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>4 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <ol>
-<li><p>序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将Java中的对象转换为字节序列</p>
-</li>
-<li><p>使用场景：</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）；</p>
-<p>  在网络中传输对象</p>
-</li>
-<li><p>实现方式：</p>
-<p>  实现<code>java.io.Serializable</code>接口</p>
-</li>
-<li><p>注意点：</p>
-<p>  基本类型、数组、枚举等也会进行序列化</p>
-<p>  transient修饰的属性和静态属性不参与序列化</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">and the values of the non-<span class="keyword">transient</span></span><br><span class="line">and non-<span class="keyword">static</span> fields of the <span class="class"><span class="keyword">class</span> <span class="title">and</span> <span class="title">all</span> <span class="title">of</span> <span class="title">its</span> <span class="title">supertypes</span> <span class="title">are</span></span></span><br><span class="line"><span class="class"><span class="title">written</span>.</span></span><br><span class="line"><span class="class"></span></span><br><span class="line"><span class="class"><span class="title">if</span> (<span class="title">obj</span> <span class="title">instanceof</span> <span class="title">String</span>) </span>&#123;</span><br><span class="line">    writeString((String) obj, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (cl.isArray()) &#123;</span><br><span class="line">    writeArray(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Enum) &#123;</span><br><span class="line">    writeEnum((Enum&lt;?&gt;) obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Serializable) &#123;</span><br><span class="line">    writeOrdinaryObject(obj, desc, unshared);</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (extendedDebugInfo) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(</span><br><span class="line">                cl.getName() + <span class="string">&quot;\n&quot;</span> + debugInfoStack.toString());</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> NotSerializableException(cl.getName());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">writeArray</span><span class="params">(xxx)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (ccl.isPrimitive()) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ccl == Integer.TYPE) &#123;</span><br><span class="line">            <span class="keyword">int</span>[] ia = (<span class="keyword">int</span>[]) array;</span><br><span class="line">            bout.writeInt(ia.length);</span><br><span class="line">            bout.writeInts(ia, <span class="number">0</span>, ia.length);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Byte.TYPE) &#123;</span><br><span class="line">            <span class="keyword">byte</span>[] ba = (<span class="keyword">byte</span>[]) array;</span><br><span class="line">            bout.writeInt(ba.length);</span><br><span class="line">            bout.write(ba, <span class="number">0</span>, ba.length, <span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ccl == Long.TYPE) &#123;</span><br><span class="line">        ......</span><br><span class="line">        &#125;</span><br><span class="line">        ......</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> number;</span><br><span class="line">    <span class="comment">// 被transient标记的属性不参与序列化，创建对象时赋值18，序列化后重新读取该属性的值为0</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> age;</span><br><span class="line">    <span class="comment">// 静态属性不参与序列化，序列化后该属性值为null</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> String gender;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">showStudent</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;name: &quot;</span> + name);</span><br><span class="line">        System.out.println(<span class="string">&quot;number: &quot;</span> + number);</span><br><span class="line">        System.out.println(<span class="string">&quot;age: &quot;</span> + age);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    .......省略getter、setter方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">serializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 创建对象</span></span><br><span class="line">    Student student = <span class="keyword">new</span> Student();</span><br><span class="line">    student.setName(<span class="string">&quot;小花&quot;</span>);</span><br><span class="line">    student.setNumber(<span class="number">36</span>);</span><br><span class="line">    student.setAge(<span class="number">18</span>);</span><br><span class="line">    student.setGender(<span class="string">&quot;female&quot;</span>);</span><br><span class="line">    String greeting = <span class="string">&quot;HelloWorld&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 创建FileOutputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectOutputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileOutputStream fos = <span class="keyword">new</span> FileOutputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(fos)) &#123;</span><br><span class="line">        <span class="comment">// 将对象写入到文件</span></span><br><span class="line">        oos.writeObject(student);</span><br><span class="line">        oos.writeObject(greeting);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>反序列化</p>
-<ul>
-<li><p>概念：</p>
-<p>  将字节序列转换为Java对象</p>
-</li>
-<li><p>使用场景</p>
-<p>  如在程序停止运行后，需要将之前的对象状态保存到文件中，在程序重新启动后，可以根据该文件重新读取相应的对象信息（持久化存储）</p>
-<p>  在网络中传输对象，接收字节序列后重新读取对象信息</p>
-</li>
-<li><p>注意点：</p>
-<p>  必须确保该读取程序的CLASSPATH中包含有序列化类的class文件</p>
-</li>
-<li><p>代码实现：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deserializable</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Student student = <span class="keyword">null</span>;</span><br><span class="line">    String greeting = <span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="comment">// 创建FileInputStream</span></span><br><span class="line">    <span class="comment">// 创建ObjectInputStream</span></span><br><span class="line">    <span class="keyword">try</span> (FileInputStream fis = <span class="keyword">new</span> FileInputStream(<span class="string">&quot;D:\\MyWork\\student.ser&quot;</span>);</span><br><span class="line">         ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(fis);) &#123;</span><br><span class="line">        <span class="comment">// 从文件读取对象</span></span><br><span class="line">        student = (Student) ois.readObject();</span><br><span class="line">        greeting = (String) ois.readObject();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException | ClassNotFoundException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用对象</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> != student) &#123;</span><br><span class="line">        student.showStudent();</span><br><span class="line">    &#125;</span><br><span class="line">    System.out.println(greeting);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>serialVersionUID</p>
-<ul>
-<li><p>概念：</p>
-<p>  序列化版本号，用来标识当前实现序列化接口的类，如果不显式指定，编译器会给类自动生成一个serialVersionUID</p>
-</li>
-<li><p>作用：</p>
-<p>  先看一个场景，在上述（1）中，Student类定义了name、number、age、gender四个属性，然后我们创建一个student对象并将其序列化保存到student.ser文件中，然后我们在Student类中增加一个属性，如className，再通过反序列化读取student.ser文件中的字节信息，转换成student对象，此时程序会报错</p>
-  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java.io.InvalidClassException: com.easyfun.base.Student; local class incompatible: stream classdesc serialVersionUID = -6313947761321746093, local class serialVersionUID = 4891437043098475710</span><br></pre></td></tr></table></figure>
-
-<p>  根据异常信息找到相应的代码：java.io.ObjectStreamClass#initNonProxy，当原class的序列化版本号和当前class的序列化版本号不一致会导致反序列化失败</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initNonProxy</span><span class="params">(xxx)</span></span>&#123;</span><br><span class="line">	<span class="keyword">long</span> suid = Long.valueOf(model.getSerialVersionUID());</span><br><span class="line">	......</span><br><span class="line">        <span class="keyword">if</span> (model.serializable == osc.serializable &amp;&amp;</span><br><span class="line">            !cl.isArray() &amp;&amp;</span><br><span class="line">            suid != osc.getSerialVersionUID()) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InvalidClassException(osc.name,</span><br><span class="line">                                            <span class="string">&quot;local class incompatible: &quot;</span> +</span><br><span class="line">                                            <span class="string">&quot;stream classdesc serialVersionUID = &quot;</span> + suid +</span><br><span class="line">                                            <span class="string">&quot;, local class serialVersionUID = &quot;</span> +</span><br><span class="line">                                            osc.getSerialVersionUID());</span><br><span class="line">        &#125;        </span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>  现在我们在Student类中添加上serialVersionUID（可以通过Idea自动生成，方法可自行搜索），然后调用序列化方法后，在Student类增加一个属性className，然后再调用反序列化方法，发现此次序列化不会再报错了</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">6313947761321746093L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">// 输出结果</span></span><br><span class="line">name: 小花</span><br><span class="line">number: <span class="number">36</span></span><br><span class="line">age: <span class="number">0</span></span><br><span class="line">gender: <span class="keyword">null</span></span><br><span class="line">className: <span class="keyword">null</span></span><br><span class="line">HelloWorld</span><br></pre></td></tr></table></figure>
-
-<p>  因此serialVersionUID的作用就比较好理解了，我们可以显式去指定某个类的序列化版本号，这样我们在反序列化时，即使该类的结构发生了变化，也能保证反序列化能够正常进行</p>
-</li>
-</ul>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1332,14 +1323,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">141k</span>
+    <span title="Symbols count total">146k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">2:08</span>
+    <span title="Reading time total">2:13</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
