@@ -19,27 +19,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令  使用ctrl+R反向查找|搜索历史命令123456789(reverse-i-search)&#96;&amp;#x27;:# 输入要查找的命令，如docker(reverse-i-search)&#96;docker&amp;#x27;: docker logs 63167">
+<meta name="description" content="我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。  查看服务器是否被暴力登录 查看&#x2F;var&#x2F;log&#x2F;secure日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录 1tail -n 100 &#x2F;var">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CentOS查找历史命令">
-<meta property="og:url" content="http://example.com/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/index.html">
+<meta property="og:title" content="CentOS修改ssh默认端口">
+<meta property="og:url" content="http://example.com/2023/05/16/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/index.html">
 <meta property="og:site_name" content="抓住那只蝉">
-<meta property="og:description" content="在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令  使用ctrl+R反向查找|搜索历史命令123456789(reverse-i-search)&#96;&amp;#x27;:# 输入要查找的命令，如docker(reverse-i-search)&#96;docker&amp;#x27;: docker logs 63167">
+<meta property="og:description" content="我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。  查看服务器是否被暴力登录 查看&#x2F;var&#x2F;log&#x2F;secure日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录 1tail -n 100 &#x2F;var">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2023-05-05T07:50:59.993Z">
-<meta property="article:modified_time" content="2023-05-05T07:52:38.887Z">
+<meta property="og:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG">
+<meta property="article:published_time" content="2023-05-15T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-15T16:00:00.000Z">
 <meta property="article:author" content="codecho">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG">
 
 
-<link rel="canonical" href="http://example.com/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/">
+<link rel="canonical" href="http://example.com/2023/05/16/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/","path":"2023/05/05/2023-05-05-CentOS查找历史命令/","title":"CentOS查找历史命令"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/05/16/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/","path":"2023/05/16/2023-05-16-CentOS修改ssh默认端口/","title":"CentOS修改ssh默认端口"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CentOS查找历史命令 | 抓住那只蝉</title>
+<title>CentOS修改ssh默认端口 | 抓住那只蝉</title>
   
 
 
@@ -138,7 +140,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ctrl-R%E5%8F%8D%E5%90%91%E6%9F%A5%E6%89%BE-%E6%90%9C%E7%B4%A2%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4"><span class="nav-number">1.</span> <span class="nav-text">使用ctrl+R反向查找|搜索历史命令</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%98%AF%E5%90%A6%E8%A2%AB%E6%9A%B4%E5%8A%9B%E7%99%BB%E5%BD%95"><span class="nav-number">1.</span> <span class="nav-text">查看服务器是否被暴力登录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.</span> <span class="nav-text">修改默认端口</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%8F%E8%94%BD%E5%B0%9D%E8%AF%95%E9%9D%9E%E6%B3%95%E7%99%BB%E5%BD%95%E7%9A%84ip"><span class="nav-number">3.</span> <span class="nav-text">屏蔽尝试非法登录的ip</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -196,7 +198,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/05/16/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -209,7 +211,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CentOS查找历史命令
+          CentOS修改ssh默认端口
         </h1>
 
         <div class="post-meta-container">
@@ -219,9 +221,8 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2023-05-05 15:50:59 / Modified: 15:52:38" itemprop="dateCreated datePublished" datetime="2023-05-05T15:50:59+08:00">2023-05-05</time>
+      <time title="Created: 2023-05-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-16T00:00:00+08:00">2023-05-16</time>
     </span>
 
   
@@ -231,7 +232,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>279</span>
+      <span>452</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -250,12 +251,26 @@
     
     <div class="post-body" itemprop="articleBody">
         <blockquote>
-<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
+<p>我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。</p>
 </blockquote>
-<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
+<h4 id="查看服务器是否被暴力登录"><a href="#查看服务器是否被暴力登录" class="headerlink" title="查看服务器是否被暴力登录"></a>查看服务器是否被暴力登录</h4><ul>
+<li><p>查看<code>/var/log/secure</code>日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n 100 /var/<span class="built_in">log</span>/secure | grep <span class="string">&quot;Failed password&quot;</span></span><br></pre></td></tr></table></figure>
 
-
-
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+</ul>
+<h4 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h4><ul>
+<li><p>修改sshd配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加另一个端口号 1234</span></span><br><span class="line">Port 22</span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
+<li><p>重启sshd服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure></li>
+<li><p>修改防火墙或安全组配置，增加新端口</p>
+</li>
+<li><p>使用新端口连接服务器，修改sshd_config配置文件，将原端口注释，保留新端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port 22</span></span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="屏蔽尝试非法登录的ip"><a href="#屏蔽尝试非法登录的ip" class="headerlink" title="屏蔽尝试非法登录的ip"></a>屏蔽尝试非法登录的ip</h4><p>​    通过shell脚本和定时任务，将ip加入屏蔽名单，详细参考<a target="_blank" rel="noopener" href="https://codecho.github.io/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">这里</a></p>
 
     </div>
 
@@ -269,13 +284,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/" rel="prev" title="GitHub Page去除域名绑定后仍定向至以前的域名">
-                  <i class="fa fa-chevron-left"></i> GitHub Page去除域名绑定后仍定向至以前的域名
+                <a href="/2023/05/09/2023-05-09-%E6%B5%85%E8%B0%88%E7%9F%AD%E9%93%BE%E6%8E%A5%E8%AE%BE%E8%AE%A1/" rel="prev" title="浅谈短链接设计">
+                  <i class="fa fa-chevron-left"></i> 浅谈短链接设计
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/05/09/2022-11-28-%E5%A6%82%E4%BD%95%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAspringboot-starter/" rel="next" title="如何创建自己的第一个springboot-starter">
-                  如何创建自己的第一个springboot-starter <i class="fa fa-chevron-right"></i>
+                <a href="/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" rel="next" title="Spring Boot统一结果响应和异常处理">
+                  Spring Boot统一结果响应和异常处理 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
