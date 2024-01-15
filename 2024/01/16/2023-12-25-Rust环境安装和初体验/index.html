@@ -19,26 +19,37 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="about">
-<meta property="og:url" content="http://example.com/about/index.html">
+<meta name="description" content="title: Rust环境安装和初体验 date: 2023-12-25 updated: 2023-12-25   下载Rustup工具rustup-init.exe，点击运行，出现cmd命令行，提示需要安装C++环境（Rust需要C&#x2F;C++的编译工具）   先安装Rust需要的C&#x2F;C++环境，可以选择Visual Studio（占用体积特别大），也可以安装Mingw-w64（占用体积很小），">
+<meta property="og:type" content="article">
+<meta property="og:title" content="抓住那只蝉">
+<meta property="og:url" content="http://example.com/2024/01/16/2023-12-25-Rust%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%92%8C%E5%88%9D%E4%BD%93%E9%AA%8C/index.html">
 <meta property="og:site_name" content="抓住那只蝉">
+<meta property="og:description" content="title: Rust环境安装和初体验 date: 2023-12-25 updated: 2023-12-25   下载Rustup工具rustup-init.exe，点击运行，出现cmd命令行，提示需要安装C++环境（Rust需要C&#x2F;C++的编译工具）   先安装Rust需要的C&#x2F;C++环境，可以选择Visual Studio（占用体积特别大），也可以安装Mingw-w64（占用体积很小），">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-01-27T17:36:51.000Z">
-<meta property="article:modified_time" content="2022-01-27T18:32:41.293Z">
+<meta property="og:image" content="d:/TyporaSave/images/rust-init提示缺失环境.png">
+<meta property="og:image" content="d:/TyporaSave/images/gcc验证安装.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust安装1.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust安装2.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust安装3.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust验证安装.png">
+<meta property="og:image" content="d:/TyporaSave/images/vscode打开rust项目.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust编译报错link程序找不到.png">
+<meta property="og:image" content="d:/TyporaSave/images/rust程序运行成功.png">
+<meta property="article:published_time" content="2024-01-15T18:10:17.643Z">
+<meta property="article:modified_time" content="2024-01-15T18:09:52.305Z">
 <meta property="article:author" content="codecho">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="d:/TyporaSave/images/rust-init提示缺失环境.png">
 
 
-<link rel="canonical" href="http://example.com/about/">
+<link rel="canonical" href="http://example.com/2024/01/16/2023-12-25-Rust%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%92%8C%E5%88%9D%E4%BD%93%E9%AA%8C/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"en","comments":true,"permalink":"http://example.com/about/index.html","path":"about/index.html","title":"about"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2024/01/16/2023-12-25-Rust%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%92%8C%E5%88%9D%E4%BD%93%E9%AA%8C/","path":"2024/01/16/2023-12-25-Rust环境安装和初体验/","title":""}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>about | 抓住那只蝉
-</title>
+<title> | 抓住那只蝉</title>
   
 
 
@@ -183,34 +194,137 @@
 </noscript>
 
 
-    <div class="main-inner page posts-expand">
+    <div class="main-inner post posts-expand">
 
 
-    
-    
-    
-    <div class="post-block" lang="en"><header class="post-header">
+  
 
-<h1 class="post-title" itemprop="name headline">about
-</h1>
 
-<div class="post-meta-container">
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2024/01/16/2023-12-25-Rust%E7%8E%AF%E5%A2%83%E5%AE%89%E8%A3%85%E5%92%8C%E5%88%9D%E4%BD%93%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2024-01-16 02:10:17 / Modified: 02:09:52" itemprop="dateCreated datePublished" datetime="2024-01-16T02:10:17+08:00">2024-01-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>679</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
 </div>
 
-</header>
+        </div>
+      </header>
 
-      
-      
-      <div class="post-body">
-          
-      </div>
-      
-      
-      
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <hr>
+<p>title: Rust环境安装和初体验</p>
+<p>date: 2023-12-25</p>
+<p>updated: 2023-12-25</p>
+<hr>
+<ol>
+<li><p>下载Rustup工具<a target="_blank" rel="noopener" href="https://www.rust-lang.org/zh-CN/tools/install"><code>rustup-init.exe</code></a>，点击运行，出现cmd命令行，提示需要安装C++环境（Rust需要C/C++的编译工具）</p>
+<p><img src="D:\TyporaSave\images\rust-init提示缺失环境.png"></p>
+</li>
+<li><p>先安装Rust需要的C/C++环境，可以选择Visual Studio（占用体积特别大），也可以安装Mingw-w64（占用体积很小），这里选择安装<a target="_blank" rel="noopener" href="https://github.com/niXman/mingw-builds-binaries/releases">Mingw-w64</a>，下载完解压缩，将bin目录添加到环境变量PATH中，打开cmd，输入gcc -v，查看是否正常显示gcc相关信息</p>
+<p><img src="D:\TyporaSave\images\gcc验证安装.png"></p>
+</li>
+<li><p>重新运行<code>rustup-init.exe</code></p>
+<p>输入[3]，不安装前提条件</p>
+<p><img src="D:\TyporaSave\images\rust安装1.png"></p>
+<p>输入[2]，自定义安装，接着输入每个提示末尾的内容，可以右键复制</p>
+<p><img src="D:\TyporaSave\images\rust安装2.png"></p>
+<p>输入[1]，默认安装，等待安装进度完成</p>
+<p><img src="D:\TyporaSave\images\rust安装3.png"></p>
+</li>
+<li><p>重新打开cmd窗口，输入<code>rustc -V</code>验证Rust是否安装成功，输入<code>cargo --version</code>验证cargo是否安装成功（cargo是Rust 构建工具和包管理器）</p>
+<p><img src="D:\TyporaSave\images\rust验证安装.png"></p>
+</li>
+<li><p>使用cargo命令创建Rust项目</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cargo new hello-rust</span><br></pre></td></tr></table></figure></li>
+<li><p>下载VSCode，安装插件<code>rust-analyzer</code>、<code>CodeLLDB</code>（用于调试Rust）</p>
+</li>
+<li><p>使用VSCode打开刚刚创建的Rust项目</p>
+<p><img src="D:\TyporaSave\images\vscode打开rust项目.png"></p>
+</li>
+<li><p>点击运行后报错</p>
+<p><img src="D:\TyporaSave\images\rust编译报错link程序找不到.png"></p>
+</li>
+<li><p>安装Visual C++ xxx Build Tools或者使用gnu工具链</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rustup toolchain install stable-x86_64-pc-windows-gnu</span><br><span class="line">rustup default stable-x86_64-pc-windows-gnu</span><br></pre></td></tr></table></figure></li>
+<li><p>重新运行Rust项目，程序正常运行并输出</p>
+<p><img src="D:\TyporaSave\images\rust程序运行成功.png"></p>
+</li>
+<li></li>
+</ol>
+
     </div>
 
     
     
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/09/05/2023-09-05-Redisson%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8%E5%8F%8A%E6%BA%90%E7%A0%81%E6%B5%85%E6%9E%90/" rel="prev" title="Redisson分布式锁入门使用及源码浅析">
+                  <i class="fa fa-chevron-left"></i> Redisson分布式锁入门使用及源码浅析
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
 
 
 </div>

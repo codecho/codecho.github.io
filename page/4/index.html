@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,6 +181,130 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="抓住那只蝉">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/" class="post-title-link" itemprop="url">使用shell脚本切换JDK版本</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-02-18T00:00:00+08:00">2023-02-18</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linux上的，所以这次我们通过shell脚本的方式来切换JDK版本。</p>
+</blockquote>
+<h3 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h3><ol>
+<li>安装JDK后需要在<code>/etc/profile</code>中配置环境变量，因此我们的目标就是更改配置文件</li>
+<li>想要更改配置文件，首先需要知道要修改的内容，我的配置是<code>export JAVA_HOME=/usr/java/jdk</code>，这里<code>=</code>后面的路径就是我们要修改的内容</li>
+<li>由于每个人的<code>/etc/profile</code>文件各不相同，因此上述配置项可能在x行，也可能在y行，所以我们需要找到该配置项所在的位置</li>
+<li>找到配置项位置后，我们将原JDK路径替换为目标JDK路径</li>
+<li>再使用<code>source</code>命令更新配置信息即可完成JDK版本的切换</li>
+</ol>
+<h3 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h3><ol>
+<li><p>创建脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch switch_jdk.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本文件</p>
+<p>简要说一下思路</p>
+<ul>
+<li>定义一个数组来存放JDK版本和路径信息，使用==关联数组==，有点类似hashmap，key为JDK版本号，value为JDK安装路径</li>
+<li>执行脚本格式为<code>. switch_jdk.sh version</code>，其中version即为要切换的JDK版本号，在shell脚本中使用<code>$1</code>(脚本第一个参数)可以获取version的值</li>
+<li>获取到目标version后，在关联数组中获取其对应的JDK安装路径，如果获取不到，则表示目标version不存在，输出提示信息</li>
+<li>根据配置项<code>export JAVA_HOME</code>获取其所在的行位置信息，使用<code>grep</code>查找配置项所在行信息，使用<code>awk</code>提取行号</li>
+<li>使用<code>sed</code>命令替换该行配置内容，<code>-i</code>表示直接修改文件内容，<code>79c</code>表示替换第79行所在的内容</li>
+<li>使用<code>source</code>命令更新环境变量</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/sh</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> here are jdk versions you installed</span></span><br><span class="line">my_versions=([8]=&quot;/usr/java/jdk&quot; [17]=&quot;/usr/java/jdk17&quot;)</span><br><span class="line"></span><br><span class="line">if [ -z $&#123;my_versions[$1]&#125; ]</span><br><span class="line">then</span><br><span class="line">    echo &quot;jdk$1 does not exist! please check whether you installed&quot;</span><br><span class="line">else</span><br><span class="line">    # 79:export JAVA_HOME=/usr/java/jdk</span><br><span class="line">    line_number=`grep &quot;export JAVA_HOME&quot; -n profile | awk -F &quot;:&quot; &#x27;&#123;print $1&#125;&#x27;`</span><br><span class="line"></span><br><span class="line">    sed -i &quot;79c export JAVA_HOME=$&#123;my_versions[$1]&#125;&quot; /etc/profile</span><br><span class="line"></span><br><span class="line">    source /etc/profile</span><br><span class="line"></span><br><span class="line">    echo &quot;switch to jdk$1 successfully!&quot;</span><br><span class="line"></span><br><span class="line">    java -version</span><br><span class="line">fi</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本并测试</p>
+<ul>
+<li><p>先查看当前JDK版本，我这里是JDK8</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本，切换到JDK17</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. switch_jdk.sh 17</span><br></pre></td></tr></table></figure></li>
+<li><p>执行脚本，切换到不存在的版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">. switch_jdk.sh 10</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png"></p>
+</li>
+</ol>
+<h3 id="注意"><a href="#注意" class="headerlink" title="==注意=="></a>==注意==</h3><blockquote>
+<p>一开始，我使用<code>./switch_jdk.sh</code>来执行的脚本（已添加执行权限），控制台输出的JDK版本信息并没有更新，检查了下脚本，觉得思路没有什么问题，于是新开一个terminal测试，但是使用<code>java -version</code>查看JDK版本时，发现已经是新版本了。</p>
+<p>这时候我猜测可能是脚本在当前session没有生效，在开启的新session中生效了，那只有可能是source命令的问题了，其他命令和环境变量没有关系。</p>
+<p>查看了下相关信息，发现执行shell脚本的方式不同，其执行效果也是不同的，下面给出相关的信息</p>
+</blockquote>
+<ol>
+<li><code>./xxx.sh</code>，用此种方式执行脚本，会开启子shell来执行脚本，继承父shell环境变量，但是不会更改父shell环境变量，即更改只对子shell生效</li>
+<li><code>sh xxx.sh</code>，此种方式效果同上</li>
+<li><code>source xxx.sh</code>，等价于<code>. xxx.sh</code>，在当前shell执行脚本，环境变量更改对当前shell生效</li>
+</ol>
+<h4 id="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本"><a href="#对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或-来执行脚本" class="headerlink" title="对于脚本中存在source或其他会影响到环境变量的命令，最好使用source或.来执行脚本"></a>对于脚本中存在<code>source</code>或其他会影响到环境变量的命令，最好使用<code>source</code>或<code>.</code>来执行脚本</h4>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -296,7 +420,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -315,7 +439,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">2:13</span>
+    <span title="Reading time total">2:14</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
