@@ -18,12 +18,12 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"transient.icu","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linu">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用shell脚本切换JDK版本">
-<meta property="og:url" content="http://example.com/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/index.html">
-<meta property="og:site_name" content="抓住那只蝉">
+<meta property="og:url" content="https://transient.icu/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/index.html">
+<meta property="og:site_name" content="夏日的蝉鸣">
 <meta property="og:description" content="JDK版本现在已经更新到20了，但是目前大部分企业和开发者仍然使用的是JDK8（你发任你发，我用JAVA8），不过随着时间的推移，切换到新的JDK版本是大势所趋。因此作为开发者，为了保证我们能够持续进步，了解和掌握新版本的功能和特性是非常重要和有价值的。在已有一个稳定版本(如JDK8)的基础上，我们可以选择再安装一个新版本(如JDK17)来供我们学习和测试，由于大部分JAVA应用是部署在Linu">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png">
@@ -34,14 +34,14 @@
 <meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2jdk.png">
 
 
-<link rel="canonical" href="http://example.com/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
+<link rel="canonical" href="https://transient.icu/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/","path":"2023/02/18/2023-02-18-使用shell脚本切换JDK版本/","title":"使用shell脚本切换JDK版本"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://transient.icu/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/","path":"2023/02/18/2023-02-18-使用shell脚本切换JDK版本/","title":"使用shell脚本切换JDK版本"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>使用shell脚本切换JDK版本 | 抓住那只蝉</title>
+<title>使用shell脚本切换JDK版本 | 夏日的蝉鸣</title>
   
 
 
@@ -68,7 +68,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">抓住那只蝉</p>
+      <p class="site-title">夏日的蝉鸣</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -155,7 +155,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">31</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -198,7 +198,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/02/18/2023-02-18-%E4%BD%BF%E7%94%A8shell%E8%84%9A%E6%9C%AC%E5%88%87%E6%8D%A2JDK%E7%89%88%E6%9C%AC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -207,7 +207,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="抓住那只蝉">
+      <meta itemprop="name" content="夏日的蝉鸣">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
@@ -339,7 +339,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2024</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
@@ -358,7 +358,7 @@
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">2:14</span>
+    <span title="Reading time total">2:13</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
