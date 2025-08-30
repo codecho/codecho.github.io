@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"codecho.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"transient.icu","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="在JDK5以后，官方提供了一种新特性 Java Agent，也叫Java 探针技术，它可以帮助我们构建一个和主程序独立的代理程序，通过代理程序可以在不修改主程序代码的情况下对主程序进行增强，如实现性能监测、日志记录、热加载等，很多著名的软件&#x2F;工具都使用了这个技术，如arthas、skywalking等 下面通过示例来学习如何使用Java Agent  关于Java Agent的一些简要说明 通过">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浅谈Java Agent">
-<meta property="og:url" content="https://codecho.github.io/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/index.html">
+<meta property="og:url" content="https://transient.icu/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/index.html">
 <meta property="og:site_name" content="夏日的蝉鸣">
 <meta property="og:description" content="在JDK5以后，官方提供了一种新特性 Java Agent，也叫Java 探针技术，它可以帮助我们构建一个和主程序独立的代理程序，通过代理程序可以在不修改主程序代码的情况下对主程序进行增强，如实现性能监测、日志记录、热加载等，很多著名的软件&#x2F;工具都使用了这个技术，如arthas、skywalking等 下面通过示例来学习如何使用Java Agent  关于Java Agent的一些简要说明 通过">
 <meta property="og:locale" content="en_US">
@@ -37,11 +37,11 @@
 <meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-09-%E6%B5%85%E8%B0%88JavaAgent/javaagent%E6%88%AA%E5%9B%BE1.png">
 
 
-<link rel="canonical" href="https://codecho.github.io/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/">
+<link rel="canonical" href="https://transient.icu/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://codecho.github.io/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/","path":"2023/05/18/2023-05-09-浅谈Java Agent/","title":"浅谈Java Agent"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://transient.icu/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/","path":"2023/05/18/2023-05-09-浅谈Java Agent/","title":"浅谈Java Agent"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>浅谈Java Agent | 夏日的蝉鸣</title>
@@ -201,7 +201,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://codecho.github.io/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/05/18/2023-05-09-%E6%B5%85%E8%B0%88Java%20Agent/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
