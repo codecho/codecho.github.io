@@ -190,7 +190,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/08/12/2023-08-12-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -203,7 +203,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/05/05/2023-05-05-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">CentOS查找历史命令</a>
+          <a href="/2023/08/12/2023-08-12-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
         </h2>
 
         <div class="post-meta-container">
@@ -214,7 +214,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-05-05 15:50:59" itemprop="dateCreated datePublished" datetime="2023-05-05T15:50:59+08:00">2023-05-05</time>
+      <time title="Created: 2023-08-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-08-12T00:00:00+08:00">2023-08-12</time>
     </span>
 
   
@@ -224,7 +224,120 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>279</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>2 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
+<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
+</li>
+<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
+</li>
+</ol>
+<blockquote>
+<p>本机Linux版本为CentOS7</p>
+</blockquote>
+<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
+<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
+<li>从每一行信息中分离出对应的外部ip</li>
+<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
+<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
+<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
+</ol>
+<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
+<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存非法访问的ip</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>创建一个文件来保存cron定时任务执行日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
+<li><p>编写脚本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
+<li><p>设置定时任务，每天执行一次</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
+<li><p>查看定时任务日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
+<li><p>查看ip是否被禁止访问</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/06/28/2023-06-28-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/06/28/2023-06-28-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">Dubbo使用Nacos作为注册中心无法连接</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-06-28 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-28T00:00:00+08:00">2023-06-28</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>281</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -242,12 +355,19 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
+          <h4 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h4><ul>
+<li>Dubbo 3.X</li>
+<li>Nacos 2.X</li>
+</ul>
+<h4 id="报错信息"><a href="#报错信息" class="headerlink" title="报错信息"></a>报错信息</h4><blockquote>
+<p>Failed to create nacos naming service client. Reason: server status check failed</p>
 </blockquote>
-<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
-
-
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/dubbo%E8%BF%9E%E6%8E%A5nacos%E6%8A%A5%E9%94%99.png"></p>
+<h4 id="问题原因"><a href="#问题原因" class="headerlink" title="问题原因"></a>问题原因</h4><blockquote>
+<p>Nacos2.X版本相比1.X新增了gRPC通信，因此添加了额外的端口，<a target="_blank" rel="noopener" href="https://nacos.io/zh-cn/docs/v2/upgrading/2.0.0-compatibility.html">详见Nacos文档</a></p>
+</blockquote>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-06-26-Dubbo%E4%BD%BF%E7%94%A8Nacos%E4%BD%9C%E4%B8%BA%E6%B3%A8%E5%86%8C%E4%B8%AD%E5%BF%83%E6%97%A0%E6%B3%95%E8%BF%9E%E6%8E%A5/nacos2%E7%89%88%E6%9C%AC%E5%8F%98%E5%8C%96.png"></p>
+<h4 id="问题解决"><a href="#问题解决" class="headerlink" title="问题解决"></a>问题解决</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 防火墙开放9848端口</span></span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --add-port=9848/tcp --permanent </span></span><br><span class="line">success</span><br><span class="line">[root@localhost logs]<span class="comment"># firewall-cmd --reload </span></span><br><span class="line">success</span><br></pre></td></tr></table></figure>
 
 
       
@@ -275,7 +395,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/06/03/2023-06-03-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -288,7 +408,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/27/2023-04-27-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/" class="post-title-link" itemprop="url">GitHub Page去除域名绑定后仍定向至以前的域名</a>
+          <a href="/2023/06/03/2023-06-03-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/" class="post-title-link" itemprop="url">如何减小Spring Boot项目jar包体积</a>
         </h2>
 
         <div class="post-meta-container">
@@ -299,7 +419,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-04-27 17:24:20" itemprop="dateCreated datePublished" datetime="2023-04-27T17:24:20+08:00">2023-04-27</time>
+      <time title="Created: 2023-06-03 00:00:00" itemprop="dateCreated datePublished" datetime="2023-06-03T00:00:00+08:00">2023-06-03</time>
     </span>
 
   
@@ -309,14 +429,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>261</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -328,96 +448,62 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
+<p>相信大部分Java开发者在使用SpringBoot开发项目时，经常会遇到代码频繁改动，每次打包部署到开发/测试环境时，由于jar包体积过大，上传jar包消耗了大量的时间，下面介绍如何给SpringBoot项目jar包减肥（使用maven作为打包工具）</p>
 </blockquote>
-<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
+<p><strong>注：Spring Boot版本：2.5.7、JDK版本：jdk8</strong></p>
+<h4 id="jar包体积"><a href="#jar包体积" class="headerlink" title="jar包体积"></a>jar包体积</h4><p><em>可以看到，一个普通的Spring Boot项目，其生成的jar包体积就高达几十近百兆</em></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/springboot%E7%9A%84jar%E5%8C%85%E4%BD%93%E7%A7%AF.png"></p>
+<hr>
+<h4 id="jar包结构"><a href="#jar包结构" class="headerlink" title="jar包结构"></a>jar包结构</h4><p><em>解压生成的jar包，查看其目录结构</em></p>
+<ul>
+<li><p>BOOT-INF</p>
+<ul>
+<li>classes    <strong>业务代码</strong></li>
+<li>lib            <strong>项目依赖</strong></li>
+</ul>
+</li>
+<li><p>META-INF</p>
+<ul>
+<li>maven    <strong>maven配置信息</strong></li>
+<li>MANIFEST.MF    <strong>jar包的描述信息和属性</strong></li>
+<li>spring-configuration-metadata.json    <strong>配置提示信息，使用IDE编写配置文件会有提示</strong></li>
+</ul>
+</li>
+<li><p>org</p>
+<ul>
+<li>springframework    <strong>启动jar包需要的class</strong></li>
+</ul>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/springboot%E7%9A%84jar%E5%8C%85%E7%BB%93%E6%9E%84.png"></p>
+</li>
+</ul>
+<hr>
+<h4 id="修改maven打包配置"><a href="#修改maven打包配置" class="headerlink" title="修改maven打包配置"></a>修改maven打包配置</h4><ul>
+<li><p>修改项目pom.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">build</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.boot<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line"></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">layout</span>&gt;</span>ZIP<span class="tag">&lt;/<span class="name">layout</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">includes</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">include</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>nothing<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>nothing<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">include</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">includes</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">build</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>使用maven重新打包，可以发现现在的jar包体积比原来要小很多</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E9%85%8D%E7%BD%AEmaven%E9%87%8D%E6%96%B0%E6%89%93%E5%8C%85%E4%B9%8B%E5%90%8Ejar%E5%8C%85%E4%BD%93%E7%A7%AF.png"></p>
+</li>
+</ul>
+<hr>
+<h4 id="准备jar包运行需要的依赖"><a href="#准备jar包运行需要的依赖" class="headerlink" title="准备jar包运行需要的依赖"></a>准备jar包运行需要的依赖</h4><ul>
+<li><p>不修改maven打包配置，生成带有<code>lib</code>目录的jar包，然后解压将<code>lib</code>目录单独提取出来</p>
+</li>
+<li><p>修改maven打包配置，将依赖copy到指定目录</p>
+<p>在plugins标签中添加下面内容，如果<code>maven-dependency-plugin</code>找不到，可以先引入该依赖，然后删除该依赖配置，以后每次打包后在target目录下会生成一个<code>lib</code>依赖目录</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugin</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>maven-dependency-plugin<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">executions</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">execution</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">id</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">phase</span>&gt;</span>prepare-package<span class="tag">&lt;/<span class="name">phase</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">goals</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">goal</span>&gt;</span>copy-dependencies<span class="tag">&lt;/<span class="name">goal</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">goals</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">configuration</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">outputDirectory</span>&gt;</span>$&#123;project.build.directory&#125;/lib<span class="tag">&lt;/<span class="name">outputDirectory</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">configuration</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">execution</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">executions</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="运行瘦身后的jar包（仅限JDK8版本）"><a href="#运行瘦身后的jar包（仅限JDK8版本）" class="headerlink" title="运行瘦身后的jar包（仅限JDK8版本）"></a>运行瘦身后的jar包（仅限JDK8版本）</h4><ul>
+<li><p>通过指定<code>loader.path</code>参数指定依赖目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Dloader.path=./lib -jar user-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E8%BF%90%E8%A1%8C%E7%98%A6%E8%BA%AB%E5%90%8E%E7%9A%84jar%E5%8C%85.png"></p>
+</li>
+<li><p>通过指定<code>java.ext.dirs</code>参数，注意不能覆盖原有的依赖（<code>$JAVA_HOME/jre/lib/ext）</code>，可以通过<code>:</code>添加多个依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -Djava.ext.dirs=<span class="variable">$JAVA_HOME</span>/jre/lib/ext:./lib -jar user-0.0.1-SNAPSHOT.jar</span><br></pre></td></tr></table></figure>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/04/26/2023-04-26-SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/26/2023-04-26-SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/" class="post-title-link" itemprop="url">SpringBoot项目不返回值为null的字段</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-04-26 17:17:55" itemprop="dateCreated datePublished" datetime="2023-04-26T17:17:55+08:00">2023-04-26</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>388</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="自定义配置类，注入ObjectMapper"><a href="#自定义配置类，注入ObjectMapper" class="headerlink" title="自定义配置类，注入ObjectMapper"></a>自定义配置类，注入ObjectMapper</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JacksonConfig</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="meta">@Primary</span></span><br><span class="line">    <span class="meta">@ConditionalOnMissingBean(ObjectMapper.class)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> ObjectMapper <span class="title">objectMapper</span><span class="params">(Jackson2ObjectMapperBuilder builder)</span> </span>&#123;</span><br><span class="line">        ObjectMapper objectMapper = builder.createXmlMapper(<span class="keyword">false</span>).build();</span><br><span class="line">        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);</span><br><span class="line">        <span class="keyword">return</span> objectMapper;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>测试</p>
-<p>配置前：</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/%E9%85%8D%E7%BD%AEjackson%E5%89%8D.png"></p>
-<p>配置后：</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/SpringBoot%E9%A1%B9%E7%9B%AE%E4%B8%8D%E8%BF%94%E5%9B%9E%E5%80%BC%E4%B8%BAnull%E7%9A%84%E5%AD%97%E6%AE%B5/%E9%85%8D%E7%BD%AEjackson%E5%90%8E.png"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-21-%E5%87%8F%E5%B0%8FSpringBoot%E9%A1%B9%E7%9B%AEjar%E5%8C%85%E4%BD%93%E7%A7%AF/%E8%BF%90%E8%A1%8C%E7%98%A6%E8%BA%AB%E5%90%8E%E7%9A%84jar%E5%8C%852.png"></p>
+<p><strong>==注意：==</strong><code>java.ext.dirs</code>参数在JDK8以上版本好像不支持</p>
 </li>
 </ul>
 
@@ -446,7 +532,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/04/23/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/05/17/2023-05-17-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -459,7 +545,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/23/2023-04-23-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">浅拷贝与深拷贝</a>
+          <a href="/2023/05/17/2023-05-17-%E6%B5%85%E6%8B%B7%E8%B4%9D%E4%B8%8E%E6%B7%B1%E6%8B%B7%E8%B4%9D/" class="post-title-link" itemprop="url">浅拷贝与深拷贝</a>
         </h2>
 
         <div class="post-meta-container">
@@ -470,7 +556,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-04-23 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-23T00:00:00+08:00">2023-04-23</time>
+      <time title="Created: 2023-05-17 00:00:00" itemprop="dateCreated datePublished" datetime="2023-05-17T00:00:00+08:00">2023-05-17</time>
     </span>
 
   
@@ -579,7 +665,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/04/20/2023-04-20-%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/25/2023-03-25-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -592,7 +678,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/20/2023-04-20-%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D/" class="post-title-link" itemprop="url">使用Python进行图片去重处理</a>
+          <a href="/2023/03/25/2023-03-25-CentOS%E6%9F%A5%E6%89%BE%E5%8E%86%E5%8F%B2%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">CentOS查找历史命令</a>
         </h2>
 
         <div class="post-meta-container">
@@ -603,7 +689,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-04-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-20T00:00:00+08:00">2023-04-20</time>
+      <time title="Created: 2023-03-25 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-25T00:00:00+08:00">2023-03-25</time>
     </span>
 
   
@@ -613,110 +699,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.5k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="需求背景"><a href="#需求背景" class="headerlink" title="需求背景"></a>需求背景</h4><blockquote>
-<p>最近给电脑换桌面背景的时候，想起硬盘里还有之前大学时期下载的搜狗壁纸图片，于是从硬盘将壁纸文件夹拷贝到电脑上，打开后发现有两个目录都保存有壁纸，每个都有几百张，但是有些是各自目录独有的，也有互相重复的。为了能够获得最完整的壁纸合集，打算将所有图片进行合并去重，很明显，这么重复枯燥的工作不可能人工去一张一张地比对处理（其实我一开始真的手动处理了几张，发现实在hold不住），作为一名程序猿，当然要使用随身佩带的武器（Programming）来披荆斩棘，虽然我是Java开发者，但是显然这种场景最适合出手的还是Python这把小巧轻灵的匕首。</p>
-<p>多说一句，以前的搜狗壁纸真的是个很良心的壁纸软件，有很多精美的壁纸，还是免费的，后来好像因为不盈利而停止运行了，可惜之前没有多下载一些好看的壁纸。现在有时候找壁纸都是去国外的壁纸网站，没有之前直接在客户端下载那么方便了。</p>
-</blockquote>
-<p>事先说明，我是一个Python菜鸟，学完Python基础后，如果长时间不用就要重新看教程的那种。</p>
-<h4 id="思路分析"><a href="#思路分析" class="headerlink" title="思路分析"></a>思路分析</h4><ol>
-<li>首先遍历需要去重的图片集，计算图片的md5值（很多软件下载页面都会提供md5值用于检查数据完整性）</li>
-<li>判断字典中是否存在该图片的md5值，如果不存在，将md5值作为key，图片文件作为value存入字典中</li>
-<li>如果字典中存在md5值，表示存在重复的图片，将当前图片标记或直接删除</li>
-<li>如果图片名称不规则，遍历图片集，一一重命名</li>
-</ol>
-<h4 id="开始上手"><a href="#开始上手" class="headerlink" title="开始上手"></a>开始上手</h4><ol>
-<li><p>重复图片预览</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-04-20-%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D%2Fpython%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D1.png"></p>
-</li>
-<li><p>主代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取图片md5值</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_md5</span>(<span class="params">filename</span>):</span></span><br><span class="line">    file_txt = <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>).read()</span><br><span class="line">    m = hashlib.md5(file_txt)</span><br><span class="line">    <span class="keyword">return</span> m.hexdigest()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">    path = <span class="string">&#x27;D:\搜狗壁纸下载\python_test&#x27;</span></span><br><span class="line">    md5_dict = &#123;&#125; <span class="comment"># md5字典</span></span><br><span class="line">    file_count = <span class="number">0</span>  <span class="comment"># 总图片数</span></span><br><span class="line">    real_count = <span class="number">0</span>  <span class="comment"># 去重后图片数</span></span><br><span class="line">    dup_count = <span class="number">0</span>  <span class="comment"># 重复图片数</span></span><br><span class="line">    <span class="keyword">for</span> file <span class="keyword">in</span> os.listdir(path):</span><br><span class="line">        real_path = os.path.join(path, file)</span><br><span class="line">        <span class="keyword">if</span> os.path.isfile(real_path):</span><br><span class="line">            file_md5 = get_md5(real_path)</span><br><span class="line">            file_count += <span class="number">1</span></span><br><span class="line">            </span><br><span class="line">            <span class="keyword">if</span> md5_dict.get(file_md5):</span><br><span class="line">                <span class="comment"># 当前图片不在md5对应的图片列表中，说明该图片重复</span></span><br><span class="line">                <span class="keyword">if</span> <span class="keyword">not</span> (file <span class="keyword">in</span> md5_dict.get(file_md5)):</span><br><span class="line">                    <span class="built_in">print</span>(<span class="string">&#x27;发现相似图片------&gt; &#x27;</span>, <span class="string">&#x27;当前图片: &#x27;</span>, file, <span class="string">&#x27;相似图片: &#x27;</span>, md5_dict.get(file_md5))</span><br><span class="line">                    md5_dict.get(file_md5).append(file)</span><br><span class="line">                    dup_count += <span class="number">1</span></span><br><span class="line">                    <span class="comment"># os.remove(real_path)  # 删除重复图片</span></span><br><span class="line">                    <span class="comment"># print(&#x27;删除图片: &#x27;, file)</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                md5_dict[file_md5] = [file]</span><br><span class="line">                </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;========================================================================&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;========================================================================&#x27;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;========================================================================&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    real_count = <span class="built_in">len</span>(md5_dict)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;总图片数: &#x27;</span>, file_count, <span class="string">&#x27;| 重复图片数: &#x27;</span>, dup_count, <span class="string">&#x27;| 去重后图片数: &#x27;</span>, real_count)</span><br><span class="line">    <span class="keyword">for</span> key <span class="keyword">in</span> md5_dict.keys():</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(md5_dict.get(key)) &gt; <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;图片md5: &#x27;</span>, key, <span class="string">&#x27;相似图片: &#x27;</span>, md5_dict.get(key))</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&#x27;图片: &#x27;</span>, md5_dict.get(key), <span class="string">&#x27;无相似图片&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rename_wallpaper</span>():</span></span><br><span class="line">    path = <span class="string">&#x27;D:\搜狗壁纸下载\python_test&#x27;</span></span><br><span class="line">    file_name_prefix = <span class="string">&#x27;壁纸&#x27;</span></span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> file_name <span class="keyword">in</span> os.listdir(path):</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        file_name_suffix = os.path.splitext(file_name)[-<span class="number">1</span>]</span><br><span class="line">        os.renames(os.path.join(path, file_name), os.path.join(path, file_name_prefix + <span class="built_in">str</span>(count) + file_name_suffix))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    main()</span><br><span class="line">    <span class="comment"># rename_wallpaper()</span></span><br></pre></td></tr></table></figure></li>
-<li><p>查看控制台输出（未实际删除）</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-04-20-%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D%2Fpython%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D2.png"></p>
-</li>
-<li><p>查看删除后目录</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-04-20-%E4%BD%BF%E7%94%A8Python%E8%BF%9B%E8%A1%8C%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D%2Fpython%E5%9B%BE%E7%89%87%E5%8E%BB%E9%87%8D3.png"></p>
-</li>
-</ol>
-<p>这里只是提供了一种去除重复文件的简单思路，实际上有很多方法都可以实现这个功能，不过作为程序猿，这种折腾、自己造轮子的经历也是帮助我们提高自己的一种手段。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/04/10/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/04/10/2023-05-16-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/" class="post-title-link" itemprop="url">CentOS修改ssh默认端口</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-04-10 00:00:00" itemprop="dateCreated datePublished" datetime="2023-04-10T00:00:00+08:00">2023-04-10</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>452</span>
+      <span>279</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
@@ -735,26 +718,12 @@
     
     <div class="post-body" itemprop="articleBody">
           <blockquote>
-<p>我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。</p>
+<p>在使用CentOS时，有时候我们需要执行某个时间之前的命令，但是这些命令有时候参数过多，一时不容易想起，这时候很需要一个工具来帮我们记录执行过哪些命令</p>
 </blockquote>
-<h4 id="查看服务器是否被暴力登录"><a href="#查看服务器是否被暴力登录" class="headerlink" title="查看服务器是否被暴力登录"></a>查看服务器是否被暴力登录</h4><ul>
-<li><p>查看<code>/var/log/secure</code>日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n 100 /var/<span class="built_in">log</span>/secure | grep <span class="string">&quot;Failed password&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="使用ctrl-R反向查找-搜索历史命令"><a href="#使用ctrl-R反向查找-搜索历史命令" class="headerlink" title="使用ctrl+R反向查找|搜索历史命令"></a>使用<kbd>ctrl</kbd>+<kbd>R</kbd>反向查找|搜索历史命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(reverse-i-search)`<span class="string">&#x27;:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 输入要查找的命令，如docker</span></span><br><span class="line"><span class="string">(reverse-i-search)`docker&#x27;</span>: docker logs 6316724f7425</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ctrl+R向前连续查找</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用方向键 &lt; or &gt; 选取命令</span></span><br><span class="line">[root@centos7 codecho]<span class="comment"># docker logs 6316724f7425</span></span><br></pre></td></tr></table></figure>
 
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-</ul>
-<h4 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h4><ul>
-<li><p>修改sshd配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加另一个端口号 1234</span></span><br><span class="line">Port 22</span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
-<li><p>重启sshd服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure></li>
-<li><p>修改防火墙或安全组配置，增加新端口</p>
-</li>
-<li><p>使用新端口连接服务器，修改sshd_config配置文件，将原端口注释，保留新端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port 22</span></span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="屏蔽尝试非法登录的ip"><a href="#屏蔽尝试非法登录的ip" class="headerlink" title="屏蔽尝试非法登录的ip"></a>屏蔽尝试非法登录的ip</h4><p>​    通过shell脚本和定时任务，将ip加入屏蔽名单，详细参考<a target="_blank" rel="noopener" href="https://codecho.github.io/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">这里</a></p>
+
+
 
       
     </div>
@@ -781,7 +750,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/20/2023-03-20-JDK17%E5%88%9D%E4%BD%93%E9%AA%8C/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/21/2023-03-21-Centos7%E5%AE%89%E8%A3%85Redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -794,7 +763,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/03/20/2023-03-20-JDK17%E5%88%9D%E4%BD%93%E9%AA%8C/" class="post-title-link" itemprop="url">JDK17初体验</a>
+          <a href="/2023/03/21/2023-03-21-Centos7%E5%AE%89%E8%A3%85Redis/" class="post-title-link" itemprop="url">Centos安装Redis</a>
         </h2>
 
         <div class="post-meta-container">
@@ -805,7 +774,7 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-03-20 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-20T00:00:00+08:00">2023-03-20</time>
+      <time title="Created: 2023-03-21 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-21T00:00:00+08:00">2023-03-21</time>
     </span>
 
   
@@ -815,14 +784,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>5.1k</span>
+      <span>2.7k</span>
     </span>
     <span class="post-meta-item" title="Reading time">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>5 mins.</span>
+      <span>2 mins.</span>
     </span>
 </div>
 
@@ -833,287 +802,52 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>从刚工作时使用的JDK8到现在的JDK17，Java的版本一直在飞速迭代，每个版本都会引入一些新特性和优化改进，比如模块化系统、var类型推断、switch表达式增强、record类、instanceof增强、Sealed类/接口、新的GC等，下面就让我们来体验一下这些新特性吧。</p>
-</blockquote>
-<p>==对于某些不太好测试的特性，这里就忽略了，如模块化系统、ZGC等==</p>
-<h4 id="var类型推断"><a href="#var类型推断" class="headerlink" title="var类型推断"></a>var类型推断</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> greeting = <span class="string">&quot;Hello, JDK17&quot;</span>;</span><br><span class="line">    <span class="keyword">var</span> num1 = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">long</span> num2 = <span class="number">1000L</span>;</span><br><span class="line">    <span class="keyword">var</span> sum = num1 + num2;</span><br><span class="line">    <span class="keyword">var</span> result = sum % <span class="number">2</span> != <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    System.out.println(<span class="string">&quot;greeting: &quot;</span> + greeting);</span><br><span class="line">    System.out.println(<span class="string">&quot;&quot;</span> + num1 + <span class="string">&quot; + &quot;</span> + num2 + <span class="string">&quot; = &quot;</span> + sum);</span><br><span class="line">    System.out.println(<span class="string">&quot;result: &quot;</span> + result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">greeting: HELLO, JDK17</span><br><span class="line">10 + 1000 = 1010</span><br><span class="line">result: false</span><br></pre></td></tr></table></figure></li>
-<li><p>class文件</p>
-<p>可以看到，var只是一种语法糖，编译时会自动转成对应的类型</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String greeting = <span class="string">&quot;Hello, JDK17&quot;</span>;</span><br><span class="line">        <span class="keyword">int</span> num1 = <span class="number">10</span>;</span><br><span class="line">        <span class="keyword">long</span> num2 = <span class="number">1000L</span>;</span><br><span class="line">        <span class="keyword">long</span> sum = (<span class="keyword">long</span>)num1 + num2;</span><br><span class="line">        <span class="keyword">boolean</span> result = sum % <span class="number">2L</span> != <span class="number">0L</span>;</span><br><span class="line">        System.out.println(<span class="string">&quot;greeting: &quot;</span> + (String)greeting.transform(String::toUpperCase));</span><br><span class="line">        System.out.println(<span class="string">&quot;&quot;</span> + num1 + <span class="string">&quot; + &quot;</span> + num2 + <span class="string">&quot; = &quot;</span> + sum);</span><br><span class="line">        System.out.println(<span class="string">&quot;result: &quot;</span> + result);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+          <h2 id="Centos7安装Redis-RedisTemplate使用"><a href="#Centos7安装Redis-RedisTemplate使用" class="headerlink" title="Centos7安装Redis + RedisTemplate使用"></a>Centos7安装Redis + RedisTemplate使用</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS7.5</li>
+<li>Redis版本：6.2.6，<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
 </ul>
-<h4 id="Http请求客户端"><a href="#Http请求客户端" class="headerlink" title="Http请求客户端"></a>Http请求客户端</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, InterruptedException </span>&#123;</span><br><span class="line">    HttpClient httpClient = HttpClient.newHttpClient();</span><br><span class="line">    HttpRequest httpRequest = HttpRequest</span><br><span class="line">        .newBuilder()</span><br><span class="line">        .uri(URI.create(<span class="string">&quot;http://localhost:9090/user/get/202000&quot;</span>))</span><br><span class="line">        .build();</span><br><span class="line">    HttpResponse&lt;String&gt; httpResponse = httpClient</span><br><span class="line">        .send(httpRequest, HttpResponse.BodyHandlers.ofString());</span><br><span class="line">    System.out.println(<span class="string">&quot;response: &quot;</span> + httpResponse.body());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response: &#123;&quot;data&quot;:&#123;&quot;id&quot;:1001,&quot;userNo&quot;:&quot;10010&quot;,&quot;nickname&quot;:&quot;codecho&quot;,&quot;mobilePhone&quot;:&quot;18755667788&quot;,&quot;createTime&quot;:&quot;2023-03-08 12:04:20&quot;,&quot;updateTime&quot;:&quot;2023-03-08 12:04:20&quot;&#125;,&quot;success&quot;:true&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="switch表达式增强"><a href="#switch表达式增强" class="headerlink" title="switch表达式增强"></a>switch表达式增强</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> month = <span class="number">4</span>;</span><br><span class="line">    System.out.println(<span class="string">&quot;month: &quot;</span> + month + <span class="string">&quot;, season: &quot;</span> + getSeason(<span class="number">4</span>));</span><br><span class="line">&#125;    </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getSeason</span><span class="params">(<span class="keyword">int</span> month)</span> </span>&#123;</span><br><span class="line">    String season = <span class="keyword">switch</span> (month) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span> -&gt; <span class="string">&quot;Spring&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span> -&gt; <span class="string">&quot;Summer&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span> -&gt; <span class="string">&quot;Autumn&quot;</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">12</span>, <span class="number">1</span>, <span class="number">2</span> -&gt; &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;month: &quot;</span> + month);</span><br><span class="line">            yield  <span class="string">&quot;Winter&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">default</span> -&gt; <span class="string">&quot;illegal month!&quot;</span>;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> season;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">month: 4, season: Spring</span><br></pre></td></tr></table></figure></li>
-<li><p>class文件</p>
-<p>可以看到，switch增强也是语法糖，和普通的switch没什么区别</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> month = <span class="number">4</span>;</span><br><span class="line">    System.out.println(<span class="string">&quot;month: &quot;</span> + month + <span class="string">&quot;, season: &quot;</span> + getSeason(<span class="number">4</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getSeason</span><span class="params">(<span class="keyword">int</span> month)</span> </span>&#123;</span><br><span class="line">    String var10000;</span><br><span class="line">    <span class="keyword">switch</span> (month) &#123;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">12</span>:</span><br><span class="line">            System.out.println(<span class="string">&quot;month: &quot;</span> + month);</span><br><span class="line">            var10000 = <span class="string">&quot;Winter&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">5</span>:</span><br><span class="line">            var10000 = <span class="string">&quot;Spring&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">6</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">7</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">            var10000 = <span class="string">&quot;Summer&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">case</span> <span class="number">9</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">        <span class="keyword">case</span> <span class="number">11</span>:</span><br><span class="line">            var10000 = <span class="string">&quot;Autumn&quot;</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        <span class="keyword">default</span>:</span><br><span class="line">            var10000 = <span class="string">&quot;illegal month!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    String season = var10000;</span><br><span class="line">    <span class="keyword">return</span> season;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="文本块"><a href="#文本块" class="headerlink" title="文本块"></a>文本块</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> text = <span class="string">&quot;&quot;</span><span class="string">&quot;</span></span><br><span class="line"><span class="string">                &#123;</span></span><br><span class="line"><span class="string">                    &quot;</span>name<span class="string">&quot;: &quot;</span>codecho<span class="string">&quot;,</span></span><br><span class="line"><span class="string">                    &quot;</span>age<span class="string">&quot;: 28,</span></span><br><span class="line"><span class="string">                    &quot;</span>gender<span class="string">&quot;: &quot;</span>male<span class="string">&quot;</span></span><br><span class="line"><span class="string">                &#125;</span></span><br><span class="line"><span class="string">                &quot;</span><span class="string">&quot;&quot;</span>;</span><br><span class="line">	System.out.println(<span class="string">&quot;text block: &quot;</span>);</span><br><span class="line">    System.out.println(text);</span><br><span class="line">&#125;    </span><br></pre></td></tr></table></figure></li>
-<li><p>输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">text block: </span><br><span class="line">&#123;</span><br><span class="line">    &quot;name&quot;: &quot;codecho&quot;,</span><br><span class="line">    &quot;age&quot;: 28,</span><br><span class="line">    &quot;gender&quot;: &quot;male&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>class文件</p>
-<p>实际还是使用的转换符</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    String text = <span class="string">&quot;&#123;\n    \&quot;name\&quot;: \&quot;codecho\&quot;,\n    \&quot;age\&quot;: 28,\n    \&quot;gender\&quot;: \&quot;male\&quot;\n&#125;\n&quot;</span>;</span><br><span class="line">    System.out.println(<span class="string">&quot;text block: &quot;</span>);</span><br><span class="line">    System.out.println(text);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="record类"><a href="#record类" class="headerlink" title="record类"></a>record类</h4><ul>
-<li><p>代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> record <span class="title">Boy</span><span class="params">(String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Boy boy = <span class="keyword">new</span> Boy(<span class="string">&quot;Gary&quot;</span>, <span class="number">12</span>);</span><br><span class="line">    System.out.println(<span class="string">&quot;the boy&#x27;s name is &quot;</span> + boy.name() + <span class="string">&quot;, he is &quot;</span> + boy.age() + <span class="string">&quot; years old&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>输出</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">the boy&#x27;s name is Gary, he is 12 years old</span><br></pre></td></tr></table></figure></li>
-<li><p>反编译class文件</p>
-<p>实际继承了Record类（==注意：当前类是final的，不可继承==），编译器自动添加了各个属性方法，和equals、hashCode、toString方法</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-03-20-JDK17%E5%88%9D%E4%BD%93%E9%AA%8C%2Fjdk17%E5%88%9D%E4%BD%93%E9%AA%8C-record%E7%B1%BB.png"></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Record</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="title">Record</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">toString</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="instanceof增强"><a href="#instanceof增强" class="headerlink" title="instanceof增强"></a>instanceof增强</h4><ul>
-<li><p>增强前</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Object o = <span class="string">&quot;instanceof&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> (o <span class="keyword">instanceof</span> String) &#123;</span><br><span class="line">        String str = (String) o;</span><br><span class="line">        System.out.println(<span class="string">&quot;str: &quot;</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>增强后</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">    Object o = <span class="string">&quot;instanceof&quot;</span>;</span><br><span class="line">    <span class="keyword">if</span> (o <span class="keyword">instanceof</span> String str) &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;str: &quot;</span> + str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="sealed密封类-接口"><a href="#sealed密封类-接口" class="headerlink" title="sealed密封类/接口"></a>sealed密封类/接口</h4><ul>
-<li><p>代码</p>
+<h3 id="安装步骤"><a href="#安装步骤" class="headerlink" title="安装步骤"></a>安装步骤</h3><ul>
+<li><p>从官网获取Redis压缩包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://download.redis.io/releases/redis-6.2.6.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>如果速度很慢可以先在windows下下载好压缩包，再通过远程连接工具上传到服务器上</p>
+</li>
+<li><p>编译安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf redis-6.2.6.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> redis-6.2.6</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make命令来编译，需要gcc支持，如果没有需要安装gcc相关工具</span></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line"><span class="comment"># 执行make install来安装</span></span><br><span class="line">make install</span><br></pre></td></tr></table></figure></li>
+<li><p>启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在/usr/local/bin目录下可以看到redis-benchmark、redis-cli、redis-server等相关命令</span></span><br><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/bin</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动redis-server，可以看到Redis的logo</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看redis-server是否成功启动</span></span><br><span class="line">ps -ef|grep redis</span><br><span class="line">root     30570 18113  0 21:30 pts/0    00:00:00 ./redis-server 127.0.0.1:6379</span><br></pre></td></tr></table></figure></li>
+<li><p>使用redis-cli连接redis-server</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">./redis-cli -p 6379 [-a 密码]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用ping命令查看是否连接成功</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line"><span class="comment"># 使用info命令查看redis详细信息</span></span><br><span class="line">127.0.0.1:6379&gt; info</span><br><span class="line"><span class="comment"># Server</span></span><br><span class="line">redis_version:6.2.6</span><br><span class="line">redis_git_sha1:00000000</span><br><span class="line">redis_git_dirty:0</span><br><span class="line">redis_build_id:a1222172bdd35f61</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux 3.10.0-1127.19.1.el7.x86_64 x86_64</span><br><span class="line">arch_bits:64</span><br><span class="line">multiplexing_api:epoll</span><br><span class="line">atomicvar_api:atomic-builtin</span><br><span class="line">gcc_version:4.8.5</span><br><span class="line">process_id:30570</span><br><span class="line">process_supervised:no</span><br><span class="line">run_id:4de193462f2317104a79ee50969de49216991d60</span><br><span class="line">tcp_port:6379</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用set命令保存一个字符串</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> msg Hello,Redis</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get msg</span><br><span class="line"><span class="string">&quot;Hello,Redis&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改Redis配置文件（推荐先将原始配置文件备份，再做修改）</p>
 <ul>
-<li><code>permit</code>：指定可以继承的类/接口</li>
-<li>sealed`：密封类/接口</li>
-<li><code>no-sealed</code>：非密封类/接口</li>
-<li><code>final</code>：不可被继承类/接口</li>
-<li>子类继承被<code>sealed</code>标记的超类后，同样要求指定密封性，使用<code>sealed</code>、<code>no-sealed</code>、<code>final</code>其中之一指定</li>
+<li>！！！注意！！！在redis-6.2.6版本中，redis配置文件中关于快照部分需要取消save 3600 1、save 300 100、save 60 10000这几行的注释，否则redis不会持久化数据，重启后数据会丢失</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// MotoVehicle只能由Bus、Car继承</span></span><br><span class="line"><span class="keyword">public</span> sealed <span class="class"><span class="keyword">class</span> <span class="title">MotoVehicle</span> <span class="title">permits</span> <span class="title">Bus</span>, <span class="title">Car</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Bus不能再被继承</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Bus</span> <span class="keyword">extends</span> <span class="title">MotoVehicle</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Car非密封，可以被继承</span></span><br><span class="line"><span class="keyword">public</span> non-sealed <span class="class"><span class="keyword">class</span> <span class="title">Car</span> <span class="keyword">extends</span> <span class="title">MotoVehicle</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Suv继承Car</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Suv</span> <span class="keyword">extends</span> <span class="title">Car</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>作用</p>
-<p>使用密封类/接口可以更好地限制类/接口的继承范围，提高代码的安全性和可维护性。</p>
-</li>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2Fredis-6.0.10%E5%BF%AB%E7%85%A7%E9%85%8D%E7%BD%AE.png"></p>
+<ul>
+<li>当我们在当前终端窗口启动redis-server后，如果退出了当前终端，redis-server也会随之停止，因此我们要修改配置文件，让Redis能够保持后台运行</li>
 </ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将daemonize no改为daemonize yes</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 此时启动redis-server后，Redis就可以一直在后台运行了</span></span><br><span class="line">./redis-server /usr/my_software/redis/redis-6.2.6/redis.conf</span><br></pre></td></tr></table></figure>
 
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/03/17/2023-03-16-%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F/" class="post-title-link" itemprop="url">使用IDEA构建docker镜像</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-03-17 18:36:15" itemprop="dateCreated datePublished" datetime="2023-03-17T18:36:15+08:00">2023-03-17</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>857</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="准备条件"><a href="#准备条件" class="headerlink" title="准备条件"></a>准备条件</h3><ol>
-<li>IDEA软件（安装有Docker插件，新版本会自带）</li>
-<li>装有Docker环境的Linux服务器/虚拟机</li>
-</ol>
-<h3 id="开始"><a href="#开始" class="headerlink" title="开始"></a>开始</h3><ol>
-<li><p>在IDEA中创建一个SpringBoot项目，并编写一个controller，用于验证服务是否部署成功</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(user);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>右键项目，创建一个名为<code>Dockerfile</code>的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># 使用openjdk镜像</span><br><span class="line">FROM openjdk:8-jre</span><br><span class="line"></span><br><span class="line"># 工作目录</span><br><span class="line">WORKDIR /home/docker</span><br><span class="line"></span><br><span class="line"># 复制jar包到容器</span><br><span class="line">ADD ./target/user-0.0.1-SNAPSHOT.jar ./user.jar</span><br><span class="line"></span><br><span class="line"># 运行jar包</span><br><span class="line">ENTRYPOINT [&quot;sh&quot;,&quot;-c&quot;,&quot;java -jar $JAVA_OPTS user.jar&quot;]</span><br></pre></td></tr></table></figure></li>
-<li><p>右键Dockerfile文件，点击<code>Modify Run Configuration</code>，编辑运行配置</p>
-<p>配置docker服务器信息</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker2.png"></p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E9%85%8D%E7%BD%AEdocker3.png"></p>
-<p>配置docker运行参数（镜像tag、容器名称、端口映射、运行前执行<code>package</code>命令）</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%85%8D%E7%BD%AEdocker%E8%BF%90%E8%A1%8C%E5%8F%82%E6%95%B0.png"></p>
-</li>
-<li><p>右键Dockerfile文件，点击运行，在Services栏可以看到docker的镜像和正在运行的容器</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2FIDEA%E8%BF%9E%E6%8E%A5docker.png"></p>
-</li>
-<li><p>验证docker镜像是否部署成功</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E4%BD%BF%E7%94%A8IDEA%E6%9E%84%E5%BB%BAdocker%E9%95%9C%E5%83%8F%2F%E9%AA%8C%E8%AF%81docker%E9%95%9C%E5%83%8F%E9%83%A8%E7%BD%B2%E6%88%90%E5%8A%9F.png"></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/" class="post-title-link" itemprop="url">编写shell脚本禁止非法访问的ip</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>2.4k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>2 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="需要提前知道的一些内容"><a href="#需要提前知道的一些内容" class="headerlink" title="需要提前知道的一些内容"></a>需要提前知道的一些内容</h4><ol>
-<li><p>Linux下的<code>/var/log/secure</code>文件记录了登录Linux服务器的日志信息，如果有人尝试破解你的服务器，那么可以在这个文件中看到很多密码错误的信息，如下图</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-<li><p>Linux下的<code>/etc/hosts.deny</code>文件可以配置需要禁止访问的ip，外部请求进入时，会先在<code>/etc/hosts.allow</code>中检查ip是否存在，若存在，直接放行请求，如果没有，判断在是否在<code>/etc/hosts.deny</code>中，如果在，禁止请求连接</p>
-</li>
-<li><p>Linux支持cron定时任务，搭配shell脚本可以让我们定时运行自己编写的脚本，不需要人工进行干预</p>
-</li>
-</ol>
+<ul>
+<li>当我们使用Redis连接工具，如AnotherRedisDesktopManager或者在程序中连接Redis时，会发现无法连接，此时需要修改redis.conf配置文件</li>
+</ul>
 <blockquote>
-<p>本机Linux版本为CentOS7</p>
+<p><strong>注意！！！如果是使用的云服务器，需要在云服务器控制台的安全组里放行Redis的端口号，否则在外网无法连接到云服务器的Redis</strong></p>
 </blockquote>
-<h4 id="先梳理整个流程"><a href="#先梳理整个流程" class="headerlink" title="先梳理整个流程"></a>先梳理整个流程</h4><ol>
-<li>读取<code>/var/log/secure</code>文件，筛选出试图登录服务器但密码错误的信息</li>
-<li>从每一行信息中分离出对应的外部ip</li>
-<li>对这些ip进行排序和去重，统计每个ip尝试登录的次数</li>
-<li>遍历所有的外部ip，判断当前ip尝试登录次数是否超过忍耐值（可能自己有时候也会输错密码或者其他原因导致登录失败），将该ip添加到<code>/etc/hosts.deny</code>中</li>
-<li>使用Linux自带的cron服务创建定时任务，每隔一定的时间就执行该脚本</li>
-</ol>
-<h4 id="开始动手"><a href="#开始动手" class="headerlink" title="开始动手"></a>开始动手</h4><ol>
-<li><p>创建<code>deny_illegal_ip.sh</code>脚本文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/shell_study</span><br><span class="line">touch deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存非法访问的ip</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch illegal_ip_list.txt</span><br></pre></td></tr></table></figure></li>
-<li><p>创建一个文件来保存cron定时任务执行日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch cron_task.log</span><br></pre></td></tr></table></figure></li>
-<li><p>编写脚本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">IP_LIST_PATH=<span class="string">&quot;/usr/shell_study/illegal_ip_list.txt&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny path</span></span><br><span class="line">HOSTS_DENY_PATH=<span class="string">&quot;/etc/hosts.deny&quot;</span></span><br><span class="line"><span class="comment"># hosts.deny backup path</span></span><br><span class="line">HOSTS_DENY_BAK_PATH=<span class="string">&quot;/etc/hosts.deny.bak&quot;</span></span><br><span class="line"><span class="comment"># cron task log path</span></span><br><span class="line">CRON_TASK_LOG_PATH=<span class="string">&quot;/usr/shell_study/cron_task.log&quot;</span></span><br><span class="line"><span class="comment"># the number of illegal ip</span></span><br><span class="line">IP_COUNT=0</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean old ip file</span></span><br><span class="line"><span class="keyword">if</span> [ -e <span class="variable">$IP_LIST_PATH</span> ]</span><br><span class="line"><span class="keyword">then</span></span><br><span class="line">    cat /dev/null &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># extract illegal ip</span></span><br><span class="line">cat <span class="variable">$SECURE_LOG_PATH</span> | grep <span class="string">&quot;Failed password&quot;</span> | awk -F <span class="string">&quot;from&quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> | awk -F <span class="string">&quot;port&quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> | sort | uniq -c &gt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># reset hosts.deny, as we check the ip whether existed in hosts.deny, so this step can be removed </span></span><br><span class="line"><span class="comment">#if [ -e $HOSTS_DENY_BAK_PATH ]</span></span><br><span class="line"><span class="comment">#then</span></span><br><span class="line"><span class="comment">#    cat $HOSTS_DENY_BAK_PATH &gt; $HOSTS_DENY_PATH</span></span><br><span class="line"><span class="comment">#fi</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add illegal ip to hosts.deny which appears more than once</span></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> IP_LINE</span><br><span class="line"><span class="keyword">do</span></span><br><span class="line">    COUNT=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $1&#125;&#x27;</span>`</span><br><span class="line">    IP=`<span class="built_in">echo</span> <span class="variable">$IP_LINE</span> | awk -F <span class="string">&quot; &quot;</span> <span class="string">&#x27;&#123;print $2&#125;&#x27;</span>`</span><br><span class="line">    <span class="keyword">if</span> [ <span class="variable">$COUNT</span> -ge 2 -a `grep -c <span class="variable">$IP</span> <span class="variable">$HOSTS_DENY_PATH</span>` -eq 0 ]</span><br><span class="line">    <span class="keyword">then</span></span><br><span class="line">        <span class="built_in">let</span> IP_COUNT++</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;sshd:<span class="variable">$IP</span>&quot;</span> &gt;&gt; <span class="variable">$HOSTS_DENY_PATH</span></span><br><span class="line">    <span class="keyword">fi</span></span><br><span class="line"><span class="keyword">done</span> &lt; <span class="variable">$IP_LIST_PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># add cron task log</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;<span class="subst">$(date <span class="string">&quot;+%Y-%m-%d %H:%M:%S&quot;</span>)</span>: added <span class="variable">$IP_COUNT</span> illegal ip&quot;</span> &gt;&gt; <span class="variable">$CRON_TASK_LOG_PATH</span></span><br></pre></td></tr></table></figure></li>
-<li><p>设置定时任务，每天执行一次</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br><span class="line">0 0 * * * /usr/shell_study/deny_illegal_ip.sh</span><br></pre></td></tr></table></figure></li>
-<li><p>查看定时任务日志</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">tail -f /usr/shell_study/cron_task.log</span><br><span class="line">2022-10-24 22:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 22:30:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:00:01: added 0 illegal ips</span><br><span class="line">2022-10-24 23:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 00:30:01: added 1 illegal ips</span><br><span class="line">2022-10-25 01:00:02: added 0 illegal ips</span><br><span class="line">2022-10-25 01:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:00:01: added 0 illegal ips</span><br><span class="line">2022-10-25 02:30:01: added 0 illegal ips</span><br><span class="line">2022-10-25 03:00:01: added 0 illegal ips</span><br></pre></td></tr></table></figure></li>
-<li><p>查看ip是否被禁止访问</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts.deny</span><br></pre></td></tr></table></figure></li>
-</ol>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2FRedis%E8%BF%9E%E6%8E%A5%E5%B7%A5%E5%85%B7%E6%8A%A5%E9%94%99.png"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 配置文件路径视个人安装情况而定</span></span><br><span class="line">vim /xxx/xxx/redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 bind 127.0.0.1 -::1 这行配置，将其注释</span></span><br><span class="line"><span class="comment">#bind 127.0.0.1 -::1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 找到 protected-mode yes 这行配置，将其改为 protected-mode no</span></span><br><span class="line">protected-mode no</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果要为Redis设置密码，取消 # requirepass foobared 的注释，在requirepass后添加自己要设置的密码</span></span><br><span class="line"><span class="comment"># 如果我们设置了密码，那么就不用配置 protected-mode no 了，在连接Redis时配置我们设置的密码就好了</span></span><br><span class="line">requirepass helloredis</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="在Java程序中使用Jedis或RedisTemplate连接Redis"><a href="#在Java程序中使用Jedis或RedisTemplate连接Redis" class="headerlink" title="在Java程序中使用Jedis或RedisTemplate连接Redis"></a>在Java程序中使用Jedis或RedisTemplate连接Redis</h3><ul>
+<li><p>创建一个SpringBoot项目（个人习惯，可以使用普通的Spring项目），在application.yml配置文件中添加Redis的配置信息</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server:</span></span><br><span class="line">  <span class="attr">port:</span> <span class="number">8080</span></span><br><span class="line"></span><br><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">redis:</span></span><br><span class="line">    <span class="attr">host:</span> <span class="number">101.34</span><span class="number">.155</span><span class="number">.68</span></span><br><span class="line">    <span class="attr">port:</span> <span class="number">6379</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">codecho@0110</span></span><br></pre></td></tr></table></figure></li>
+<li><p>引入Redis依赖</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-starter-data-redis&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;2.4.2&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>通过RedisTemplate操作Redis</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line">RedisTemplate redisTemplate;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Test</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testRedis</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    redisTemplate.opsForValue().set(<span class="string">&quot;today&quot;</span>, <span class="string">&quot;Tuesday&quot;</span>);</span><br><span class="line">    System.out.println(redisTemplate.opsForValue().get(<span class="string">&quot;today&quot;</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Centos%E5%AE%89%E8%A3%85Redis%2F%E4%BD%BF%E7%94%A8RedisTemplate%E6%93%8D%E4%BD%9CRedis.png"></p>
+</li>
+</ul>
 
       
     </div>
@@ -1140,7 +874,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/16/2023-03-16-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -1153,7 +887,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/18/2022-10-05-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
+          <a href="/2023/03/16/2023-03-16-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/" class="post-title-link" itemprop="url">Linux下搭建Redis集群</a>
         </h2>
 
         <div class="post-meta-container">
@@ -1164,7 +898,208 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2023-02-18 14:05:27" itemprop="dateCreated datePublished" datetime="2023-02-18T14:05:27+08:00">2023-02-18</time>
+      <time title="Created: 2023-03-16 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-16T00:00:00+08:00">2023-03-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>3 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><ul>
+<li>操作系统：CentOS 7.5</li>
+<li>Redis版本：6.2.6，<a target="_blank" rel="noopener" href="https://download.redis.io/releases/redis-6.2.6.tar.gz">链接</a></li>
+</ul>
+<h3 id="搭建Redis主从集群"><a href="#搭建Redis主从集群" class="headerlink" title="搭建Redis主从集群"></a>搭建Redis主从集群</h3><ul>
+<li><p>新建<code>slave1</code>和<code>slave2</code>目录，复制两份redis配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mkdir slave1</span><br><span class="line">mkdir slave2</span><br><span class="line"></span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave1/redis.conf</span><br><span class="line">cp redis.conf.bak /usr/my_software/redis/slave2/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>修改端口号等其他配置，<code>slave2</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">vim redis.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 6389</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis_6389.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置redis.log路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/slave1/redis.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置dump.rdb路径</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/slave1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点</span></span><br><span class="line">replicaof 127.0.0.1 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点密码（如果主节点有设置密码）</span></span><br><span class="line">masterauth <span class="string">&quot;codecho@0110&quot;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>启动<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> slave1</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> slave2</span><br><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看主从节点启动情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep redis</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>连接主节点，使用<code>info</code>命令可以看到主节点现在有两个从节点<code>slave1</code>和<code>slave2</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6379 [-a 密码]</span><br><span class="line">127.0.0.1:6379&gt; info</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8B%E4%B8%BB%E8%8A%82%E7%82%B9%E6%83%85%E5%86%B5.PNG"></p>
+</li>
+<li><p>测试主节点和从节点数据同步</p>
+<blockquote>
+<p>！！！注意！！！从节点只能读数据，无法进行写数据操作</p>
+</blockquote>
+<p>再开启一个窗口，连接从节点<code>slave1</code>或<code>slave2</code>，通过<code>keys *</code>命令可以发现redis中没有数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -p 6389</span><br><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">(empty array)</span><br></pre></td></tr></table></figure>
+
+<p>在连接主节点的窗口中插入一些数据</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> today 2022-01-05</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hset student_1001 name xiaoming gender male age 22</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+<p>在连接从节点的窗口中重新查询数据，现在从节点也有数据了</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6389&gt; keys *</span><br><span class="line">1) <span class="string">&quot;student_1001&quot;</span></span><br><span class="line">2) <span class="string">&quot;today&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>在这种模式下，如果主节点挂掉，我们只能通过手动重新启动主节点，显然，这种情况是我们难以接受的，因此，需要另一种方式来实现主节点的<strong>故障转移，</strong>而哨兵模式就可以做到这一点。</p>
+</blockquote>
+<h3 id="设置哨兵模式"><a href="#设置哨兵模式" class="headerlink" title="设置哨兵模式"></a>设置哨兵模式</h3><ul>
+<li><p>新建<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>目录，复制三份sentinel配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir sentinel1</span><br><span class="line">mkdir sentinel2</span><br><span class="line">mkdir sentinel3</span><br><span class="line"></span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel1</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel2</span><br><span class="line">cp sentinel.conf /usr/my_software/redis/sentinel3</span><br></pre></td></tr></table></figure>
+
+<p>修改端口等信息，<code>sentinel2</code>、<code>sentinel3</code>设置类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> sentinel1</span><br><span class="line">vim sentinel.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置端口号</span></span><br><span class="line">port 26379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置后台运行</span></span><br><span class="line">daemonize yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置pid路径</span></span><br><span class="line">pidfile /var/run/redis-sentinel1.pid</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置sentinel日志路径</span></span><br><span class="line">logfile <span class="string">&quot;/usr/my_software/redis/sentinel1/sentinel.log&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置工作目录</span></span><br><span class="line">dir <span class="string">&quot;/usr/my_software/redis/sentinel1&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;redis-port&gt; &lt;quorum&gt;</span></span><br><span class="line"><span class="comment"># quorum表示至少有&lt;quorum&gt;个哨兵认定主节点下线（主观下线），这个主节点才真正下线了（客观下线）</span></span><br><span class="line">sentinel monitor mymaster 127.0.0.1 6379 2</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置主节点连接密码（如果主节点设置了）</span></span><br><span class="line">sentinel auth-pass mymaster codecho@0110</span><br></pre></td></tr></table></figure></li>
+<li><p>启动哨兵</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/bin</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel1/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel2/sentinel.conf</span><br><span class="line">./redis-sentinel /usr/my_software/redis/sentinel3/sentinel.conf</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>、<code>sentinel2</code>、<code>sentinel3</code>启动情况</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A8sentinel.PNG"></p>
+<p>查看<code>sentinel1</code>日志，可以看到主节点、从节点、其他哨兵节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bsentinel%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+<li><p>模拟主节点挂掉的情况</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 redis主节点pid</span><br></pre></td></tr></table></figure>
+
+<p>查看<code>sentinel1</code>的日志</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f sentinel.log</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，当主节点6379挂掉后，哨兵选举了从节点6399作为新的主节点，并且会更新其他从节点配置文件中的主节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%93%A8%E5%85%B5%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E9%80%89%E4%B8%BE%E4%B8%BB%E8%8A%82%E7%82%B9%E5%90%8E%E4%BF%AE%E6%94%B9%E4%BB%8E%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6.PNG"></p>
+</li>
+<li><p>重新启动原来的主节点6379</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>可以看到原来的主节点的配置文件中多了一行<code>replicaof 127.0.0.1 6399</code> ，表示它现在是6399的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%A2%AB%E6%9B%B4%E6%96%B0.PNG"></p>
+<p>也可以用<code>info</code>命令查看从节点信息</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Finfo%E5%91%BD%E4%BB%A4%E6%9F%A5%E7%9C%8B%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BF%A1%E6%81%AF.PNG"></p>
+</li>
+</ul>
+<h3 id="搭建Redis-Cluster"><a href="#搭建Redis-Cluster" class="headerlink" title="搭建Redis Cluster"></a>搭建Redis Cluster</h3><ul>
+<li><p>创建cluster目录，在cluster目录中创建6379、6380、6381、6382、6383、6384（每个目录代表一个端口号，可以使用其他端口号）共6个目录，表示一共有6个redis节点（3主3从）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir cluster</span><br><span class="line"><span class="built_in">cd</span> cluster</span><br><span class="line">mkdir 6379 6380 6381 6382 6383 6384</span><br></pre></td></tr></table></figure></li>
+<li><p>将redis源码目录中的redis.conf分别复制到上述6个目录下，并修改端口号等信息</p>
+<blockquote>
+<p>注意，像设置后台运行、pid路径、redis日志文件路径等配置自行参考上节部分按需修改</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 修改端口号</span></span><br><span class="line">port 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># 开启aof</span></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置以集群方式运行</span></span><br><span class="line">cluster-enabled yes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 每个集群节点的配置文件，不需要手动创建</span></span><br><span class="line">cluster-config-file nodes.conf</span><br><span class="line"></span><br><span class="line"><span class="comment"># 集群节点超时，单位：毫秒</span></span><br><span class="line">cluster-node-timeout 5000</span><br></pre></td></tr></table></figure></li>
+<li><p>启动上述6个节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 6379</span><br><span class="line">redis-server redis.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>查看节点是否启动成功</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%90%AF%E5%8A%A86%E4%B8%AA%E9%9B%86%E7%BE%A4%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+<li><p>创建真正的集群！！！</p>
+<p>对于redis-5及之后的版本，使用<code>redis-cli</code> 命令来创建集群，redis-4.x及之前的版本貌似使用的是<code>redis-trib.rb</code> ，<a target="_blank" rel="noopener" href="https://redis.io/topics/cluster-tutorial">可参考官网文档</a></p>
+<blockquote>
+<p>注意：如果要想在外部通过代码连接集群，这里的ip地址需要换成服务器的公网ip</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">redis-cli --cluster create 127.0.0.1:6379 127.0.0.1:6380 127.0.0.1:6381 127.0.0.1:6382 127.0.0.1:6383 127.0.0.1:6384 --cluster-replicas 1</span><br><span class="line"></span><br><span class="line">输入yes确认保存配置</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%88%9B%E5%BB%BA%E7%9C%9F%E6%AD%A3%E7%9A%84%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+<li><p>更简单快速地创建集群</p>
+<p>使用redis源码<code>create-cluster</code>目录下的<code>create-cluster</code>脚本创建集群</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> utils/create-cluster</span><br><span class="line">./create-cluster start</span><br><span class="line">./create-cluster create</span><br><span class="line"></span><br><span class="line">./create-cluster stop</span><br></pre></td></tr></table></figure>
+
+<p>可以看到<code>create-cluster</code>脚本中端口号是从<code>30000</code>开始的，也是创建6个节点，本质上和上面手动创建是一样的操作</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2Fcreate-cluster%E8%84%9A%E6%9C%AC.PNG"></p>
+</li>
+<li><p>连接集群并使用</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -p 6380</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，我们连接任意一个集群节点，写入的数据会根据key重定向到不同的哈希槽，同样，查询数据时也会从对应的集群节点中获取</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A8.PNG"></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4%E5%B9%B6%E4%BD%BF%E7%94%A82.PNG"></p>
+</li>
+<li><p>模拟三个主节点中的一个挂掉</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -9 6379主节点的pid</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，<code>6379</code>的从节点<code>6384</code>被选举为新的主节点</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2FRedis%20Cluster%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89%E5%90%8E%E9%80%89%E4%B8%BE%E4%BB%8E%E8%8A%82%E7%82%B9%E4%BD%9C%E4%B8%BA%E6%96%B0%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9.PNG"></p>
+<p>重新启动<code>6379</code>节点，连接集群后可以看到<code>6379</code>已经变成<code>6384</code>的从节点了</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E5%8E%9F%E6%9D%A5%E7%9A%84%E4%B8%BB%E8%8A%82%E7%82%B9%E4%B8%8A%E7%BA%BF%E5%90%8E%E5%8F%98%E6%88%90%E4%BB%8E%E8%8A%82%E7%82%B9.PNG"></p>
+</li>
+</ul>
+<h3 id="使用Redis工具连接Redis-Cluster"><a href="#使用Redis工具连接Redis-Cluster" class="headerlink" title="使用Redis工具连接Redis Cluster"></a>使用Redis工具连接Redis Cluster</h3><ul>
+<li><p>推荐使用<code>AnotherRedisDesktopManager</code>客户端工具，<a target="_blank" rel="noopener" href="https://github.com/qishibo/AnotherRedisDesktopManager">github地址</a></p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E4%BD%BF%E7%94%A8redis%E5%B7%A5%E5%85%B7%E8%BF%9E%E6%8E%A5%E9%9B%86%E7%BE%A4.PNG"></p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/03/12/2023-03-12-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/03/12/2023-03-12-CentOS%E6%B8%85%E7%90%86%E7%A3%81%E7%9B%98%E7%A9%BA%E9%97%B4/" class="post-title-link" itemprop="url">CentOS清理磁盘空间</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-03-12 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-12T00:00:00+08:00">2023-03-12</time>
     </span>
 
   
@@ -1208,6 +1143,257 @@
 </li>
 <li><p>清理</p>
 <p>经过上面分析后，可以发现占用空间较大的主要是一些日志和自己创建的目录，比如这里的<code>/usr/from_pc</code>保存了一些软件压缩包，清理该目录也不会有任何影响</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2022/12/05/2022-12-05-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/12/05/2022-12-05-GitHub%20Page%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/" class="post-title-link" itemprop="url">GitHub Page去除域名绑定后仍定向至以前的域名</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-12-05 00:00:00" itemprop="dateCreated datePublished" datetime="2022-12-05T00:00:00+08:00">2022-12-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>261</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>在使用GitHub Page搭建博客后，买了一个域名和xxx.github.io绑定，域名过期后，直接访问xxx.github.io发现每次都重定向到之前的域名，然而在更换了浏览器重新访问发现可以正常访问，因此想到可能是浏览器的缓存信息没有更新</p>
+</blockquote>
+<h4 id="解决方法：清除浏览器缓存（以Google-Chrome为例）"><a href="#解决方法：清除浏览器缓存（以Google-Chrome为例）" class="headerlink" title="解决方法：清除浏览器缓存（以Google Chrome为例）"></a>解决方法：清除浏览器缓存（以Google Chrome为例）</h4><p>打开浏览器<code>设置</code>，点击<code>隐私和安全</code>，选择<code>清除浏览数据</code>，<strong>建议通过google账号同步数据</strong>后退出，然后勾选下面的浏览记录、cookie、缓存文件、网站设置等，点击<code>清除数据</code>，重新访问GitHub Page网址，发现可以正常访问博客内容</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/GitHubPage%E5%8E%BB%E9%99%A4%E5%9F%9F%E5%90%8D%E7%BB%91%E5%AE%9A%E5%90%8E%E4%BB%8D%E5%AE%9A%E5%90%91%E8%87%B3%E4%BB%A5%E5%89%8D%E7%9A%84%E5%9F%9F%E5%90%8D/%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%85%E9%99%A4%E7%BC%93%E5%AD%98.png"></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2022/11/26/2022-11-26-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/11/26/2022-11-26-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">Spring Boot统一结果响应和异常处理</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-26T00:00:00+08:00">2022-11-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>6.9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>6 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>在开发中，我们会经常使用公司或其他平台的各种接口，每个接口的功能各不相同，但是它们的响应结果基本上是一致的，都会包含code(响应码)、msg(错误信息)、data(真实数据)这三部分，有些公司会使用Map来返回这些信息，但是需要编写重复性的代码，不太优雅，而Spring为我们提供了能够简化代码编写的功能，下面就来尝试一下吧</p>
+</blockquote>
+<h4 id="项目准备"><a href="#项目准备" class="headerlink" title="项目准备"></a>项目准备</h4><ol>
+<li><p>创建一个SpringBoot项目并引入<code>spring-boot-starter-web</code>依赖，分别创建controller和service</p>
+<ul>
+<li><p>UserController.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>UserService.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserMapper userMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMapper.getById(id);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>UserMapper.xml省略（可以直接硬编码返回，省略数据库配置）</p>
+</li>
+</ul>
+</li>
+<li><p>测试controller返回结果</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C1.png"></p>
+</li>
+</ol>
+<h4 id="统一结果响应"><a href="#统一结果响应" class="headerlink" title="统一结果响应"></a>统一结果响应</h4><ol>
+<li><p>创建<code>CommonResponse</code>和<code>CommonResponseAdvice</code></p>
+<ul>
+<li><p>CommonResponse.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponse</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应是否成功:</span></span><br><span class="line"><span class="comment">     *  true: 成功</span></span><br><span class="line"><span class="comment">     *  false: 失败</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean success;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> errCode;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String errMsg;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success, <span class="keyword">int</span> errCode, String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">        <span class="keyword">this</span>.errCode = errCode;</span><br><span class="line">        <span class="keyword">this</span>.errMsg = errMsg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应成功无返回数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:22:07</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应成功并返回数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:22:28</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> data 响应数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">true</span>, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应失败，无错误码，有错误信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 17:37:39</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errMsg 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; CommonResponse&lt;T&gt; <span class="title">fail</span><span class="params">(String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">false</span>, -<span class="number">1</span>, errMsg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应失败，有错误码和错误信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:25:27</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errCode 错误码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errMsg 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">fail</span><span class="params">(<span class="keyword">int</span> errCode, String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">false</span>, errCode, errMsg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>CommonResponseAdvice.java</p>
+<p>supports方法返回true表示响应结果需要进行重写</p>
+<p>beforeBodyWrite方法对响应结果进行封装</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponseAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>重新运行程序，再次测试controller返回结果</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C2.png"></p>
+</li>
+</ol>
+<h4 id="统一异常处理"><a href="#统一异常处理" class="headerlink" title="统一异常处理"></a>统一异常处理</h4><ol>
+<li><p>当程序出现异常时，controller返回的结果并不是我们希望获得的</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C4.png"></p>
+</li>
+<li><p>创建ResponseStatusEnum、<code>CommonException</code>和<code>CommonExceptionHandler</code></p>
+<ul>
+<li><p>ResponseStatusEnum.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">ResponseStatusEnum</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    ERROR_500(<span class="number">500</span>, <span class="string">&quot;服务器未知错误&quot;</span>),</span><br><span class="line">    ERROR_400(<span class="number">400</span>, <span class="string">&quot;错误请求&quot;</span>),</span><br><span class="line">    USER_NOT_FOUND(<span class="number">233</span>, <span class="string">&quot;用户不存在&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    ResponseStatusEnum(<span class="keyword">int</span> code, String msg) &#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMsg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>CommonException.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">6124960120588564481L</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> ResponseStatusEnum statusEnum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(<span class="keyword">int</span> code, String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(ResponseStatusEnum statusEnum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(statusEnum.getMsg());</span><br><span class="line">        <span class="keyword">this</span>.code = statusEnum.getCode();</span><br><span class="line">        <span class="keyword">this</span>.statusEnum = statusEnum;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>CommonExceptionHandler.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 处理基础异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2022-11-23 15:59:48</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex 基础异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(value = &#123;CommonException.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">exceptionHandler</span><span class="params">(CommonException ex)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 输出日志</span></span><br><span class="line">        log.error(<span class="string">&quot;CommonException: &#123;&#125;&quot;</span>, ex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> CommonResponse.fail(ex.getCode(), ex.getMessage());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...处理自定义或常见的异常</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 处理其他异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2022-11-23 16:00:05</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex 其他异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(value = &#123;Exception.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">exceptionHandler</span><span class="params">(Exception ex)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 输出日志</span></span><br><span class="line">        log.error(<span class="string">&quot;Exception: &#123;&#125;&quot;</span>, ex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> CommonResponse.fail(ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改<code>CommonResponseAdvice</code></p>
+<ul>
+<li><p>CommonResponseAdvice.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponseAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String COMMON_RESPONSE = <span class="string">&quot;CommonResponse&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 配置统一异常处理或controller返回类型为CommonResponse，直接返回，不需要再次封装</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(body) &amp;&amp; COMMON_RESPONSE.equals(body.getClass().getSimpleName())) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改UserController的getById方法</p>
+<ul>
+<li><p>UserController.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(value = &quot;/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">    UserDO user = userService.getById(id);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == user) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CommonException(ResponseStatusEnum.USER_NOT_FOUND);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>重新运行程序，测试controller返回结果</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C5.png"></p>
+</li>
+</ol>
+<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><blockquote>
+<p>有时候不是所有的接口都必须返回统一的格式，某些情况下我们想要自定义controller的返回，但是配置统一结果响应后，它是对注解<code>@RestControllerAdvice</code>的属性<code>basePackages</code>的包和其子包生效的。如果想要在某些使其不生效，可以考虑使用自定义注解和重写<code>ResponseBodyAdvice</code>接口的<code>supports</code>方法来实现</p>
+</blockquote>
+<ol>
+<li><p>创建自定义注解<code>@MyResponse</code></p>
+<ul>
+<li><p>MyResponse.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyResponse &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改<code>CommonResponseAdvice</code>的<code>supports</code>方法</p>
+<ul>
+<li><p>CommonResponseAdvice.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果方法上有@MyResponse注解，返回false，不需要设置统一响应结果</span></span><br><span class="line">    <span class="keyword">if</span> (returnType.hasMethodAnnotation(MyResponse.class)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>在<code>UserController</code>中创建一个带有<code>@MyResponse</code>注解的请求</p>
+<ul>
+<li><p>UserController.java</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MyResponse</span></span><br><span class="line"><span class="meta">@GetMapping(value = &quot;/mock&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UserDO <span class="title">mockUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UserDO user = <span class="keyword">new</span> UserDO();</span><br><span class="line">    user.setUsername(<span class="string">&quot;july&quot;</span>);</span><br><span class="line">    user.setMobilePhone(<span class="string">&quot;18756989090&quot;</span>);</span><br><span class="line">    user.setUserState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>重新运行程序，测试新的请求</p>
+<p>可以看到，添加自定义注解后，统一结果响应未生效</p>
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C6.png"></p>
 </li>
 </ol>
 
