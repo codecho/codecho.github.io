@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"transient.icu","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"codecho.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="环境准备 操作系统：CentOS 7.5 Redis版本：6.2.6，链接  搭建Redis主从集群 新建slave1和slave2目录，复制两份redis配置文件 12345mkdir slave1mkdir slave2cp redis.conf.bak &#x2F;usr&#x2F;my_software&#x2F;redis&#x2F;slave1&#x2F;redis.confcp redis.conf.bak &#x2F;usr&#x2F;my_soft">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux下搭建Redis集群">
-<meta property="og:url" content="https://transient.icu/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:url" content="https://codecho.github.io/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/index.html">
 <meta property="og:site_name" content="夏日的蝉鸣">
 <meta property="og:description" content="环境准备 操作系统：CentOS 7.5 Redis版本：6.2.6，链接  搭建Redis主从集群 新建slave1和slave2目录，复制两份redis配置文件 12345mkdir slave1mkdir slave2cp redis.conf.bak &#x2F;usr&#x2F;my_software&#x2F;redis&#x2F;slave1&#x2F;redis.confcp redis.conf.bak &#x2F;usr&#x2F;my_soft">
 <meta property="og:locale" content="en_US">
@@ -49,11 +49,11 @@
 <meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4%2F%E6%9F%A5%E7%9C%8Bredis%E4%B8%BB%E4%BB%8E%E8%8A%82%E7%82%B9%E5%90%AF%E5%8A%A8%E6%83%85%E5%86%B5.PNG">
 
 
-<link rel="canonical" href="https://transient.icu/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
+<link rel="canonical" href="https://codecho.github.io/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://transient.icu/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/","path":"2023/02/18/2022-01-12-Linux下搭建Redis集群/","title":"Linux下搭建Redis集群"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://codecho.github.io/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/","path":"2023/02/18/2022-01-12-Linux下搭建Redis集群/","title":"Linux下搭建Redis集群"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Linux下搭建Redis集群 | 夏日的蝉鸣</title>
@@ -213,7 +213,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
+    <link itemprop="mainEntityOfPage" href="https://codecho.github.io/2023/02/18/2022-01-12-Linux%E4%B8%8B%E6%90%AD%E5%BB%BARedis%E9%9B%86%E7%BE%A4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -401,13 +401,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2023/02/18/2022-01-30-arthas%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8/" rel="prev" title="arthas诊断工具简单使用">
-                  <i class="fa fa-chevron-left"></i> arthas诊断工具简单使用
+                <a href="/2023/02/18/2020-11-25-Java%20%E5%BA%8F%E5%88%97%E5%8C%96%E4%B8%8E%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="prev" title="Java序列化与反序列化">
+                  <i class="fa fa-chevron-left"></i> Java序列化与反序列化
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/02/18/2022-01-30-Centos7%E5%AE%89%E8%A3%85Redis/" rel="next" title="Centos安装Redis">
-                  Centos安装Redis <i class="fa fa-chevron-right"></i>
+                <a href="/2023/02/18/2020-11-15-Mybatis%E4%B8%80%E7%9F%A5%E5%8D%8A%E8%A7%A3/" rel="next" title="Mybatis一知半解">
+                  Mybatis一知半解 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

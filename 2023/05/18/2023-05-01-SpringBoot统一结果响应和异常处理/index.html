@@ -18,11 +18,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"transient.icu","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"codecho.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"manual","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="在开发中，我们会经常使用公司或其他平台的各种接口，每个接口的功能各不相同，但是它们的响应结果基本上是一致的，都会包含code(响应码)、msg(错误信息)、data(真实数据)这三部分，有些公司会使用Map来返回这些信息，但是需要编写重复性的代码，不太优雅，而Spring为我们提供了能够简化代码编写的功能，下面就来尝试一下吧  项目准备 创建一个SpringBoot项目并引入spring-boo">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Spring Boot统一结果响应和异常处理">
-<meta property="og:url" content="https://transient.icu/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
+<meta property="og:url" content="https://codecho.github.io/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="夏日的蝉鸣">
 <meta property="og:description" content="在开发中，我们会经常使用公司或其他平台的各种接口，每个接口的功能各不相同，但是它们的响应结果基本上是一致的，都会包含code(响应码)、msg(错误信息)、data(真实数据)这三部分，有些公司会使用Map来返回这些信息，但是需要编写重复性的代码，不太优雅，而Spring为我们提供了能够简化代码编写的功能，下面就来尝试一下吧  项目准备 创建一个SpringBoot项目并引入spring-boo">
 <meta property="og:locale" content="en_US">
@@ -38,11 +38,11 @@
 <meta name="twitter:image" content="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C1.png">
 
 
-<link rel="canonical" href="https://transient.icu/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+<link rel="canonical" href="https://codecho.github.io/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://transient.icu/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/","path":"2023/05/18/2023-05-01-SpringBoot统一结果响应和异常处理/","title":"Spring Boot统一结果响应和异常处理"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"https://codecho.github.io/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/","path":"2023/05/18/2023-05-01-SpringBoot统一结果响应和异常处理/","title":"Spring Boot统一结果响应和异常处理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>Spring Boot统一结果响应和异常处理 | 夏日的蝉鸣</title>
@@ -202,7 +202,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
+    <link itemprop="mainEntityOfPage" href="https://codecho.github.io/2023/05/18/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
