@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -181,6 +181,105 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/11/26/2023-11-26-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/11/26/2023-11-26-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/" class="post-title-link" itemprop="url">CentOS修改ssh默认端口</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-26T00:00:00+08:00">2023-11-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>452</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>1 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。</p>
+</blockquote>
+<h4 id="查看服务器是否被暴力登录"><a href="#查看服务器是否被暴力登录" class="headerlink" title="查看服务器是否被暴力登录"></a>查看服务器是否被暴力登录</h4><ul>
+<li><p>查看<code>/var/log/secure</code>日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n 100 /var/<span class="built_in">log</span>/secure | grep <span class="string">&quot;Failed password&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
+</li>
+</ul>
+<h4 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h4><ul>
+<li><p>修改sshd配置文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加另一个端口号 1234</span></span><br><span class="line">Port 22</span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
+<li><p>重启sshd服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure></li>
+<li><p>修改防火墙或安全组配置，增加新端口</p>
+</li>
+<li><p>使用新端口连接服务器，修改sshd_config配置文件，将原端口注释，保留新端口</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port 22</span></span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="屏蔽尝试非法登录的ip"><a href="#屏蔽尝试非法登录的ip" class="headerlink" title="屏蔽尝试非法登录的ip"></a>屏蔽尝试非法登录的ip</h4><p>​    通过shell脚本和定时任务，将ip加入屏蔽名单，详细参考<a target="_blank" rel="noopener" href="https://codecho.github.io/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">这里</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -1246,174 +1345,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2022/11/26/2022-11-26-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/11/26/2022-11-26-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="post-title-link" itemprop="url">Spring Boot统一结果响应和异常处理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2022-11-26T00:00:00+08:00">2022-11-26</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>6.9k</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>6 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>在开发中，我们会经常使用公司或其他平台的各种接口，每个接口的功能各不相同，但是它们的响应结果基本上是一致的，都会包含code(响应码)、msg(错误信息)、data(真实数据)这三部分，有些公司会使用Map来返回这些信息，但是需要编写重复性的代码，不太优雅，而Spring为我们提供了能够简化代码编写的功能，下面就来尝试一下吧</p>
-</blockquote>
-<h4 id="项目准备"><a href="#项目准备" class="headerlink" title="项目准备"></a>项目准备</h4><ol>
-<li><p>创建一个SpringBoot项目并引入<code>spring-boot-starter-web</code>依赖，分别创建controller和service</p>
-<ul>
-<li><p>UserController.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping(value = &quot;/user&quot;)</span></span><br><span class="line"><span class="meta">@RestController</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserController</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserService userService;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@GetMapping(value = &quot;/id/&#123;id&#125;&quot;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">        UserDO user = userService.getById(id);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> user;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>UserService.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> UserMapper userMapper;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(Long id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMapper.getById(id);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>UserMapper.xml省略（可以直接硬编码返回，省略数据库配置）</p>
-</li>
-</ul>
-</li>
-<li><p>测试controller返回结果</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C1.png"></p>
-</li>
-</ol>
-<h4 id="统一结果响应"><a href="#统一结果响应" class="headerlink" title="统一结果响应"></a>统一结果响应</h4><ol>
-<li><p>创建<code>CommonResponse</code>和<code>CommonResponseAdvice</code></p>
-<ul>
-<li><p>CommonResponse.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Getter</span></span><br><span class="line"><span class="meta">@Setter</span></span><br><span class="line"><span class="meta">@ToString</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponse</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应是否成功:</span></span><br><span class="line"><span class="comment">     *  true: 成功</span></span><br><span class="line"><span class="comment">     *  false: 失败</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> Boolean success;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误码</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> errCode;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> String errMsg;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 响应数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> T data;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success, T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">        <span class="keyword">this</span>.data = data;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonResponse</span><span class="params">(Boolean success, <span class="keyword">int</span> errCode, String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.success = success;</span><br><span class="line">        <span class="keyword">this</span>.errCode = errCode;</span><br><span class="line">        <span class="keyword">this</span>.errMsg = errMsg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应成功无返回数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:22:07</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">success</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应成功并返回数据</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:22:28</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> data 响应数据</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">success</span><span class="params">(T data)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">true</span>, data);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应失败，无错误码，有错误信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 17:37:39</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errMsg 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; CommonResponse&lt;T&gt; <span class="title">fail</span><span class="params">(String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">false</span>, -<span class="number">1</span>, errMsg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     *</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 响应失败，有错误码和错误信息</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2021-12-05 15:25:27</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errCode 错误码</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> errMsg 错误信息</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function">CommonResponse&lt;T&gt; <span class="title">fail</span><span class="params">(<span class="keyword">int</span> errCode, String errMsg)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> CommonResponse&lt;&gt;(<span class="keyword">false</span>, errCode, errMsg);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>CommonResponseAdvice.java</p>
-<p>supports方法返回true表示响应结果需要进行重写</p>
-<p>beforeBodyWrite方法对响应结果进行封装</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponseAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>重新运行程序，再次测试controller返回结果</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C2.png"></p>
-</li>
-</ol>
-<h4 id="统一异常处理"><a href="#统一异常处理" class="headerlink" title="统一异常处理"></a>统一异常处理</h4><ol>
-<li><p>当程序出现异常时，controller返回的结果并不是我们希望获得的</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C4.png"></p>
-</li>
-<li><p>创建ResponseStatusEnum、<code>CommonException</code>和<code>CommonExceptionHandler</code></p>
-<ul>
-<li><p>ResponseStatusEnum.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">ResponseStatusEnum</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 错误</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    ERROR_500(<span class="number">500</span>, <span class="string">&quot;服务器未知错误&quot;</span>),</span><br><span class="line">    ERROR_400(<span class="number">400</span>, <span class="string">&quot;错误请求&quot;</span>),</span><br><span class="line">    USER_NOT_FOUND(<span class="number">233</span>, <span class="string">&quot;用户不存在&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String msg;</span><br><span class="line"></span><br><span class="line">    ResponseStatusEnum(<span class="keyword">int</span> code, String msg) &#123;</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">        <span class="keyword">this</span>.msg = msg;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getMsg</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> msg;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>CommonException.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonException</span> <span class="keyword">extends</span> <span class="title">RuntimeException</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = <span class="number">6124960120588564481L</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> code;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Getter</span></span><br><span class="line">    <span class="keyword">private</span> ResponseStatusEnum statusEnum;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(<span class="keyword">int</span> code, String message)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(message);</span><br><span class="line">        <span class="keyword">this</span>.code = code;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">CommonException</span><span class="params">(ResponseStatusEnum statusEnum)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>(statusEnum.getMsg());</span><br><span class="line">        <span class="keyword">this</span>.code = statusEnum.getCode();</span><br><span class="line">        <span class="keyword">this</span>.statusEnum = statusEnum;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>CommonExceptionHandler.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonExceptionHandler</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 处理基础异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2022-11-23 15:59:48</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex 基础异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(value = &#123;CommonException.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">exceptionHandler</span><span class="params">(CommonException ex)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 输出日志</span></span><br><span class="line">        log.error(<span class="string">&quot;CommonException: &#123;&#125;&quot;</span>, ex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> CommonResponse.fail(ex.getCode(), ex.getMessage());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ...处理自定义或常见的异常</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@desc</span> 处理其他异常</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@author</span> codecho</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@date</span> 2022-11-23 16:00:05</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> ex 其他异常</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@ExceptionHandler(value = &#123;Exception.class&#125;)</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> CommonResponse <span class="title">exceptionHandler</span><span class="params">(Exception ex)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 输出日志</span></span><br><span class="line">        log.error(<span class="string">&quot;Exception: &#123;&#125;&quot;</span>, ex);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> CommonResponse.fail(ex.getMessage());</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改<code>CommonResponseAdvice</code></p>
-<ul>
-<li><p>CommonResponseAdvice.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RestControllerAdvice(basePackages = &#123;&quot;com.codecho.base.controller&quot;&#125;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CommonResponseAdvice</span> <span class="keyword">implements</span> <span class="title">ResponseBodyAdvice</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> String COMMON_RESPONSE = <span class="string">&quot;CommonResponse&quot;</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">beforeBodyWrite</span><span class="params">(Object body, MethodParameter returnType, MediaType selectedContentType, Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 配置统一异常处理或controller返回类型为CommonResponse，直接返回，不需要再次封装</span></span><br><span class="line">        <span class="keyword">if</span> (Objects.nonNull(body) &amp;&amp; COMMON_RESPONSE.equals(body.getClass().getSimpleName())) &#123;</span><br><span class="line">            <span class="keyword">return</span> body;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> CommonResponse.success(body);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改UserController的getById方法</p>
-<ul>
-<li><p>UserController.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@GetMapping(value = &quot;/&#123;id&#125;&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UserDO <span class="title">getById</span><span class="params">(<span class="meta">@PathVariable(value = &quot;id&quot;)</span> Long id)</span> </span>&#123;</span><br><span class="line">    UserDO user = userService.getById(id);</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">null</span> == user) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> CommonException(ResponseStatusEnum.USER_NOT_FOUND);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>重新运行程序，测试controller返回结果</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C5.png"></p>
-</li>
-</ol>
-<h4 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h4><blockquote>
-<p>有时候不是所有的接口都必须返回统一的格式，某些情况下我们想要自定义controller的返回，但是配置统一结果响应后，它是对注解<code>@RestControllerAdvice</code>的属性<code>basePackages</code>的包和其子包生效的。如果想要在某些使其不生效，可以考虑使用自定义注解和重写<code>ResponseBodyAdvice</code>接口的<code>supports</code>方法来实现</p>
-</blockquote>
-<ol>
-<li><p>创建自定义注解<code>@MyResponse</code></p>
-<ul>
-<li><p>MyResponse.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(ElementType.METHOD)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyResponse &#123;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>修改<code>CommonResponseAdvice</code>的<code>supports</code>方法</p>
-<ul>
-<li><p>CommonResponseAdvice.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">supports</span><span class="params">(MethodParameter returnType, Class converterType)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 如果方法上有@MyResponse注解，返回false，不需要设置统一响应结果</span></span><br><span class="line">    <span class="keyword">if</span> (returnType.hasMethodAnnotation(MyResponse.class)) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>在<code>UserController</code>中创建一个带有<code>@MyResponse</code>注解的请求</p>
-<ul>
-<li><p>UserController.java</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MyResponse</span></span><br><span class="line"><span class="meta">@GetMapping(value = &quot;/mock&quot;)</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> UserDO <span class="title">mockUser</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    UserDO user = <span class="keyword">new</span> UserDO();</span><br><span class="line">    user.setUsername(<span class="string">&quot;july&quot;</span>);</span><br><span class="line">    user.setMobilePhone(<span class="string">&quot;18756989090&quot;</span>);</span><br><span class="line">    user.setUserState(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> user;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>重新运行程序，测试新的请求</p>
-<p>可以看到，添加自定义注解后，统一结果响应未生效</p>
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/2023-05-01-SpringBoot%E7%BB%9F%E4%B8%80%E7%BB%93%E6%9E%9C%E5%93%8D%E5%BA%94%E5%92%8C%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/springboot%E7%BB%9F%E4%B8%80%E8%BF%94%E5%9B%9E%E7%BB%93%E6%9E%9C6.png"></p>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="Previous page"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1439,14 +1370,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">147k</span>
+    <span title="Symbols count total">156k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">2:13</span>
+    <span title="Reading time total">2:22</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>

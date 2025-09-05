@@ -148,7 +148,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -376,6 +376,174 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 解锁逻辑：</span></span><br><span class="line"><span class="comment">// 1.如果redis中不存在指定的key和field，返回nil，表示解锁成功（锁已经不存在了）</span></span><br><span class="line"><span class="comment">// 2.如果存在，将field对应的value值减一，如果减一后的value值大于0，使用pexpire指令重新设置过期时间（单位毫秒），即重入次数减一，返回0</span></span><br><span class="line"><span class="comment">// 3.如果减一后的value值小于或等于0，删除指定的key，发布解锁信息到指定的channel，订阅了该channel并设置了监听事件的客户端会执行回调和释放信号量，唤醒等待的线程重新获取锁（这部分内容下次我会详细写一篇文章进行分析），返回1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">protected</span> RFuture&lt;Boolean&gt; <span class="title">unlockInnerAsync</span><span class="params">(<span class="keyword">long</span> threadId)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> evalWriteAsync(getRawName(), LongCodec.INSTANCE, RedisCommands.EVAL_BOOLEAN,</span><br><span class="line">                          <span class="string">&quot;if (redis.call(&#x27;hexists&#x27;, KEYS[1], ARGV[3]) == 0) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil;&quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;local counter = redis.call(&#x27;hincrby&#x27;, KEYS[1], ARGV[3], -1); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;if (counter &gt; 0) then &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;pexpire&#x27;, KEYS[1], ARGV[2]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 0; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;else &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;del&#x27;, KEYS[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;redis.call(&#x27;publish&#x27;, KEYS[2], ARGV[1]); &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return 1; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;end; &quot;</span> +</span><br><span class="line">                          <span class="string">&quot;return nil;&quot;</span>,</span><br><span class="line">                          Arrays.asList(getRawName(), getChannelName()), LockPubSub.UNLOCK_MESSAGE, internalLockLeaseTime, getLockName(threadId));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>​    从零开始使用Redis作为分布式锁会遇到各种各样的问题，通过一步步的分析，我们慢慢摸索到了分布式锁的雏形，而Redlock算法就是为了解决这些问题而提出的。但是它仍然不是完美的，比如过渡依赖时钟、网络、设计过重等，具体可以网上搜索Redis作者<strong>Antirez</strong>和分布式系统专家<strong>Martin</strong>的论战。在实际使用时，应该根据我们的业务场景和需求来决定采用何种解决方案。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://transient.icu/2025/05/26/2025-05-26-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3ThreadLocal/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="codecho">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="夏日的蝉鸣">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2025/05/26/2025-05-26-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3ThreadLocal/" class="post-title-link" itemprop="url">深入理解ThreadLocal</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2025-05-26 00:00:00" itemprop="dateCreated datePublished" datetime="2025-05-26T00:00:00+08:00">2025-05-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="Symbols count in article">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">Symbols count in article: </span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="Reading time">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">Reading time &asymp;</span>
+      <span>8 mins.</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>什么是ThreadLocal？</p>
+</blockquote>
+<p><code>ThreadLocal</code>是<code>java.lang</code>包下的一个线程工具类，它可以保存每个线程的专属变量，实现不同线程之间的数据隔离，从而避免多线程环境下的资源竞争和线程安全问题。</p>
+<p>一、<code>ThreadLocal</code>能做什么？有哪些使用场景？</p>
+<ol>
+<li><p>保存当前请求下的用户信息，在后续调用链路中直接获取，而不是通过方法入参层层传递</p>
+<ul>
+<li><p>创建<code>UserContext</code>类，使用<code>ThreadLocal</code>保存用户信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">UserContext</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;UserInfo&gt; USER_HOLDER = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">setCurrentUser</span><span class="params">(UserInfo userInfo)</span> </span>&#123;</span><br><span class="line">        USER_HOLDER.set(userInfo);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Long <span class="title">getCurrentUserId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> USER_HOLDER.get().getId();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">getCurrentUserOpenId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> USER_HOLDER.get().getOpenid();</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        USER_HOLDER.remove();</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>自定义拦截器重写<code>preHandle()</code>方法，在请求到达controller前设置用户信息</p>
+<p>==注意：==在<code>afterCompletion</code>方法中进行清理操作，防止<code>ThreadLocal</code>内存泄漏</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="meta">@Slf4j</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TokenInterceptor</span> <span class="keyword">implements</span> <span class="title">HandlerInterceptor</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> JwtUtil jwtUtil;</span><br><span class="line">	</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">preHandle</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 登录接口放行</span></span><br><span class="line">        <span class="keyword">if</span> (request.getRequestURI().contains(<span class="string">&quot;/auth/login&quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 验证请求头token</span></span><br><span class="line">        String bearerToken = getTokenFromHeader(request);</span><br><span class="line">        <span class="keyword">if</span> (Strings.isNullOrEmpty(bearerToken) || jwtUtil.verifyToken(bearerToken)) &#123;</span><br><span class="line">            response.setStatus(HttpStatus.UNAUTHORIZED.value());</span><br><span class="line">            response.setContentType(<span class="string">&quot;application/json;charset=UTF-8&quot;</span>);</span><br><span class="line">            response.getWriter().write(<span class="string">&quot;&#123;\&quot;code\&quot;:401,\&quot;message\&quot;:\&quot;token无效或已过期\&quot;&#125;&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 从token中获取用户信息</span></span><br><span class="line">        UserInfo userInfo = jwtUtil.getUserInfo(bearerToken);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 将用户信息保存到ThreadLocal中</span></span><br><span class="line">        UserContext.setCurrentUser(userInfo);</span><br><span class="line">        </span><br><span class="line">        log.info(<span class="string">&quot;设置用户信息成功, userId: &#123;&#125;, openid: &#123;&#125;&quot;</span>, UserContext.getCurrentUserId(), UserContext.getCurrentUserOpenId());</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">afterCompletion</span><span class="params">(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="comment">// 及时清理ThreadLocal，防止内存泄漏</span></span><br><span class="line">        UserContext.remove();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getTokenFromHeader</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">        String bearerHeader = request.getHeader(<span class="string">&quot;Authorization&quot;</span>);</span><br><span class="line">        <span class="keyword">if</span> (!Strings.isNullOrEmpty(bearerHeader) &amp;&amp; bearerHeader.startsWith(<span class="string">&quot;Bearer &quot;</span>)) &#123;</span><br><span class="line">            <span class="keyword">return</span> bearerHeader.substring(<span class="number">7</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>在业务层使用<code>UserContext</code>获取当前请求下的用户信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> UserStats <span class="title">getUserStats</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	Long userId = UserContext.getCurrentUserId();</span><br><span class="line">    UserInfo userInfo = UserContext.getCurrentUser();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>Spring事务管理</p>
+<p><code>TransactionSynchronizationManager</code>内部大量使用<code>ThreadLocal</code>保存事务相关信息</p>
+<p><code>AbstractPlatformTransactionManager</code> 、<code>DataSourceTransactionManager</code> 、<code>JdbcTemplate</code> 等类间接使用<code>ThreadLocal</code>管理事务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">TransactionSynchronizationManager</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Map&lt;Object, Object&gt;&gt; resources =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Transactional resources&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Set&lt;TransactionSynchronization&gt;&gt; synchronizations =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Transaction synchronizations&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;String&gt; currentTransactionName =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Current transaction name&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Boolean&gt; currentTransactionReadOnly =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Current transaction read-only status&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Integer&gt; currentTransactionIsolationLevel =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Current transaction isolation level&quot;</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;Boolean&gt; actualTransactionActive =</span><br><span class="line">			<span class="keyword">new</span> NamedThreadLocal&lt;&gt;(<span class="string">&quot;Actual transaction active&quot;</span>);</span><br><span class="line">    ...</span><br><span class="line">&#125;        </span><br></pre></td></tr></table></figure></li>
+<li><p>保存非线程安全的类对象</p>
+<p>当然能使用线程安全的类更好，如<code>DateTimeFormatter</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DateUtil</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;SimpleDateFormat&gt; dateFormatThreadLocal = </span><br><span class="line">        ThreadLocal.withInitial(() -&gt; <span class="keyword">new</span> SimpleDateFormat(<span class="string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>));</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">format</span><span class="params">(Date date)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateFormatThreadLocal.get().format(date);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Date <span class="title">parse</span><span class="params">(String dateStr)</span> <span class="keyword">throws</span> ParseException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> dateFormatThreadLocal.get().parse(dateStr);</span><br><span class="line">    &#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>日志跟踪</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TraceContext</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;String&gt; traceIdHolder = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(String traceId)</span> </span>&#123;</span><br><span class="line">        traceIdHolder.set(traceId);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> traceIdHolder.get();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        traceIdHolder.remove();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>二、<code>ThreadLocal</code>实现原理是什么？</p>
+<ol>
+<li><p><span id="threadLocals"><code>Thread</code>类中的两个成员变量</span></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ThreadLocalMap 才是实际保存线程独立变量副本的地方</span></span><br><span class="line">ThreadLocal.ThreadLocalMap threadLocals = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 同上，和InheritableThreadLocal 有关，下面会提到</span></span><br><span class="line">ThreadLocal.ThreadLocalMap inheritableThreadLocals = <span class="keyword">null</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>ThreadLocalMap</code></p>
+<p><code>ThreadLocalMap</code>是<code>ThreadLocal</code>中的静态内部类，它是真正保存线程独立变量副本的数据结构</p>
+<p>它有点类似<code>HashMap</code>，底层使用数组存储，Key是当前<code>ThreadLocal</code>对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadLocalMap</span> </span>&#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">        <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">        Object value;</span><br><span class="line">		</span><br><span class="line">        Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">            <span class="keyword">super</span>(k);</span><br><span class="line">            value = v;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INITIAL_CAPACITY = <span class="number">16</span>;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">private</span> Entry[] table;</span><br><span class="line">    </span><br><span class="line">    ThreadLocalMap(ThreadLocal&lt;?&gt; firstKey, Object firstValue) &#123;</span><br><span class="line">        table = <span class="keyword">new</span> Entry[INITIAL_CAPACITY];</span><br><span class="line">        <span class="keyword">int</span> i = firstKey.threadLocalHashCode &amp; (INITIAL_CAPACITY - <span class="number">1</span>);</span><br><span class="line">        table[i] = <span class="keyword">new</span> Entry(firstKey, firstValue);</span><br><span class="line">        size = <span class="number">1</span>;</span><br><span class="line">        setThreshold(INITIAL_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    ...</span><br><span class="line">&#125;   </span><br></pre></td></tr></table></figure></li>
+<li><p><code>ThreadLocal</code></p>
+<p>可以看到，<code>ThreadLocal</code>实际上充当了“管家”角色，它对外提供了<code>ThreadLocalMap</code>的访问操作</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">get</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        ThreadLocalMap.Entry e = map.getEntry(<span class="keyword">this</span>);</span><br><span class="line">        <span class="keyword">if</span> (e != <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">            T result = (T)e.value;</span><br><span class="line">            <span class="keyword">return</span> result;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> setInitialValue();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">set</span><span class="params">(T value)</span> </span>&#123;</span><br><span class="line">    Thread t = Thread.currentThread();</span><br><span class="line">    ThreadLocalMap map = getMap(t);</span><br><span class="line">    <span class="keyword">if</span> (map != <span class="keyword">null</span>) &#123;</span><br><span class="line">        map.set(<span class="keyword">this</span>, value);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        createMap(t, value);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> t.threadLocals;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>示例</p>
+<p>对于保存当前请求对应的用户信息场景，请求1和请求2在自定义拦截器中向各自线程的<code>ThreadLocalMap</code>中添加了{USER_HOLDER:userInfo1}、{USER_HOLDER:userInfo2}的数据</p>
+<p>每个请求后续调用链路中使用<code>USER_HOLDER.get()</code>方法获取用户信息时，当前线程先获取到自己的<code>ThreadLocalMap</code>，然后根据KEY(即USER_HOLDER对象)获取相应的VALUE(即userInfo1、userInfo2对象)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> ThreadLocal&lt;UserInfo&gt; USER_HOLDER = <span class="keyword">new</span> ThreadLocal&lt;&gt;();</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p>三、<code>InheritableThreadLocal</code>是什么？有什么作用？</p>
+<ol>
+<li><p><code>ThreadLocal</code>的局限性</p>
+<p><code>ThreadLocalMap</code>是线程私有的，在子线程中无法获取父线程中的<code>ThreadLocal</code>信息，只能通过传参方式获取；而<code>InheritableThreadLocal</code>就解决了这个问题，子线程可以直接通过<code>get()</code>方法获取到父线程中的<code>ThreadLocal</code>信息</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 主线程设置用户信息</span></span><br><span class="line">userContext.set(<span class="string">&quot;AdminUser&quot;</span>);</span><br><span class="line">System.out.println(<span class="string">&quot;主线程用户: &quot;</span> + userContext.get()); <span class="comment">// 输出: AdminUser</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建子线程处理任务</span></span><br><span class="line"><span class="keyword">new</span> Thread(() -&gt; &#123;</span><br><span class="line">    System.out.println(<span class="string">&quot;子线程用户: &quot;</span> + userContext.get()); <span class="comment">// 输出: null</span></span><br><span class="line">    <span class="comment">// 子线程无法获取父线程的上下文信息</span></span><br><span class="line">&#125;).start();</span><br></pre></td></tr></table></figure></li>
+<li><p><code>InheritableThreadLocal</code>从字面看就是”可继承的<code>ThreadLocal</code>“，实际上它也确实是<code>ThreadLocal</code>的子类</p>
+<p>还记得<a href="#threadLocals">这里</a>吗？下面的<code>t.inheritableThreadLocals</code>就是<code>Thread</code>类中定义的<code>ThreadLocal.ThreadLocalMap inheritableThreadLocals = null;</code></p>
+<p>另外，<code>InheritableThreadLocal</code>重写了<code>getMap()</code>和<code>createMap()</code>方法，当使用<code>InheritableThreadLocal</code>时，会将信息保存到<code>Thread</code>类的<code>inheritableThreadLocals</code>变量中</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InheritableThreadLocal</span>&lt;<span class="title">T</span>&gt; <span class="keyword">extends</span> <span class="title">ThreadLocal</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">InheritableThreadLocal</span><span class="params">()</span> </span>&#123;&#125;</span><br><span class="line">	</span><br><span class="line">    <span class="function">ThreadLocalMap <span class="title">getMap</span><span class="params">(Thread t)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> t.inheritableThreadLocals;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">createMap</span><span class="params">(Thread t, T firstValue)</span> </span>&#123;</span><br><span class="line">        t.inheritableThreadLocals = <span class="keyword">new</span> ThreadLocalMap(<span class="keyword">this</span>, firstValue);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>InheritableThreadLocal</code>是如何获取到父线程的<code>ThreadLocal</code>信息的？</p>
+<ul>
+<li><p>JDK8及以前，创建线程时，构造方法会调用下面的<code>init()</code>方法，该方法中会判断父线程中<code>inheritableThreadLocals</code>属性是否为null，如果不为null，则将父线程的<code>inheritableThreadLocals</code>拷贝一份给自己</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="params"><span class="function">                  <span class="keyword">long</span> stackSize)</span> </span>&#123;</span><br><span class="line">    init(g, target, name, stackSize, <span class="keyword">null</span>, <span class="keyword">true</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="params"><span class="function">                  <span class="keyword">long</span> stackSize, AccessControlContext acc,</span></span></span><br><span class="line"><span class="params"><span class="function">                  <span class="keyword">boolean</span> inheritThreadLocals)</span> </span>&#123;</span><br><span class="line">	...</span><br><span class="line">    <span class="keyword">if</span> (inheritThreadLocals &amp;&amp; parent.inheritableThreadLocals != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">this</span>.inheritableThreadLocals =</span><br><span class="line">        ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>JDK9及以后，相关代码直接放到构造方法中了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">Thread</span><span class="params">(ThreadGroup g, Runnable target, String name,</span></span></span><br><span class="line"><span class="params"><span class="function">               <span class="keyword">long</span> stackSize, AccessControlContext acc,</span></span></span><br><span class="line"><span class="params"><span class="function">               <span class="keyword">boolean</span> inheritThreadLocals)</span> </span>&#123;</span><br><span class="line">	...	</span><br><span class="line">    <span class="keyword">if</span> (inheritThreadLocals &amp;&amp; parent.inheritableThreadLocals != <span class="keyword">null</span>)</span><br><span class="line">        <span class="keyword">this</span>.inheritableThreadLocals =</span><br><span class="line">        ThreadLocal.createInheritedMap(parent.inheritableThreadLocals);</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<p>四、<code>ThreadLocal</code>产生内存泄露的原因？</p>
+<ol>
+<li><p><code>ThreadLocalMap</code>的内部结构</p>
+<ul>
+<li><code>ThreadLocalMap</code>底层是一个Entry数组</li>
+<li>Entry的key是<code>ThreadLocal</code>类型，它是一个弱引用(==弱引用对象如果没有强引用就会被GC回收==)，而value是一个强引用(Object对象)</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Entry</span> <span class="keyword">extends</span> <span class="title">WeakReference</span>&lt;<span class="title">ThreadLocal</span>&lt;?&gt;&gt; </span>&#123;</span><br><span class="line">    <span class="comment">/** The value associated with this ThreadLocal. */</span></span><br><span class="line">    Object value;</span><br><span class="line"></span><br><span class="line">    Entry(ThreadLocal&lt;?&gt; k, Object v) &#123;</span><br><span class="line">        <span class="keyword">super</span>(k);</span><br><span class="line">        value = v;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> Entry[] table;</span><br></pre></td></tr></table></figure></li>
+<li><p>当Entry的key即<code>ThreadLocal</code>对象没有强引用指向它后，下次GC回收后Entry中的key变为null，而对应的value由于是强引用无法被GC回收，因此仍然存在于<code>ThreadLocalMap</code>中，如果线程一直存活，那么<code>ThreadLocalMap</code>也会一直存在，因此key为null的Entry无法被GC回收，造成内存泄漏</p>
+</li>
+<li><p>内存泄漏的条件</p>
+<ul>
+<li><code>ThreadLocal</code>对象被回收(局部变量、匿名对象、手动置空)</li>
+<li>没有显示调用remove()方法清理</li>
+<li>线程持续存在(如线程池)，<code>ThreadLocalMap</code>一直存活</li>
+</ul>
+</li>
+</ol>
+<p>五、使用<code>ThreadLocal</code>时要注意哪些点？</p>
+<ol>
+<li><p>注意线程池使用场景</p>
+<p>由于线程池中的线程是复用的，如果线程A使用完<code>ThreadLocal</code>后没有清理，后续线程A继续执行任务会遇到“脏数据”</p>
+</li>
+<li><p>使用完及时清理，避免内存泄漏</p>
+<p>虽然<code>ThreadLocal</code>的<code>get()</code>、<code>set()</code>、<code>remove()</code>方法中有尝试调用<code>expungeStaleEntry()</code></p>
+</li>
+<li><p>避免使用<code>ThreadLocal</code>存储大对象</p>
+</li>
+</ol>
 
       
     </div>
@@ -1617,105 +1785,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://transient.icu/2023/11/26/2023-11-26-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpg">
-      <meta itemprop="name" content="codecho">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="夏日的蝉鸣">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/11/26/2023-11-26-CentOS%E4%BF%AE%E6%94%B9ssh%E9%BB%98%E8%AE%A4%E7%AB%AF%E5%8F%A3/" class="post-title-link" itemprop="url">CentOS修改ssh默认端口</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-11-26 00:00:00" itemprop="dateCreated datePublished" datetime="2023-11-26T00:00:00+08:00">2023-11-26</time>
-    </span>
-
-  
-    <span class="post-meta-break"></span>
-    <span class="post-meta-item" title="Symbols count in article">
-      <span class="post-meta-item-icon">
-        <i class="far fa-file-word"></i>
-      </span>
-      <span class="post-meta-item-text">Symbols count in article: </span>
-      <span>452</span>
-    </span>
-    <span class="post-meta-item" title="Reading time">
-      <span class="post-meta-item-icon">
-        <i class="far fa-clock"></i>
-      </span>
-      <span class="post-meta-item-text">Reading time &asymp;</span>
-      <span>1 mins.</span>
-    </span>
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>我们在使用云服务器时的过程中，可能经常会发现自己的主机被各种扫描端口和尝试登录，如果安全意识不够，很可能会发生服务器被别人入侵，导致自己的数据资产受损。下面介绍如何修改ssh登录默认端口，减少自己主机被暴力登录的情况发生。</p>
-</blockquote>
-<h4 id="查看服务器是否被暴力登录"><a href="#查看服务器是否被暴力登录" class="headerlink" title="查看服务器是否被暴力登录"></a>查看服务器是否被暴力登录</h4><ul>
-<li><p>查看<code>/var/log/secure</code>日志，如果发现有很多登录密码错误的信息，表示服务器可能正在被别人尝试暴力登录</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -n 100 /var/<span class="built_in">log</span>/secure | grep <span class="string">&quot;Failed password&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p><img src="https://myblog-1256052415.cos.ap-shanghai.myqcloud.com/%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux%2F%E6%9F%A5%E7%9C%8Bvar-log-secure%E7%99%BB%E5%BD%95%E6%97%A5%E5%BF%97.PNG"></p>
-</li>
-</ul>
-<h4 id="修改默认端口"><a href="#修改默认端口" class="headerlink" title="修改默认端口"></a>修改默认端口</h4><ul>
-<li><p>修改sshd配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/ssh/sshd_config</span><br><span class="line"></span><br><span class="line"><span class="comment"># 增加另一个端口号 1234</span></span><br><span class="line">Port 22</span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
-<li><p>重启sshd服务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd</span><br></pre></td></tr></table></figure></li>
-<li><p>修改防火墙或安全组配置，增加新端口</p>
-</li>
-<li><p>使用新端口连接服务器，修改sshd_config配置文件，将原端口注释，保留新端口</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Port 22</span></span><br><span class="line">Port 1234</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="屏蔽尝试非法登录的ip"><a href="#屏蔽尝试非法登录的ip" class="headerlink" title="屏蔽尝试非法登录的ip"></a>屏蔽尝试非法登录的ip</h4><p>​    通过shell脚本和定时任务，将ip加入屏蔽名单，详细参考<a target="_blank" rel="noopener" href="https://codecho.github.io/2023/02/18/2022-10-25-%E7%BC%96%E5%86%99shell%E8%84%9A%E6%9C%AC%E7%A6%81%E6%AD%A2%E9%9D%9E%E6%B3%95ip%E8%AE%BF%E9%97%AELinux/">这里</a></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
@@ -1741,14 +1810,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>Symbols count total: </span>
-    <span title="Symbols count total">147k</span>
+    <span title="Symbols count total">156k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>Reading time total &asymp;</span>
-    <span title="Reading time total">2:13</span>
+    <span title="Reading time total">2:22</span>
   </span>
 </div>
   <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
